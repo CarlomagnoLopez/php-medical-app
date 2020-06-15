@@ -2,33 +2,33 @@
 
 One Paragraph of project description goes here
 
-## Getting Started
+## Getting Started 🚀
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Prerequisites 📋
 
 Prerequisite  Before you can sun the application
 
-RequirementsResultPHP 7.0+v.7.4.3
-MySQLi PHP ExtensionEnabled
-PDO PHP ExtensionEnabled
-cURL PHP ExtensionEnabled
-OpenSSL PHP ExtensionEnabled
-MBString PHP ExtensionEnabled
-IMAP PHP ExtensionEnabled
-GD PHP ExtensionEnabled
-Zip PHP ExtensionEnabled
-FileInfo PHP ExtensionEnabled
-Json PHP ExtensionEnabled
-mod_rewrite ExtensionEnabled
-Output bufferingEnabled
+* RequirementsResultPHP 7.0+v.7.4.3
+* MySQLi PHP ExtensionEnabled
+* PDO PHP ExtensionEnabled
+* cURL PHP ExtensionEnabled
+* OpenSSL PHP ExtensionEnabled
+* MBString PHP ExtensionEnabled
+* IMAP PHP ExtensionEnabled
+* GD PHP ExtensionEnabled
+* Zip PHP ExtensionEnabled
+* FileInfo PHP ExtensionEnabled
+* Json PHP ExtensionEnabled
+* mod_rewrite ExtensionEnabled
+* Output bufferingEnabled
 
 ```
 Give examples
 ```
 
-### Installing
+### Installing 🔧
 
 
 
@@ -46,13 +46,15 @@ create in MySQL user test with pass test
 
 
 
-## Deployment
+## Deployment ⚙️
 
-open : http://localhost/php-medical-app/
+open : http://localhost/trackme1/signin/?id=36/
+
+id = 36 from database mysql
 
 
 
-## Versioning
+## Versioning  📌
 
 1.0
 
@@ -63,12 +65,6 @@ open : http://localhost/php-medical-app/
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License
+## License  ✒️
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
