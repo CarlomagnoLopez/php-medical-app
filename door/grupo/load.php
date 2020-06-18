@@ -592,8 +592,11 @@ function gr_group() {
                   "method"         => $this->request->data['method']
             ),
         );*/
-     //   $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-        $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode("{}"));
+
+        $data_array =  array(
+            "sms"        => trim($arg[1]["msg"]),
+        );
+        $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
         $response  = json_decode($make_call, true);
         $data    = $response['body']['MessageId'];
         $statusCode = $response['statusCode'];
