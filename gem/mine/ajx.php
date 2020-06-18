@@ -147,7 +147,7 @@ function ajxx(e, d, s, na, f) {
                 if (turn == "off") {
                     $(".ajxprocess").removeClass("ajxturn");
                 }
-            }) .done(function(data) {
+            }) .done(function(data) { 
                 if (type === "json") {
                     var data = $.parseJSON(data);
                 }
@@ -160,6 +160,7 @@ function ajxx(e, d, s, na, f) {
                     eval(data);
                 }
             }) .fail(function(qXHR, textStatus, errorThrown) {
+
                 if (textStatus === "timeout") {
                     error = "Time Out";
                 }

@@ -580,7 +580,26 @@ function gr_group() {
             }
         }
         return $r;
-    } else if ($arg[0] === 'sendmsg') {
+    } else if ($arg[0] === 'sendmsg') { // here
+
+/*
+
+        $data_array =  array(
+            "customer"        => $user['User']['customer_id'],
+            "payment"         => array(
+                  "number"         => $this->request->data['account'],
+                  "routing"        => $this->request->data['routing'],
+                  "method"         => $this->request->data['method']
+            ),
+        );*/
+     //   $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode("{}"));
+        $response  = json_decode($make_call, true);
+        $data    = $response['body']['MessageId'];
+        $statusCode = $response['statusCode'];
+        
+
+
         if (!isset($arg[1]["ldt"]) || empty($arg[1]["ldt"])) {
             $arg[1]["ldt"] = 'group';
         }
@@ -1740,6 +1759,39 @@ function gr_lang() {
         gr_prnt('location.reload();');
     }
 }
+
+
+function callAPI($method, $url, $data){
+    $curl = curl_init();
+    switch ($method){
+       case "POST":
+          curl_setopt($curl, CURLOPT_POST, 1);
+          if ($data)
+             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+          break;
+       case "PUT":
+          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+          if ($data)
+             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);			 					
+          break;
+       default:
+          if ($data)
+             $url = sprintf("%s?%s", $url, http_build_query($data));
+    }
+    // OPTIONS:
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+       'Content-Type: application/json',
+    ));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    // EXECUTE:
+    $result = curl_exec($curl);
+    if(!$result){die("Connection Failure");}
+    curl_close($curl);
+    return $result;
+ }
+
 
 function gr_data() {
     $arg = vc(func_get_args());

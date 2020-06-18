@@ -56,7 +56,8 @@ function gr_login($do) {
                 if ($login[1] === 'blocked') {
                     gr_prnt('say("'.gr_lang('get', 'device_blocked').'");');
                 } else {
-                    gr_prnt('say("'.gr_lang('get', 'invalid_login').'");');
+                    gr_prnt('say("'.gr_lang('get', 'invalid_login').'");$.loadingBlockHide();');
+
                 }
             }
         }

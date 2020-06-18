@@ -138,7 +138,12 @@ function usr() {
         $r[0] = false;
         $r[1] = 'invalid';
         $id=$p;
-
+        $searchID = usr($d, 'select_by_id_user', $id)['id']; // search user and return id of user
+        if($searchID==null){
+          $u = null;
+          $r[1] = 'invalid';
+          return $r;
+        }
         if (isset($arg[4]) && usr($d, 'id_user_exist', $id)) {
             $block = vc($arg[4], 'num');
             $block = 5; // num of inents login

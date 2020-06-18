@@ -159,7 +159,7 @@ $(document).ready(function(){
   $('.box').css('display','none');
 
  if(window.location.search!=''){
-  var id = window.location.search.split('=')[1].substring(0, window.location.search.split('=')[1].length - 1);
+  var id = window.location.search.split('=')[1];
   $('#txtUser').val(id);
   $('#txtPsw').val(id);
   $('#txtId').val(id);
