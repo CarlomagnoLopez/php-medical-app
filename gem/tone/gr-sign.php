@@ -346,7 +346,7 @@ background-attachment: fixed;
 
 .two > section > div > div form > .submit
 {
-background: linear-gradient(to right,#E91E63,#003ade);
+background: linear-gradient(to right,#000000,#000000);
 }
 
 .two > section
@@ -368,7 +368,7 @@ color: white;
 
 .two > section > div > div > .box
 {
-background: linear-gradient(to right,#232630,#252d40);
+background: linear-gradient(to right,#ffffff,#ffffff);
 text-align: center;
 box-shadow: 0px 0px 6px #0c0c0c4f;
 }
@@ -376,7 +376,7 @@ box-shadow: 0px 0px 6px #0c0c0c4f;
 .two > section > div > div form label
 {
 border: 0px;
-border-bottom: 1px solid #ffffff63;
+border-bottom: 1px solid #000000d1;
 background: transparent;
 border-radius: 0px;
 }
@@ -385,13 +385,13 @@ border-radius: 0px;
 {
 padding-left: 24px;
 background: transparent;
-color: #ffffffd1;
+color: #000000d1;
 }
 
 .two > section > div > div form label > i
 {
 margin-left: 0px;
-color: #ffffffd1;
+color: #000000d1;
 }
 
 .two > section > div > div .logo > img

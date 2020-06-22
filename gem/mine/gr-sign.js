@@ -1,4 +1,38 @@
-<?php if(!defined('s7V9pz')) {die();}?>$('.sign > section > div > div form > .switch').on('click', function() {
+$(document).ready(function(){
+    showSigUp();
+});
+
+
+function showSigUp(){
+    $('body').hide();
+    var btn = $('.two > section > div > div form > .submit.global').text();
+    $('.two > section > div > div form > .submit.global').text($('.two > section > div > div form > .submit.global').attr('btn'));
+    $('.two > section > div > div form > .submit.global').attr('btn', btn);
+    $('.sign > section > div > div form .global').removeClass('d-none');
+    $('.two > section > div > div form > .submit.reset').addClass('d-none');
+
+
+    $('.two > section > div > div form > .submit.global').attr('do', 'register');
+    $('.two > section > div > div form .doz').val('register');
+    $('.sign > section > div > div form .login').addClass('d-none');
+    $('.sign > section > div > div form .register,.sign .regsep').removeClass('d-none');
+    $('.sign > section > div > div form > .sub').addClass('d-none');
+    $(this).addClass('log');
+
+
+    var qn = $('.sign > section > div > div form > .switch > i').text();
+    $('.sign > section > div > div form > .switch > i').text($('.sign > section > div > div form > .switch').attr('qn'));
+    $('.sign > section > div > div form > .switch').attr('qn', qn);
+
+    var btn2 = $('.two > section > div > div form > .switch > span').text();
+    $('.two > section > div > div form > .switch > span').text($('.sign > section > div > div form > .switch').attr('btn'));
+    $('.sign > section > div > div form > .switch').attr('btn', btn2);
+    $('body').fadeIn();    
+
+}
+
+
+$('.sign > section > div > div form > .switch').on('click', function() {
     $('body').hide();
     var btn = $('.two > section > div > div form > .submit.global').text();
     $('.two > section > div > div form > .submit.global').text($('.two > section > div > div form > .submit.global').attr('btn'));
@@ -112,8 +146,39 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         }
     });
     if (doer === 1) {
-        var s = 'eval(data);';
-        ajxx($(this), '', s, 0, e);
+         var s = 'eval(data);';
+       // var s = '';
+         ajxx($(this), '', s, 0, e);
+        // signup
+
+        // data = new FormData();
+        // data.append('act',1);
+        // data.append('do','register');
+        // data.append('fname', 'george');
+        // data.append('email', 'george@george.com' );
+        // data.append('name','George' );
+        // data.append('pass', 'george' );
+        // data.append('sign', '');
+        // data.append('rmbr', '');
+    
+        
+        
+
+        // $.ajax({
+        //     url: './signin',
+        //     data: data,
+        //     processData: false,
+        //     type: 'POST',
+        //     success: function ( data ) {
+        //         alert( data );
+        //     }
+        // });
+    
+
+
+
+
+
     } else {
         say($('.two > section > div > div form > .submit.global').attr('em'));
     }
@@ -140,18 +205,18 @@ $('.two > section > div > div form > .submit').trigger('click');
  }
 });
 
-$('body').on('keyup', '.gstdep', function() {
-    if (!$('.sign > section > div > div form > .switch').hasClass('log')) {
-        var dlg = $('.two > section > div > div form > .submit.global').attr('dlg');
-        var gst = $('.two > section > div > div form > .submit.global').attr('gst');
-        if ($(this).val().length != 0 && gst == 0) {
-            $('.two > section > div > div form > .submit.global').attr('dlg', $('.two > section > div > div form > .submit.global').text());
-            $('.two > section > div > div form > .submit.global').attr('gst', 1);
-            $('.two > section > div > div form > .submit.global').text(dlg);
-        } else if ($(this).val().length == 0 && gst == 1) {
-            $('.two > section > div > div form > .submit.global').attr('dlg', $('.two > section > div > div form > .submit.global').text());
-            $('.two > section > div > div form > .submit.global').attr('gst', 0);
-            $('.two > section > div > div form > .submit.global').text(dlg);
-        }
-    }
-});
+// $('body').on('keyup', '.gstdep', function() {
+//     if (!$('.sign > section > div > div form > .switch').hasClass('log')) {
+//         var dlg = $('.two > section > div > div form > .submit.global').attr('dlg');
+//         var gst = $('.two > section > div > div form > .submit.global').attr('gst');
+//         if ($(this).val().length != 0 && gst == 0) {
+//             $('.two > section > div > div form > .submit.global').attr('dlg', $('.two > section > div > div form > .submit.global').text());
+//             $('.two > section > div > div form > .submit.global').attr('gst', 1);
+//             $('.two > section > div > div form > .submit.global').text(dlg);
+//         } else if ($(this).val().length == 0 && gst == 1) {
+//             $('.two > section > div > div form > .submit.global').attr('dlg', $('.two > section > div > div form > .submit.global').text());
+//             $('.two > section > div > div form > .submit.global').attr('gst', 0);
+//             $('.two > section > div > div form > .submit.global').text(dlg);
+//         }
+//     }
+// });

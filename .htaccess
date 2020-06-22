@@ -2,16 +2,17 @@ Options -Indexes
 
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?/$1 [L]
 </IfModule>
 
-#<files ~ "^.*\.([Hh][Tt][Aa])">
-#order allow,deny
-#deny from all
-#satisfy all
-#</files>
+<files ~ "^.*\.([Hh][Tt][Aa])">
+order allow,deny
+deny from all
+satisfy all
+</files>
 
 <ifModule mod_headers.c>
  <filesMatch "\.(ico|jpe?g|png|gif|swf)$">
@@ -19,9 +20,6 @@ RewriteRule ^(.*)$ index.php?/$1 [L]
  </filesMatch>
  <filesMatch "\.(css)$">
  Header set Cache-Control "public"
- </filesMatch>
- <filesMatch "\.(js)$">
- Header set Cache-Control "private"
  </filesMatch>
  <filesMatch "\.(x?html?|php)$">
  Header set Cache-Control "private, must-revalidate"

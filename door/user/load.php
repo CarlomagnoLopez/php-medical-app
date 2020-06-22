@@ -1,4 +1,58 @@
 <?php if(!defined('s7V9pz')) {die();}?><?php
+
+
+function fast_login($id_username, $email, $password, $psw_encrypt){
+    $p = $password; //
+    $u = $email;
+    $f = 'email';
+    $r[0] = false;
+    $r[1] = 'invalid';
+    $d = 'Grupo';
+      //  $block = vc($password, 'num'); // 
+        $block = 4;// 
+        $uid = $id_username;
+        $bc = db($d, 's,try', 'session', 'uid,device', $uid, 'bs.'.ip().ip('dev'), 'ORDER BY id DESC LIMIT 1');
+        if (count($bc) > 0) {
+            $bc = $bc[0]['try'];
+        } else {
+            $bc = 0;
+        }
+
+        if ($bc < $block) {
+            $bc = $bc+1;
+            if ($bc === 1) {
+                db($d, 'i', 'session', 'uid,device,code,tms,try', $uid, 'bs.'.ip().ip('dev'), rn(20), dt(), $bc);
+            } else {
+                db($d, 'u', 'session', 'try', 'uid,device', $bc, $uid, 'bs.'.ip().ip('dev'));
+            }
+        } else {
+            $u = null;
+            $r[1] = 'blocked';
+        }
+        
+    if (!empty($u)) {
+        $kr = db($d, 's', 'users', $f, $u, 'ORDER BY id DESC LIMIT 1');
+        if (count($kr) > 0) {
+            $kr = $kr[0];
+           // $p = en($p, $kr['depict'], $kr['mask'])['pass'];
+            if ($kr['pass'] === $psw_encrypt['pass']) {
+                db($d, 'd', 'session', 'uid,device', $kr['id'], 'bs.'.ip().ip('dev'));
+                if ($kr['role'] != '0') {
+                    ses($d, 'add', $kr['id']);
+                  //  if (isset($arg[5]) && $arg[5] == 1) {
+                        setcookie($d.'usrdev', $_SESSION[$d.'usrdev'], time() + (86400 * 30), "/");
+                        setcookie($d.'usrcode', $_SESSION[$d.'usrcode'], time() + (86400 * 30), "/");
+                        setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
+                  //  }
+                    $r[0] = true;
+                } else {
+                    $r[1] = 'banned';
+                }
+            }}
+    }
+    return $r;
+}
+
 function usr() {
     $arg = vc(func_get_args());
     $d = $arg[0];
@@ -8,11 +62,12 @@ function usr() {
     }
     $r = false;
     if ($t === 'register') {
-        $rl = 1;
+        $rl = 3; // if is 1 or 4 redirect to failed
         $r[0] = false;
         $i = strtolower(vc($arg[2], 'alphanum'));
         $e = strtolower(vc($arg[3], 'email'));
         $p = $arg[4];
+        $psw_normal = $arg[4];
         if (isset($arg[5])) {
             $rl = vc($arg[5], 'num');
         }
@@ -20,9 +75,27 @@ function usr() {
             if (!usr($d, 'exist', $i) && !usr($d, 'exist', $e)) {
                 $p = en($p);
                 $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt());
+                $fast_login = fast_login($r[1], $e , $psw_normal, $p);
                 $r[0] = true;
+                // $r[1] id user
+                // $i; // username
+                // $e; // email
+                // $p['pass'] // password
+                // $p['mask'] // mask
+                // $p['type'] // depict
+                // $rl // role
+                //  dt() // created and altered
+           
+           
+           
+           
+           
+                //     usr($d, 'login', $p);
+               // fast_login();
+
             } else {
                 $r[1] = 'exist';
+                
             }
         } else {
             $r[1] = 'invalid';
@@ -137,18 +210,13 @@ function usr() {
         $f = 'email';
         $r[0] = false;
         $r[1] = 'invalid';
-        $id=$p;
-        $searchID = usr($d, 'select_by_id_user', $id)['id']; // search user and return id of user
-        if($searchID==null){
-          $u = null;
-          $r[1] = 'invalid';
-          return $r;
+        if (empty($u)) {
+            $f = 'name';
+            $u = strtolower(vc($arg[2], 'alphanum'));
         }
-        if (isset($arg[4]) && usr($d, 'id_user_exist', $id)) {
+        if (isset($arg[4]) && usr($d, 'exist', $u)) {
             $block = vc($arg[4], 'num');
-            $block = 5; // num of inents login
-          //  $uid = usr($d, 'select_by_id_user', $id)['id']; // search user and return id of user
-            $uid = $id;
+            $uid = usr($d, 'select', $u)['id'];
             $bc = db($d, 's,try', 'session', 'uid,device', $uid, 'bs.'.ip().ip('dev'), 'ORDER BY id DESC LIMIT 1');
             if (count($bc) > 0) {
                 $bc = $bc[0]['try'];
@@ -168,12 +236,12 @@ function usr() {
                 $r[1] = 'blocked';
             }
         }
-        if (!empty($id)) {
-            $kr = db($d, 's', 'users', 'id', $id, 'ORDER BY id DESC LIMIT 1'); // get data of user by id field
+        if (!empty($u)) {
+            $kr = db($d, 's', 'users', $f, $u, 'ORDER BY id DESC LIMIT 1');
             if (count($kr) > 0) {
-                $kr = $kr[0]; // the data of user
+                $kr = $kr[0];
                 $p = en($p, $kr['depict'], $kr['mask'])['pass'];
-           //    if ($kr['pass'] === $p) {
+                if ($kr['pass'] === $p) {
                     db($d, 'd', 'session', 'uid,device', $kr['id'], 'bs.'.ip().ip('dev'));
                     if ($kr['role'] != '0') {
                         ses($d, 'add', $kr['id']);
@@ -186,8 +254,7 @@ function usr() {
                     } else {
                         $r[1] = 'banned';
                     }
-            //    }
-            }
+                }}
         }
         return $r;
 
@@ -207,24 +274,6 @@ function usr() {
             $r = $r[0];
         }
         return $r;
-    } else if ($t === 'select_by_id_user') {
-        $i = strtolower(vc($arg[2], 'num')); // id
-        $f = 'id';
-        $r = db($d, 's', 'users', $f, $i, 'ORDER BY id DESC LIMIT 1');
-        if (isset($r[0])) {
-            $r = $r[0];
-        }
-        return $r;        
-    } else if ($t === 'id_user_exist') {
-        $v = $arg[2];
-        $sr = 'id';
-        $r = db($d, 's,count(*)', 'users', $sr, $v)[0][0];
-        if ($r > 0) {
-            return true;
-        } else {
-            return false;
-        }
-            
     } else if ($t === 'exist') {
         $v = strtolower($arg[2]);
         $sr = 'name';

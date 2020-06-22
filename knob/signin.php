@@ -29,20 +29,29 @@ grupofns();
     <section>
         <div>
             <div>
-                <div class="logo">  
-                     <img width="100" style="width: 40%;" src="<?php pr(mf("grupo/global/logo-main.png")); ?>" />
-                </div>
                 <div class='box'>
                     <div class="logo">
-                        <img src="<?php pr(mf("grupo/global/logo.png")); ?>" />
+                        <img style="width: 130px;" src="<?php pr(mf("grupo/global/logo-main.png")); ?>" />
                     </div>
                     <form autocomplete='off' class='gr_sign'>
                         <div class="elements">
                             <input type="hidden" name="act" value=1 />
                             <input type="hidden" name="do" class='doz' value='login' />
                             <div class='register d-none'>
+                            <label><i class="ti-user"></i>
+                                    <input type="text" autocomplete='off' name="fname" placeholder="Name" />
+                                </label>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' name="fname" placeholder="<?php pr(gr_lang('get', 'full_name')) ?>" />
+                                    <input type="text" autocomplete='off' name="flastname" placeholder="Last Name" />
+                                </label>
+                                <label><i class="ti-home"></i>
+                                    <input type="text" autocomplete='off' name="faddress" placeholder="Address" />
+                                </label>
+                                <label><i class="ti-pin"></i>
+                                    <input type="text" autocomplete='off' name="fzipcode" placeholder="ZipCode" />
+                                </label>
+                                <label><i class="ti-mobile"></i>
+                                    <input type="text" autocomplete='off' name="fphonenumber" placeholder="Phone Number"/>
                                 </label>
                                 <label><i class="ti-email"></i>
                                     <input type="email" autocomplete='off' name="email" placeholder="<?php pr(gr_lang('get', 'email_address')) ?>" />
@@ -53,12 +62,12 @@ grupofns();
                             </div>
                             <div class='login'>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' name="sign" id="txtUser" placeholder="<?php pr(gr_lang('get', 'email_username')) ?>" />
+                                    <input type="text" autocomplete='off' name="sign" placeholder="<?php pr(gr_lang('get', 'email_username')) ?>" />
                                 </label>
                             </div>
                             <div class='global'>
                                 <label><i class="ti-lock"></i>
-                                    <input type="password" class='gstdep' autocomplete='off' id="txtPsw" name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
+                                    <input type="password" class='gstdep' autocomplete='off' name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
                                 </label>
                             </div>
                         </div>
@@ -84,14 +93,7 @@ grupofns();
                             ?>
                         </span>
                         <span class="submit ajx reset d-none" form='.gr_sign'><?php pr(gr_lang('get', 'reset')); ?></span>
-                        <?php if (gr_default('get', 'userreg') == 'enable') {
-                            ?>
-                            <div class="switch" qn='<?php pr(gr_lang('get', 'already_have_account')); ?>' btn='<?php pr(gr_lang('get', 'login')); ?>'>
-                                <i><?php pr(gr_lang('get', 'dont_have_account')); ?></i>
-                                <span><?php pr(gr_lang('get', 'create')); ?></span>
-                            </div>
-                            <?php
-                        } ?>
+                      
                     </form>
                     <div class='tos'>
                         <h4><span><?php pr(gr_lang('get', 'tos')); ?></span><i class="ti-close"></i></h4>
@@ -117,29 +119,8 @@ cdn("npm/popper.js@1.14.7/dist/umd/popper.min.js");
 cdn("npm/bootstrap@4.3.1/dist/js/bootstrap.min.js");
 cdn("npm/jquery.nicescroll@3.7.6/jquery.nicescroll.min.js");
 cdn("npm/js-cookie@2/src/js.cookie.min.js");
-js("ajx", "gr-sign");
-if (pg('signin') == 'unverified/') {
-    pr("<script> alert('".gr_lang('get', 'check_inbox')."'); </script>");
-}
+
 ?>
-<script src="../asset/jquery.loading.block.js"></script>
-
-
-<script>
-
-    $.loadingBlockShow({
-        imgPath: '../asset/default.svg',
-        text: 'Loading...',
-        style: {
-            position: 'fixed',
-            width: '100%',
-            height: '100%',
-            background: 'rgba(0, 0, 0, .8)',
-            left: 0,
-            top: 0,
-            zIndex: 10000
-        }
-    });
-</script>
-
+<script src="./gem/mine/ajx.js"></script>
+<script src="./gem/mine/gr-sign.js"></script>
 </html>

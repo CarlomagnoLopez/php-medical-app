@@ -4,40 +4,6 @@ $usr = usr('Grupo');
 if (!$usr['active']) {
     rt('signin');
 }
-
-
-
-/*
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-require "key/Connection.php";                
-$Connection  = new Connection();               
-$db          = $Connection->getConnection(); 
-
-$id  = trim($_GET['id_usuario'], '/');       
-    $sql = "SELECT * FROM gr_users WHERE id = :id";
-    try {
-        $stmt = $db->prepare($sql); 
-        $stmt->bindParam("id", $id);
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-           $result = $stmt->fetch(PDO::FETCH_OBJ);
-           echo 'email:'.$result->email;
-        } else {
-           return false;
-        }
-        $db = null; 
-    } catch(PDOException $e) {
-        echo $e->getMessage(); 
-    }
-
-*/
-
-
-
-
 grupofns();
 gr_unverified();
 gr_profile('ustatus', 'online');

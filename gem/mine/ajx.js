@@ -1,8 +1,5 @@
-<?php if(!defined('s7V9pz')) {die();}?>$(document).ready(function() {
-    $("head").append("<link rel='stylesheet' type='text/css' href='<?php echo url();?>ajx.css' />");
-    $('body').append("<div class='ajxprocess'><span></span></div>");
-    $('body').append("<div class='ajxcnf'><div><div><span></span><span><i class=nocnf>No</i><i class=yescnf>Yes</i></span></div></div></div><span class='ajxout'></span>");
-    ajx('.ajx');
+$(document).ready(function() {
+
 });
 $('body').on('click', ".say", function(na) {
     na.preventDefault();
