@@ -22,7 +22,8 @@ function gr_register($do) {
                     gr_data('i', 'profile', 'name', $do["fname"], $id);
                     gr_mail('verify', $id, 0, rn(5));
                     gr_prnt('say("'.gr_lang('get', 'check_inbox').'","s");');
-                    gr_prnt('setTimeout(function() { location.reload(); }, 2000);');
+
+                    gr_prnt('setTimeout(function() { prompt("Input you code:", "145874478969"); location.reload(); }, 2000);');
                 }
             }
         } else {
