@@ -1,5 +1,8 @@
+
 $(document).ready(function(){
-    showSigUp();
+   // showSigUp();
+   
+
 });
 
 
@@ -135,6 +138,12 @@ $('.gr-consent > span > i').on('click', function() {
 });
 $('.two > section > div > div form > .submit.global').on('click', function(e) {
     var doer = 1;
+
+    $.loadingBlockShow({
+        imgPath: './asset/default.svg',
+        text: 'Loading...',
+        style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+    });
     $("form").find('input').each(function() {
         if (!$(this).val() && $(this).is(":visible")) {
             doer = 0;
@@ -146,11 +155,47 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         }
     });
     if (doer === 1) {
+    
+
+
+        if(!validatePhoneNumber($("#txtPhoneNumber").val())){
+            alert("Phone number format incorrect.");
+            $("#txtPhoneNumber").focus();
+            return false;
+        }
+        if(!checkPassword($("#txtPassword").val())) {
+            alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
+            $("#txtPassword").focus();
+            return false;
+        }
+        if(!validateEmail($("#txtEmail").val())){
+            alert("Email format incorrect.");
+            $("#txtEmail").focus();
+            return false;
+        }
+
+
          var s = 'eval(data);';
        // var s = '';
-         ajxx($(this), '', s, 0, e);
+      //   ajxx($(this), '', s, 0, e);
         // signup
-
+        var values = {
+            txtName        : $("#txtName").val(),
+            txtLastName    : $("#txtLastName").val(),
+            txtAddress     : $("#txtAddress").val(),
+            txtZipCode     : $("#txtZipCode").val(),
+            txtPhoneNumber : $("#txtPhoneNumber").val(),
+            txtEmail       : $("#txtEmail").val(),
+            txtUsername    : $("#txtUsername").val(),
+            txtPassword    : $("#txtPassword").val()
+        }
+        signUpCognito(values).then(function(data){
+            var cognitoUser = data.user;
+           
+         }).catch(function(err) {
+             console.log(err.message || JSON.stringify(err));
+         });
+ 
         // data = new FormData();
         // data.append('act',1);
         // data.append('do','register');
@@ -159,11 +204,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         // data.append('name','George' );
         // data.append('pass', 'george' );
         // data.append('sign', '');
-        // data.append('rmbr', '');
-    
-        
-        
-
+        // data.append('rmbr', '');        
         // $.ajax({
         //     url: './signin',
         //     data: data,
@@ -173,17 +214,70 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         //         alert( data );
         //     }
         // });
-    
-
-
-
-
 
     } else {
         say($('.two > section > div > div form > .submit.global').attr('em'));
     }
 
 });
+
+function validatePhoneNumber(phone_number) 
+    {
+        var re = /\D*(^[0-9]{6,15}$)\D*/
+        return re.test(phone_number);
+    }
+    function validateEmail(email) 
+    {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+function checkPassword(str)
+{
+  // at least one number, one lowercase and one uppercase letter
+  // at least six characters
+  var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+  return re.test(str);
+}
+function signUpCognito(data){
+  
+    return new Promise((resolve, reject) => {
+        var CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
+        var poolData = {
+          UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
+          ClientId: "13pbrvceiogtq8ikiv1l9v89t4", // Your client id here
+        };
+        var userPool = new CognitoUserPool(poolData);
+        var attributeList = [];
+
+       var dataAddress          = {Name: 'address',Value: data.txtAddress.trim()};     
+       var dataName             = {Name: 'name',Value: data.txtName.trim() + ' ' + data.txtLastName.trim()};       
+       var dataPhoneNumber      = {Name: 'phone_number',Value: data.txtPhoneNumber};     
+       var dataEmail            = {Name: 'email',Value: data.txtEmail};     
+       var dataRole             = {Name: 'custom:role',Value:'OrgAdmin'};   
+       var dataPK               = {Name: 'custom:pk',Value: 'mcp-org-19b6f5ae-36bd-4664-9266-d43d491df1eb'};
+
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataAddress));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataName));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataPhoneNumber));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataRole));
+        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataPK));
+        userPool.signUp(data.txtEmail, data.txtPassword, attributeList, null, function(
+          err,
+          result
+          ) {
+              if (err) {
+                  reject(err)
+              }else{
+                  resolve(result);
+              }
+          });
+      })
+
+  }
+
+
+
 $(document).on('keypress', function(e) {
     if (e.which == 13) {
         $('.two > section > div > div form > .submit.global').trigger('click');

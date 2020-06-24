@@ -39,25 +39,25 @@ grupofns();
                             <input type="hidden" name="do" class='doz' value='login' />
                             <div class='register d-none'>
                             <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' name="fname" placeholder="Name" />
+                                    <input type="text" autocomplete='off' id="txtName" name="fname" placeholder="Name" />
                                 </label>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' name="flastname" placeholder="Last Name" />
+                                    <input type="text" autocomplete='off' id="txtLastName" name="flastname" placeholder="Last Name" />
                                 </label>
                                 <label><i class="ti-home"></i>
-                                    <input type="text" autocomplete='off' name="faddress" placeholder="Address" />
+                                    <input type="text" autocomplete='off' id="txtAddress" name="faddress" placeholder="Address" />
                                 </label>
                                 <label><i class="ti-pin"></i>
-                                    <input type="text" autocomplete='off' name="fzipcode" placeholder="ZipCode" />
+                                    <input type="number" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
                                 </label>
                                 <label><i class="ti-mobile"></i>
-                                    <input type="text" autocomplete='off' name="fphonenumber" placeholder="Phone Number"/>
+                                    <input type="text" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number"/>
                                 </label>
                                 <label><i class="ti-email"></i>
-                                    <input type="email" autocomplete='off' name="email" placeholder="<?php pr(gr_lang('get', 'email_address')) ?>" />
+                                    <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="<?php pr(gr_lang('get', 'email_address')) ?>" />
                                 </label>
                                 <label><i class="ti-world"></i>
-                                    <input type="text" autocomplete='off' name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
+                                    <input type="text" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
                                 </label>
                             </div>
                             <div class='login'>
@@ -67,13 +67,13 @@ grupofns();
                             </div>
                             <div class='global'>
                                 <label><i class="ti-lock"></i>
-                                    <input type="password" class='gstdep' autocomplete='off' name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
+                                    <input type="password" class='gstdep' autocomplete='off' id="txtPassword" name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
                                 </label>
                             </div>
                         </div>
                         <div class="regsep d-none"></div>
                         <div class="sub">
-                            <span class='rmbr'><i><b></b><input type="hidden" name="rmbr" /></i> <?php pr(gr_lang('get', 'remember_me')) ?></span>
+                            <span class='rmbr' style="color: black;"><i><b></b><input type="hidden" name="rmbr" /></i> <?php pr(gr_lang('get', 'remember_me')) ?></span>
                             <span class="doer" data-do="forgot"><?php pr(gr_lang('get', 'forgot_password')) ?></span>
                         </div>
                         <?php if (gr_default('get', 'recaptcha') == 'enable') {
@@ -93,7 +93,14 @@ grupofns();
                             ?>
                         </span>
                         <span class="submit ajx reset d-none" form='.gr_sign'><?php pr(gr_lang('get', 'reset')); ?></span>
-                      
+                        <?php if (gr_default('get', 'userreg') == 'enable') {
+                            ?>
+                            <div class="switch" qn='<?php pr(gr_lang('get', 'already_have_account')); ?>' btn='<?php pr(gr_lang('get', 'login')); ?>'>
+                                <i><?php pr(gr_lang('get', 'dont_have_account')); ?></i>
+                                <span><?php pr(gr_lang('get', 'create')); ?></span>
+                            </div>
+                            <?php
+                        } ?>
                     </form>
                     <div class='tos'>
                         <h4><span><?php pr(gr_lang('get', 'tos')); ?></span><i class="ti-close"></i></h4>
@@ -109,6 +116,7 @@ grupofns();
             <i><?php pr(gr_lang('get', 'got_it')); ?></i>
         </span>
     </div>
+    <div class='ajxprocess'><span></span></div>
 </body>
 
 <?php
@@ -121,6 +129,12 @@ cdn("npm/jquery.nicescroll@3.7.6/jquery.nicescroll.min.js");
 cdn("npm/js-cookie@2/src/js.cookie.min.js");
 
 ?>
+<script src="./dist/jquery.loading.block.js"></script>
+
+<script src="./dist/amazon-cognito-identity.js"></script>
+<!-- optional: only if you use other AWS services -->
+<script src="./dist/aws-cognito-sdk.min.js"></script>
+
 <script src="./gem/mine/ajx.js"></script>
 <script src="./gem/mine/gr-sign.js"></script>
 </html>
