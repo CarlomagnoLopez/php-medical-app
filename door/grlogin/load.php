@@ -9,21 +9,21 @@ function gr_register($do) {
             $do["email"] = vc($do["email"], 'email');
             $do["name"] = vc($do["name"], 'alphanum');
             $do["fname"] = vc($do["fname"], 'strip');
-            if (empty($do["fname"]) || empty($do["name"]) || empty($do["email"]) || empty($do["pass"])) {
+            if (empty($do["fname"]) || empty($do["name"]) || empty($do["email"]) || empty($do["pass"]) || empty($do["fphonenumber"]) ) {
                 gr_prnt('say("'.gr_lang('get', 'invalid_value').'");');
             } else if (usr('Grupo', 'exist', $do["name"])) {
                 gr_prnt('say("'.gr_lang('get', 'username_exists').'");');
             } else if (usr('Grupo', 'exist', $do["email"])) {
                 gr_prnt('say("'.gr_lang('get', 'email_exists').'");');
             } else {
-                $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"]);
+                $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"]);
                 if ($reg[0]) {
                     $id = $reg[1];
                     gr_data('i', 'profile', 'name', $do["fname"], $id);
                     gr_mail('verify', $id, 0, rn(5));
                     gr_prnt('say("'.gr_lang('get', 'check_inbox').'","s");');
 
-                    gr_prnt('setTimeout(function() { prompt("Input you code:", "145874478969"); location.reload(); }, 2000);');
+                    gr_prnt('setTimeout(function() { location.reload(); }, 2000);');
                 }
             }
         } else {

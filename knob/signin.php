@@ -56,13 +56,13 @@ grupofns();
                                 <label><i class="ti-email"></i>
                                     <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="<?php pr(gr_lang('get', 'email_address')) ?>" />
                                 </label>
-                                <label><i class="ti-world"></i>
-                                    <input type="text" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
-                                </label>
+                                    <input type="hidden" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
+                                <!-- <label><i class="ti-world"></i>
+                               </label> -->
                             </div>
                             <div class='login'>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' name="sign" placeholder="<?php pr(gr_lang('get', 'email_username')) ?>" />
+                                    <input type="text" autocomplete='off' id="txtEmailLogin" name="sign" placeholder="Email" />
                                 </label>
                             </div>
                             <div class='global'>

@@ -8,7 +8,7 @@ width: 100%;
 body
 {
 font-family: 'Montserrat', sans-serif;
-background: url(gem/ore/grupo/global/bg.jpg);
+background: url(gem/ore/grupo/global/background-img.png);
 background-size: cover;
 background-position: center;
 overflow-x: hidden;

@@ -37,7 +37,7 @@ function fast_login($id_username, $email, $password, $psw_encrypt){
            // $p = en($p, $kr['depict'], $kr['mask'])['pass'];
             if ($kr['pass'] === $psw_encrypt['pass']) {
                 db($d, 'd', 'session', 'uid,device', $kr['id'], 'bs.'.ip().ip('dev'));
-                if ($kr['role'] != '0') {
+           //     if ($kr['role'] != '0') {
                     ses($d, 'add', $kr['id']);
                   //  if (isset($arg[5]) && $arg[5] == 1) {
                         setcookie($d.'usrdev', $_SESSION[$d.'usrdev'], time() + (86400 * 30), "/");
@@ -45,9 +45,9 @@ function fast_login($id_username, $email, $password, $psw_encrypt){
                         setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
                   //  }
                     $r[0] = true;
-                } else {
-                    $r[1] = 'banned';
-                }
+                // } else {
+                //     $r[1] = 'banned';
+                // }
             }}
     }
     return $r;
@@ -67,6 +67,7 @@ function usr() {
         $i = strtolower(vc($arg[2], 'alphanum'));
         $e = strtolower(vc($arg[3], 'email'));
         $p = $arg[4];
+        $phone = $arg[5];
         $psw_normal = $arg[4];
         if (isset($arg[5])) {
             $rl = vc($arg[5], 'num');
@@ -74,7 +75,7 @@ function usr() {
         if (!empty($d) && !empty($i) && !empty($e) && !empty($p)) {
             if (!usr($d, 'exist', $i) && !usr($d, 'exist', $e)) {
                 $p = en($p);
-                $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt());
+                $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone);
                 $fast_login = fast_login($r[1], $e , $psw_normal, $p);
                 $r[0] = true;
                 // $r[1] id user
@@ -243,7 +244,7 @@ function usr() {
                 $p = en($p, $kr['depict'], $kr['mask'])['pass'];
                 if ($kr['pass'] === $p) {
                     db($d, 'd', 'session', 'uid,device', $kr['id'], 'bs.'.ip().ip('dev'));
-                    if ($kr['role'] != '0') {
+                   // if ($kr['role'] != '0') {
                         ses($d, 'add', $kr['id']);
                         if (isset($arg[5]) && $arg[5] == 1) {
                             setcookie($d.'usrdev', $_SESSION[$d.'usrdev'], time() + (86400 * 30), "/");
@@ -251,9 +252,9 @@ function usr() {
                             setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
                         }
                         $r[0] = true;
-                    } else {
-                        $r[1] = 'banned';
-                    }
+                    // } else {
+                    //     $r[1] = 'banned';
+                    // }
                 }}
         }
         return $r;

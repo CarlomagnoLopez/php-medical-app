@@ -1,9 +1,41 @@
 
+window.isLogin = true;
 $(document).ready(function(){
-   // showSigUp();
-   
+
+    
+    $("#txtEmailLogin").val("mlopez@mlopez.com");
+    $("#txtPassword").val("Soporte00#");
+    //showSigUp();
+  
+//    if(window.location.search!=''){
+//     var id     = window.location.search.split('=')[1];
+//     var email  = window.location.search.split('=')[2];
+//     var phone  = window.location.search.split('=')[3];
+
+
+//     $("#txtPhoneNumber").val(phone);
+//     $("#txtEmail").val(email);
+//     var psw = window.location.search.split('=')[2];
+//      getDataUserCognito(id).then(function(data){
+//         debugger;
+       
+//       }).catch(function(err) {
+//           console.log(err.message || JSON.stringify(err));
+//       });
+//    }
+  
+
+
+        //     txtLastName    : $("#txtLastName").val(),
+        //     txtAddress     : $("#txtAddress").val(),
+        //     txtZipCode     : $("#txtZipCode").val(),
+        //     txtPhoneNumber : $("#txtPhoneNumber").val(),
+        //     txtEmail       : $("#txtEmail").val(),
+        //     txtUsername    : $("#txtUsername").val(),
+        //     txtPassword    : $("#txtPassword").val()
 
 });
+
 
 
 function showSigUp(){
@@ -49,6 +81,7 @@ $('.sign > section > div > div form > .switch').on('click', function() {
         $('.sign > section > div > div form .login').removeClass('d-none');
         $('.sign > section > div > div form > .sub').removeClass('d-none');
         $(this).removeClass('log');
+        window.isLogin = true;
     } else {
         $('.two > section > div > div form > .submit.global').attr('do', 'register');
         $('.two > section > div > div form .doz').val('register');
@@ -56,6 +89,7 @@ $('.sign > section > div > div form > .switch').on('click', function() {
         $('.sign > section > div > div form .register,.sign .regsep').removeClass('d-none');
         $('.sign > section > div > div form > .sub').addClass('d-none');
         $(this).addClass('log');
+        window.isLogin = false;
     }
     var qn = $('.sign > section > div > div form > .switch > i').text();
     $('.sign > section > div > div form > .switch > i').text($('.sign > section > div > div form > .switch').attr('qn'));
@@ -158,43 +192,152 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
     
 
 
+
+
+
+/*
         if(!validatePhoneNumber($("#txtPhoneNumber").val())){
             alert("Phone number format incorrect.");
             $("#txtPhoneNumber").focus();
             return false;
-        }
-        if(!checkPassword($("#txtPassword").val())) {
-            alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
-            $("#txtPassword").focus();
-            return false;
-        }
-        if(!validateEmail($("#txtEmail").val())){
-            alert("Email format incorrect.");
-            $("#txtEmail").focus();
-            return false;
+        }*/
+
+        var _self = $(this);    
+
+        if(window.isLogin){
+
+            if(!checkPassword($("#txtPassword").val())) {
+                alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
+                $("#txtPassword").focus();
+                return false;
+            }
+            if(!validateEmail($("#txtEmailLogin").val())){
+                alert("Email format incorrect.");
+                $("#txtEmailLogin").focus();
+                return false;
+            }
+ 
+            $.ajax({
+                url: 'door/user/main.php',
+                data: JSON.stringify({ "method" : "getDataUserByEmail", "email" :  $("#txtEmailLogin").val()}),
+                processData: false,
+                dataType: "json",
+                contentType: "application/json",
+                type: 'POST',
+                beforeSend: function(){
+                 
+                },
+                success: function ( data ) {
+                    console.log(data);
+                    var phone = data.data.phone;
+                    var code = generateCode();
+                    console.log(code);
+
+                            $.ajax({
+                                url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+                                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
+                                processData: false,
+                                contentType: "application/json",
+                                type: 'POST',
+                                beforeSend: function(){
+                                    var username = $("#txtEmail").val().split("@")[0];
+                                    $("#txtUsername").val(username);
+                                },
+                                success: function ( data ) {
+                                    console.log(data);
+                                    var verificationCode = prompt('Please input verification code', '');
+                                    if(verificationCode === code){
+                                        var s = 'eval(data);';
+                                        ajxx(_self, '', s, 0, e);
+                                    }else{
+                                        alert("invalida code");
+                                    }
+                                },
+                                error: function(error){
+                                    $.loadingBlockHide();
+                                }
+                            });
+
+                    
+                },
+                error: function(error){
+                    $.loadingBlockHide();
+                }
+            });
+
+
+        }else{
+
+
+            if(!checkPassword($("#txtPassword").val())) {
+                alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
+                $("#txtPassword").focus();
+                return false;
+            }
+            if(!validateEmail($("#txtEmail").val())){
+                alert("Email format incorrect.");
+                $("#txtEmail").focus();
+                return false;
+            }
+            var code = generateCode();
+            console.log(code);
+            $.ajax({
+                url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : $("#txtPhoneNumber").val() } ),
+                processData: false,
+                contentType: "application/json",
+                type: 'POST',
+                beforeSend: function(){
+                    var username = $("#txtEmail").val().split("@")[0];
+                    $("#txtUsername").val(username);
+                },
+                success: function ( data ) {
+                    console.log(data);
+                    var verificationCode = prompt('Please input verification code', '');
+                    if(verificationCode === code){
+                        var s = 'eval(data);';
+                        ajxx(_self, '', s, 0, e);
+                    }else{
+                        alert("invalida code");
+                    }
+                },
+                error: function(error){
+                    $.loadingBlockHide();
+                }
+            });
         }
 
 
-         var s = 'eval(data);';
+
+
+        // var s = 'eval(data);';
+        // ajxx(_self, '', s, 0, e);
+
+
+
+
+
+
+
        // var s = '';
-      //   ajxx($(this), '', s, 0, e);
         // signup
-        var values = {
-            txtName        : $("#txtName").val(),
-            txtLastName    : $("#txtLastName").val(),
-            txtAddress     : $("#txtAddress").val(),
-            txtZipCode     : $("#txtZipCode").val(),
-            txtPhoneNumber : $("#txtPhoneNumber").val(),
-            txtEmail       : $("#txtEmail").val(),
-            txtUsername    : $("#txtUsername").val(),
-            txtPassword    : $("#txtPassword").val()
-        }
-        signUpCognito(values).then(function(data){
-            var cognitoUser = data.user;
-           
-         }).catch(function(err) {
-             console.log(err.message || JSON.stringify(err));
-         });
+        // var values = {
+        //     txtName        : $("#txtName").val(),
+        //     txtLastName    : $("#txtLastName").val(),
+        //     txtAddress     : $("#txtAddress").val(),
+        //     txtZipCode     : $("#txtZipCode").val(),
+        //     txtPhoneNumber : $("#txtPhoneNumber").val(),
+        //     txtEmail       : $("#txtEmail").val(),
+        //     txtUsername    : $("#txtUsername").val(),
+        //     txtPassword    : $("#txtPassword").val()
+        // }
+        // signUpCognito(values).then(function(data){
+        //     var cognitoUser = data.user;
+        //     var userSub = data.userSub;
+        //     var userConfirmed = data.userConfirmed;
+        //  }).catch(function(err) {
+        //      console.log(err.message || JSON.stringify(err));
+       //  });
  
         // data = new FormData();
         // data.append('act',1);
@@ -216,10 +359,23 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         // });
 
     } else {
+        $.loadingBlockHide();
         say($('.two > section > div > div form > .submit.global').attr('em'));
     }
 
 });
+
+function generateCode(){
+    var length = 5,
+    charsetnum = "0123456789",
+    password = "";
+
+    for (var i = 0, n = charsetnum.length; i < length; ++i) {
+        password += charsetnum.charAt(Math.floor(Math.random() * n));
+    }
+    return password;
+}
+
 
 function validatePhoneNumber(phone_number) 
     {
@@ -238,8 +394,34 @@ function checkPassword(str)
   var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   return re.test(str);
 }
+
+
+
+function confirmUserCognito(username){
+    var poolData = {
+        UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
+        ClientId: "13pbrvceiogtq8ikiv1l9v89t4", // Your client id here
+    };
+     
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    var userData = {
+        Username: username,
+        Pool: userPool,
+    };
+     
+    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    cognitoUser.confirmRegistration('123456', true, function(err, result) {
+        debugger;
+        if (err) {
+            alert(err.message || JSON.stringify(err));
+            return;
+        }
+        console.log('call result: ' + result);
+    });
+}
+
+
 function signUpCognito(data){
-  
     return new Promise((resolve, reject) => {
         var CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
         var poolData = {
@@ -276,6 +458,91 @@ function signUpCognito(data){
 
   }
 
+function getDataUserCognito(id){
+    return new Promise((resolve, reject) => {
+        var CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
+
+        var authenticationData = {
+            Username: id,
+            Password: 'Soporte00#',
+        };
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
+            authenticationData
+        );
+        var poolData = {
+            UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
+            ClientId: "13pbrvceiogtq8ikiv1l9v89t4", // Your client id here
+        };
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+        var userData = {
+            Username: id,
+            Pool: userPool,
+        };
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+
+        var params = {
+            UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
+            Username: id /* required */
+          };
+        //  var x = new AmazonCognitoIdentity.adminGetUser(params, function(err, data) {
+        //     if (err) console.log(err, err.stack); // an error occurred
+        //     else     console.log(data);           // successful response
+        //   });
+
+
+
+
+
+
+        cognitoUser.authenticateUser(authenticationDetails, {
+            mfaRequired: function (codeDeliveryDetails) {
+                var verificationCode = prompt('Please input verification code', '');
+                cognitoUser.sendMFACode(verificationCode, this);
+            },
+            onSuccess: function(result) {
+                var accessToken = result.getAccessToken().getJwtToken();
+         
+                //POTENTIAL: Region needs to be set if not already set previously elsewhere.
+                AWS.config.region = 'us-east-1';
+         
+                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: 'us-east-1_zgFW3AEob', // your identity pool id here
+                    Logins: {
+                        // Change the key below according to the specific region your user pool is in.
+                        'cognito-idp.us-east-1.amazonaws.com/us-east-1_zgFW3AEob': result
+                            .getIdToken()
+                            .getJwtToken(),
+                    },
+                });
+         
+                //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
+                AWS.config.credentials.refresh(error => {
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        // Instantiate aws sdk service objects now that the credentials have been updated.
+                        // example: var s3 = new AWS.S3();
+                        console.log('Successfully logged!');
+                    }
+                });
+            },
+         
+            onFailure: function(err) {
+            //    confirmUserCognito('rex@rex.com');
+                alert(err.message || JSON.stringify(err));
+            },
+        });
+
+
+
+
+
+
+    
+    });
+
+}
 
 
 $(document).on('keypress', function(e) {
