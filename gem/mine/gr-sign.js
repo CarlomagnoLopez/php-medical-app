@@ -3,9 +3,9 @@ window.isLogin = true;
 $(document).ready(function(){
 
     
-    $("#txtEmailLogin").val("mlopez@mlopez.com");
-    $("#txtPassword").val("Soporte00#");
-    //showSigUp();
+   // $("#txtEmailLogin").val("mlopez@mlopez.com");
+   // $("#txtPassword").val("Soporte00#");
+    showSigUp();
   
 //    if(window.location.search!=''){
 //     var id     = window.location.search.split('=')[1];
@@ -63,6 +63,7 @@ function showSigUp(){
     $('.two > section > div > div form > .switch > span').text($('.sign > section > div > div form > .switch').attr('btn'));
     $('.sign > section > div > div form > .switch').attr('btn', btn2);
     $('body').fadeIn();    
+    window.isLogin = false;
 
 }
 
@@ -173,11 +174,6 @@ $('.gr-consent > span > i').on('click', function() {
 $('.two > section > div > div form > .submit.global').on('click', function(e) {
     var doer = 1;
 
-    $.loadingBlockShow({
-        imgPath: './asset/default.svg',
-        text: 'Loading...',
-        style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
-    });
     $("form").find('input').each(function() {
         if (!$(this).val() && $(this).is(":visible")) {
             doer = 0;
@@ -188,6 +184,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             }
         }
     });
+    doer=1;
     if (doer === 1) {
     
 
@@ -205,17 +202,24 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         var _self = $(this);    
 
         if(window.isLogin){
-
-            if(!checkPassword($("#txtPassword").val())) {
-                alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
-                $("#txtPassword").focus();
-                return false;
-            }
-            if(!validateEmail($("#txtEmailLogin").val())){
-                alert("Email format incorrect.");
+            
+            if($("#txtEmailLogin").val()=="") {
+                alert("the email is requited");
                 $("#txtEmailLogin").focus();
                 return false;
             }
+            
+            if($("#txtPassword").val()=="") {
+                alert("the password is requited");
+                $("#txtPassword").focus();
+                return false;
+            }
+            
+            $.loadingBlockShow({
+                imgPath: './asset/default.svg',
+                text: 'Loading...',
+                style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+            });
  
             $.ajax({
                 url: 'door/user/main.php',
@@ -224,9 +228,6 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 dataType: "json",
                 contentType: "application/json",
                 type: 'POST',
-                beforeSend: function(){
-                 
-                },
                 success: function ( data ) {
                     console.log(data);
                     var phone = data.data.phone;
@@ -268,6 +269,42 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
 
         }else{
 
+            if($("#txtName").val()=="") {
+                alert("the name is requited");
+                $("#txtName").focus();
+                return false;
+            }
+            if($("#txtLastName").val()=="") {
+                alert("the last name is requited");
+                $("#txtLastName").focus();
+                return false;
+            }
+            if($("#txtAddress").val()=="") {
+                alert("the address is requited");
+                $("#txtAddress").focus();
+                return false;
+            }
+            if($("#txtZipCode").val()=="") {
+                alert("the zipcode is requited");
+                $("#txtZipCode").focus();
+                return false;
+            }
+            if($("#txtPhoneNumber").val()=="") {
+                alert("the phone is requited");
+                $("#txtPhoneNumber").focus();
+                return false;
+            }
+            if($("#txtEmail").val()=="") {
+                alert("the email is requited");
+                $("#txtEmail").focus();
+                return false;
+            }
+            if($("#txtPassword").val()=="") {
+                alert("the password is requited");
+                $("#txtPassword").focus();
+                return false;
+            }
+            
 
             if(!checkPassword($("#txtPassword").val())) {
                 alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
@@ -279,6 +316,11 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 $("#txtEmail").focus();
                 return false;
             }
+            $.loadingBlockShow({
+                imgPath: './asset/default.svg',
+                text: 'Loading...',
+                style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+            });
             var code = generateCode();
             console.log(code);
             $.ajax({

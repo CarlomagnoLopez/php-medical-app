@@ -62,16 +62,16 @@ function usr() {
     }
     $r = false;
     if ($t === 'register') {
-        $rl = 3; // if is 1 or 4 redirect to failed
+        $rl = 2; // if is 1 or 4 redirect to failed
         $r[0] = false;
         $i = strtolower(vc($arg[2], 'alphanum'));
         $e = strtolower(vc($arg[3], 'email'));
         $p = $arg[4];
         $phone = $arg[5];
         $psw_normal = $arg[4];
-        if (isset($arg[5])) {
-            $rl = vc($arg[5], 'num');
-        }
+        // if (isset($arg[5])) {
+        //     $rl = vc($arg[5], 'num');
+        // }
         if (!empty($d) && !empty($i) && !empty($e) && !empty($p)) {
             if (!usr($d, 'exist', $i) && !usr($d, 'exist', $e)) {
                 $p = en($p);
