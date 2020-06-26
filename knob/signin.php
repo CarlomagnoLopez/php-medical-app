@@ -54,7 +54,7 @@ grupofns();
                                     <input type="text" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number"/>
                                 </label>
                                 <label><i class="ti-email"></i>
-                                    <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="<?php pr(gr_lang('get', 'email_address')) ?>" />
+                                    <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="Username" />
                                 </label>
                                     <input type="hidden" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
                                 <!-- <label><i class="ti-world"></i>
@@ -62,7 +62,7 @@ grupofns();
                             </div>
                             <div class='login'>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' id="txtEmailLogin" name="sign" placeholder="Email" />
+                                    <input type="text" autocomplete='off' id="txtEmailLogin" name="sign" placeholder="Username" />
                                 </label>
                             </div>
                             <div class='global'>
