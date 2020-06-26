@@ -75,7 +75,7 @@ $('.sign > section > div > div form > .switch').on('click', function() {
     $('.two > section > div > div form > .submit.global').attr('btn', btn);
     $('.sign > section > div > div form .global').removeClass('d-none');
     $('.two > section > div > div form > .submit.reset').addClass('d-none');
-    if ($(this).hasClass('log')) {
+    if (!window.isLogin) {
         $('.two > section > div > div form > .submit.global').attr('do', 'login');
         $('.two > section > div > div form .doz').val('login');
         $('.sign > section > div > div form .register,.sign .regsep').addClass('d-none');
