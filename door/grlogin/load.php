@@ -9,14 +9,14 @@ function gr_register($do) {
             $do["email"] = vc($do["email"], 'email');
             $do["name"] = vc($do["name"], 'alphanum');
             $do["fname"] = vc($do["fname"], 'strip');
-            if (empty($do["fname"]) || empty($do["name"]) || empty($do["email"]) || empty($do["pass"]) || empty($do["fphonenumber"]) ) {
+            if (empty($do["fname"]) || empty($do["name"]) || empty($do["email"]) || empty($do["pass"]) || empty($do["fphonenumber"]) || empty($do["forganizationname"]) || empty($do["fsecretkey"]) || empty($do['fIdOrganization']) ) {
                 gr_prnt('say("'.gr_lang('get', 'invalid_value').'");');
             } else if (usr('Grupo', 'exist', $do["name"])) {
                 gr_prnt('say("'.gr_lang('get', 'username_exists').'");');
             } else if (usr('Grupo', 'exist', $do["email"])) {
                 gr_prnt('say("'.gr_lang('get', 'email_exists').'");');
             } else {
-                $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"]);
+                $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"], $do["fIdOrganization"]);
                 if ($reg[0]) {
                     $id = $reg[1];
                     gr_data('i', 'profile', 'name', $do["fname"], $id);

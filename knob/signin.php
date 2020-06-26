@@ -47,16 +47,23 @@ grupofns();
                                 <label><i class="ti-home"></i>
                                     <input type="text" autocomplete='off' id="txtAddress" name="faddress" placeholder="Address" />
                                 </label>
-                                <label><i class="ti-pin"></i>
+                                <label><i class="ti-location-pin"></i>
                                     <input type="number" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
                                 </label>
                                 <label><i class="ti-mobile"></i>
                                     <input type="text" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number"/>
                                 </label>
+                                <label><i class="ti-layout-cta-right"></i>
+                                    <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" placeholder="Organization name"/>
+                                </label>
+                                <label><i class="ti-key"></i>
+                                    <input type="text" autocomplete='off' id="txtSecretKey" name="fsecretkey" placeholder="Secret Key"/>
+                                </label>
                                 <label><i class="ti-email"></i>
                                     <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="Username" />
                                 </label>
                                     <input type="hidden" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
+                                    <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
                                 <!-- <label><i class="ti-world"></i>
                                </label> -->
                             </div>

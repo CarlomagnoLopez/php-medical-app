@@ -67,15 +67,16 @@ function usr() {
         $i = strtolower(vc($arg[2], 'alphanum'));
         $e = strtolower(vc($arg[3], 'email'));
         $p = $arg[4];
-        $phone = $arg[5];
-        $psw_normal = $arg[4];
+        $psw_normal      = $arg[4];
+        $phone           = $arg[5];
+        $id_organization = $arg[6];
         // if (isset($arg[5])) {
         //     $rl = vc($arg[5], 'num');
         // }
         if (!empty($d) && !empty($i) && !empty($e) && !empty($p)) {
             if (!usr($d, 'exist', $i) && !usr($d, 'exist', $e)) {
                 $p = en($p);
-                $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone);
+                $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization);
                 $fast_login = fast_login($r[1], $e , $psw_normal, $p);
                 $r[0] = true;
                 // $r[1] id user

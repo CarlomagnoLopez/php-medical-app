@@ -171,6 +171,43 @@ $('.gr-consent > span > i').on('click', function() {
     });
     $('.gr-consent').fadeOut();
 });
+
+
+function searchOrganization(organization, secret_key){
+    var searchOrg = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "searchOrganization", "organization" :  organization, "secret_key" : secret_key}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return searchOrg;
+}
+
+
+function getDataUserByEmail(email){
+    var getData = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "getDataUserByEmail", "email" :  email}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return getData;
+}
+
+
 $('.two > section > div > div form > .submit.global').on('click', function(e) {
     var doer = 1;
 
@@ -221,53 +258,44 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
             });
  
-            $.ajax({
-                url: 'door/user/main.php',
-                data: JSON.stringify({ "method" : "getDataUserByEmail", "email" :  $("#txtEmailLogin").val()}),
-                processData: false,
-                dataType: "json",
-                contentType: "application/json",
-                type: 'POST',
-                success: function ( data ) {
-                    console.log(data);
-                    var phone = data.data.phone;
-                    var code = generateCode();
-                    console.log(code);
+            var searchDataUser = getDataUserByEmail($("#txtEmailLogin").val());
+            var dataUser  = JSON.parse(searchDataUser);
+            if(dataUser.exist){
+                var phone = dataUser.data.phone;
+                var code = generateCode();
+                console.log(code);
 
-                            $.ajax({
-                                url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-                                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
-                                processData: false,
-                                contentType: "application/json",
-                                type: 'POST',
-                                beforeSend: function(){
-                                    var username = $("#txtEmail").val().split("@")[0];
-                                    $("#txtUsername").val(username);
-                                },
-                                success: function ( data ) {
-                                    console.log(data);
-                                    var verificationCode = prompt('Please input verification code', '');
-                                    if(verificationCode === code){
-                                        var s = 'eval(data);';
-                                        ajxx(_self, '', s, 0, e);
-                                    }else{
-                                        alert("invalida code");
-                                    }
-                                },
-                                error: function(error){
-                                    $.loadingBlockHide();
+                        $.ajax({
+                            url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+                            data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
+                            processData: false,
+                            contentType: "application/json",
+                            type: 'POST',
+                            beforeSend: function(){
+                                var username = $("#txtEmail").val().split("@")[0];
+                                $("#txtUsername").val(username);
+                            },
+                            success: function ( data ) {
+                                console.log(data);
+                                var verificationCode = prompt('Please input verification code', '');
+                                if(verificationCode === code){
+                                    var s = 'eval(data);';
+                                    ajxx(_self, '', s, 0, e);
+                                }else{
+                                    alert("invalida code");
                                 }
-                            });
-
-                    
-                },
-                error: function(error){
-                    $.loadingBlockHide();
-                }
-            });
+                            },
+                            error: function(error){
+                                $.loadingBlockHide();
+                            }
+                        });
+            }
+            
+     
 
 
         }else{
+
 
             if($("#txtName").val()=="") {
                 alert("the name is requited");
@@ -294,6 +322,16 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 $("#txtPhoneNumber").focus();
                 return false;
             }
+            if($("#txtOrganizationName").val()=="") {
+                alert("the company name is requited");
+                $("#txtOrganizationName").focus();
+                return false;
+            }
+            if($("#txtSecretKey").val()=="") {
+                alert("the secret key is requited");
+                $("#txtSecretKey").focus();
+                return false;
+            }
             if($("#txtEmail").val()=="") {
                 alert("the email is requited");
                 $("#txtEmail").focus();
@@ -305,7 +343,6 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 return false;
             }
             
-
             if(!checkPassword($("#txtPassword").val())) {
                 alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
                 $("#txtPassword").focus();
@@ -316,11 +353,25 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 $("#txtEmail").focus();
                 return false;
             }
+            
             $.loadingBlockShow({
                 imgPath: './asset/default.svg',
                 text: 'Loading...',
                 style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
             });
+
+
+
+            var searchOrg = searchOrganization( $("#txtOrganizationName").val(), $("#txtSecretKey").val());
+            var dataOrg = JSON.parse(searchOrg);
+            console.log(searchOrg);
+            if(!dataOrg.exist){
+                $.loadingBlockHide();
+                alert("The organization name and secret key doesn't exist.");
+                return false;
+            }
+
+            $("#txtIdOrganization").val(dataOrg.data.id_organization);
             var code = generateCode();
             console.log(code);
             $.ajax({
@@ -347,7 +398,10 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                     $.loadingBlockHide();
                 }
             });
-        }
+        
+        
+        
+        } // end else
 
 
 
