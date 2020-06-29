@@ -28,7 +28,6 @@ switch($method){
 }
 
 
-
 function searchOrganization($db,$organization,$secret_key){
     $sql = "SELECT * FROM `gr_organizations` WHERE organization = '$organization' or secret_key = '$secret_key' ";
     try {
@@ -79,8 +78,8 @@ function getDataUserByEmail($db,$email ){
 
 function saveOrganization($db,$organization,$secret_key){
    $sql = "INSERT INTO `gr_organizations`
-   (`organization`,
-   `secret_key`,
+   (organization,
+   secret_key
    )
    VALUES
    (:organization,
@@ -102,7 +101,7 @@ function saveOrganization($db,$organization,$secret_key){
        $response['error'] = true; 
        $response['message'] = "An error occurred, try again.".$e->getMessage();    
    }
-   return $response;
+   echo json_encode($response);
 }
 
 
