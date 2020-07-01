@@ -38,11 +38,11 @@ grupofns();
                             <input type="hidden" name="act" value=1 />
                             <input type="hidden" name="do" class='doz' value='login' />
                             <div class='register d-none'>
-                                <label><i class="ti-layout-cta-right"></i>
-                                    <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" placeholder="Organization name"/>
-                                </label>
                                 <label><i class="ti-key"></i>
                                     <input type="text" autocomplete='off' id="txtSecretKey" name="fsecretkey" placeholder="Secret Key"/>
+                                </label>
+                                <label><i class="ti-layout-cta-right"></i>
+                                    <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" placeholder="Organization name"/>
                                 </label>
                                 <label><i class="ti-user"></i>
                                     <input type="text" autocomplete='off' id="txtName" name="fname" placeholder="Name" />

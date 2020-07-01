@@ -173,6 +173,31 @@ $('.gr-consent > span > i').on('click', function() {
 });
 
 
+$("#txtSecretKey").change(function(event){
+    if ( $(this).val().length == 5 ) {
+       var searchOrganization = searchOrganizationBySecretKey($(this).val());
+       if(searchOrganization.exist){
+            $("#txtOrganizationName").val(searchOrganization.data.organization);
+       }
+    }
+});
+
+function searchOrganizationBySecretKey(secret_key){
+    var searchOrg = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "searchOrganizationBySecretKey", "secret_key" : secret_key}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
+}
+
 function searchOrganization(organization, secret_key){
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
