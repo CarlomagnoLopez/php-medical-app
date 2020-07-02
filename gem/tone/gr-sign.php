@@ -115,7 +115,7 @@ position: relative;
 {
 background: #f4f5fa;
 position: relative;
-width: 300px;
+width: 400px;
 display: inline-block;
 padding: 37px 37px;
 box-shadow: 0px 0px 6px #0c0c0c29;

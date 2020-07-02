@@ -1,39 +1,7 @@
 
 window.isLogin = true;
 $(document).ready(function(){
-
-    
-   // $("#txtEmailLogin").val("mlopez@mlopez.com");
-   // $("#txtPassword").val("Soporte00#");
     showSigUp();
-  
-//    if(window.location.search!=''){
-//     var id     = window.location.search.split('=')[1];
-//     var email  = window.location.search.split('=')[2];
-//     var phone  = window.location.search.split('=')[3];
-
-
-//     $("#txtPhoneNumber").val(phone);
-//     $("#txtEmail").val(email);
-//     var psw = window.location.search.split('=')[2];
-//      getDataUserCognito(id).then(function(data){
-//         debugger;
-       
-//       }).catch(function(err) {
-//           console.log(err.message || JSON.stringify(err));
-//       });
-//    }
-  
-
-
-        //     txtLastName    : $("#txtLastName").val(),
-        //     txtAddress     : $("#txtAddress").val(),
-        //     txtZipCode     : $("#txtZipCode").val(),
-        //     txtPhoneNumber : $("#txtPhoneNumber").val(),
-        //     txtEmail       : $("#txtEmail").val(),
-        //     txtUsername    : $("#txtUsername").val(),
-        //     txtPassword    : $("#txtPassword").val()
-
 });
 
 
@@ -256,7 +224,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
 
 /*
         if(!validatePhoneNumber($("#txtPhoneNumber").val())){
-            alert("Phone number format incorrect.");
+            $.toast("Phone number format incorrect.");
             $("#txtPhoneNumber").focus();
             return false;
         }*/
@@ -266,13 +234,13 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         if(window.isLogin){
             
             if($("#txtEmailLogin").val()=="") {
-                alert("the email is requited");
+                $.toast("the email is requited");
                 $("#txtEmailLogin").focus();
                 return false;
             }
             
             if($("#txtPassword").val()=="") {
-                alert("the password is requited");
+                $.toast("the password is requited");
                 $("#txtPassword").focus();
                 return false;
             }
@@ -307,7 +275,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                                     var s = 'eval(data);';
                                     ajxx(_self, '', s, 0, e);
                                 }else{
-                                    alert("invalida code");
+                                    $.toast("invalida code");
                                 }
                             },
                             error: function(error){
@@ -320,64 +288,69 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
 
 
         }else{
-
-
+            // if($("#txtOrganizationName").val()=="") {
+            //     $.toast("the company name is requited");
+            //     $("#txtOrganizationName").focus();
+            //     return false;
+            // }
+            // if($("#txtSecretKey").val()=="") {
+            //     $.toast("the secret key is requited");
+            //     $("#txtSecretKey").focus();
+            //     return false;
+            // }
             if($("#txtName").val()=="") {
-                alert("the name is requited");
+                //$.toast("the name is requited");
+                $.toast('the name is requited');
                 $("#txtName").focus();
                 return false;
             }
             if($("#txtLastName").val()=="") {
-                alert("the last name is requited");
+                $.toast("the last name is requited");
                 $("#txtLastName").focus();
                 return false;
             }
             if($("#txtAddress").val()=="") {
-                alert("the address is requited");
+                $.toast("the address is requited");
                 $("#txtAddress").focus();
                 return false;
             }
             if($("#txtZipCode").val()=="") {
-                alert("the zipcode is requited");
+                $.toast("the zipcode is requited");
                 $("#txtZipCode").focus();
                 return false;
             }
             if($("#txtPhoneNumber").val()=="") {
-                alert("the phone is requited");
+                $.toast("the phone is requited");
                 $("#txtPhoneNumber").focus();
                 return false;
             }
-            if($("#txtOrganizationName").val()=="") {
-                alert("the company name is requited");
-                $("#txtOrganizationName").focus();
-                return false;
-            }
-            if($("#txtSecretKey").val()=="") {
-                alert("the secret key is requited");
-                $("#txtSecretKey").focus();
-                return false;
-            }
+
             if($("#txtEmail").val()=="") {
-                alert("the email is requited");
+                $.toast("the email is requited");
+                $("#txtEmail").focus();
+                return false;
+            }
+            if(!validateEmail($("#txtEmail").val())){
+                $.toast("Email format incorrect.");
                 $("#txtEmail").focus();
                 return false;
             }
             if($("#txtPassword").val()=="") {
-                alert("the password is requited");
+                $.toast("the password is requited");
                 $("#txtPassword").focus();
                 return false;
             }
-            
             if(!checkPassword($("#txtPassword").val())) {
-                alert("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
+                $.toast("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
                 $("#txtPassword").focus();
                 return false;
             }
-            if(!validateEmail($("#txtEmail").val())){
-                alert("Email format incorrect.");
-                $("#txtEmail").focus();
+
+            if(!validatePasswords($("#txtPassword").val(),$("#txtRepeatPassword").val())){
+                $.toast("The given passwords do not match");
                 return false;
             }
+
             
             $.loadingBlockShow({
                 imgPath: './asset/default.svg',
@@ -387,21 +360,27 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
 
 
 
-            var searchOrg = searchOrganization( $("#txtOrganizationName").val(), $("#txtSecretKey").val());
-            var dataOrg = JSON.parse(searchOrg);
-            console.log(searchOrg);
-            if(!dataOrg.exist){
-                $.loadingBlockHide();
-                alert("The organization name and secret key doesn't exist.");
-                return false;
+            if( $("#txtOrganizationName").val() == "" && $("#txtSecretKey").val() == "" ){
+                $("#txtStatusUser").val(0);
+            }else{    
+                var searchOrg = searchOrganization( $("#txtOrganizationName").val(), $("#txtSecretKey").val());
+                var dataOrg = JSON.parse(searchOrg);
+                console.log(searchOrg);
+                if(!dataOrg.exist){
+                    $.loadingBlockHide();
+                    $.toast("The organization name and secret key doesn't exist.");
+                    return false;
+                }else{
+                    $("#txtIdOrganization").val(dataOrg.data.id_organization);
+                    $("#txtStatusUser").val(1);
+                }
             }
 
-            $("#txtIdOrganization").val(dataOrg.data.id_organization);
             var code = generateCode();
             console.log(code);
             $.ajax({
                 url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : $("#txtPhoneNumber").val() } ),
+                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : $("#selComplementPhone").val() + $("#txtPhoneNumber").val() } ),
                 processData: false,
                 contentType: "application/json",
                 type: 'POST',
@@ -416,7 +395,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                         var s = 'eval(data);';
                         ajxx(_self, '', s, 0, e);
                     }else{
-                        alert("invalida code");
+                        $.toast("invalida code");
                     }
                 },
                 error: function(error){
@@ -475,7 +454,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         //     processData: false,
         //     type: 'POST',
         //     success: function ( data ) {
-        //         alert( data );
+        //         $.toast( data );
         //     }
         // });
 
@@ -497,19 +476,19 @@ function generateCode(){
     return password;
 }
 
-
-function validatePhoneNumber(phone_number) 
-    {
+function validatePasswords(password, repeatPassword){
+    return password===repeatPassword;
+}
+function validatePhoneNumber(phone_number){
         var re = /\D*(^[0-9]{6,15}$)\D*/
         return re.test(phone_number);
-    }
-    function validateEmail(email) 
-    {
+}
+
+function validateEmail(email){
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
-    }
-function checkPassword(str)
-{
+}
+function checkPassword(str){
   // at least one number, one lowercase and one uppercase letter
   // at least six characters
   var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
@@ -518,152 +497,7 @@ function checkPassword(str)
 
 
 
-function confirmUserCognito(username){
-    var poolData = {
-        UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
-        ClientId: "13pbrvceiogtq8ikiv1l9v89t4", // Your client id here
-    };
-     
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-    var userData = {
-        Username: username,
-        Pool: userPool,
-    };
-     
-    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-    cognitoUser.confirmRegistration('123456', true, function(err, result) {
-        debugger;
-        if (err) {
-            alert(err.message || JSON.stringify(err));
-            return;
-        }
-        console.log('call result: ' + result);
-    });
-}
 
-
-function signUpCognito(data){
-    return new Promise((resolve, reject) => {
-        var CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
-        var poolData = {
-          UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
-          ClientId: "13pbrvceiogtq8ikiv1l9v89t4", // Your client id here
-        };
-        var userPool = new CognitoUserPool(poolData);
-        var attributeList = [];
-
-       var dataAddress          = {Name: 'address',Value: data.txtAddress.trim()};     
-       var dataName             = {Name: 'name',Value: data.txtName.trim() + ' ' + data.txtLastName.trim()};       
-       var dataPhoneNumber      = {Name: 'phone_number',Value: data.txtPhoneNumber};     
-       var dataEmail            = {Name: 'email',Value: data.txtEmail};     
-       var dataRole             = {Name: 'custom:role',Value:'OrgAdmin'};   
-       var dataPK               = {Name: 'custom:pk',Value: 'mcp-org-19b6f5ae-36bd-4664-9266-d43d491df1eb'};
-
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataAddress));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataName));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataPhoneNumber));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataRole));
-        attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(dataPK));
-        userPool.signUp(data.txtEmail, data.txtPassword, attributeList, null, function(
-          err,
-          result
-          ) {
-              if (err) {
-                  reject(err)
-              }else{
-                  resolve(result);
-              }
-          });
-      })
-
-  }
-
-function getDataUserCognito(id){
-    return new Promise((resolve, reject) => {
-        var CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
-
-        var authenticationData = {
-            Username: id,
-            Password: 'Soporte00#',
-        };
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
-            authenticationData
-        );
-        var poolData = {
-            UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
-            ClientId: "13pbrvceiogtq8ikiv1l9v89t4", // Your client id here
-        };
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-        var userData = {
-            Username: id,
-            Pool: userPool,
-        };
-        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-
-        var params = {
-            UserPoolId: "us-east-1_zgFW3AEob", // Your user pool id here
-            Username: id /* required */
-          };
-        //  var x = new AmazonCognitoIdentity.adminGetUser(params, function(err, data) {
-        //     if (err) console.log(err, err.stack); // an error occurred
-        //     else     console.log(data);           // successful response
-        //   });
-
-
-
-
-
-
-        cognitoUser.authenticateUser(authenticationDetails, {
-            mfaRequired: function (codeDeliveryDetails) {
-                var verificationCode = prompt('Please input verification code', '');
-                cognitoUser.sendMFACode(verificationCode, this);
-            },
-            onSuccess: function(result) {
-                var accessToken = result.getAccessToken().getJwtToken();
-         
-                //POTENTIAL: Region needs to be set if not already set previously elsewhere.
-                AWS.config.region = 'us-east-1';
-         
-                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: 'us-east-1_zgFW3AEob', // your identity pool id here
-                    Logins: {
-                        // Change the key below according to the specific region your user pool is in.
-                        'cognito-idp.us-east-1.amazonaws.com/us-east-1_zgFW3AEob': result
-                            .getIdToken()
-                            .getJwtToken(),
-                    },
-                });
-         
-                //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
-                AWS.config.credentials.refresh(error => {
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        // Instantiate aws sdk service objects now that the credentials have been updated.
-                        // example: var s3 = new AWS.S3();
-                        console.log('Successfully logged!');
-                    }
-                });
-            },
-         
-            onFailure: function(err) {
-            //    confirmUserCognito('rex@rex.com');
-                alert(err.message || JSON.stringify(err));
-            },
-        });
-
-
-
-
-
-
-    
-    });
-
-}
 
 
 $(document).on('keypress', function(e) {

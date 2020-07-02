@@ -16,6 +16,8 @@ grupofns();
     <meta name="generator" content="Grupo">
     <link rel="shortcut icon" type="image/png" href="<?php pr(mf("grupo/global/favicon.png")); ?>" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700,700i,800" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" rel="stylesheet">
+
     <?php
     cdn("npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", "npm/cd-themify-icons@0.0.1/index.css");
     css("gr-sign");
@@ -56,14 +58,25 @@ grupofns();
                                 <label><i class="ti-location-pin"></i>
                                     <input type="number" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
                                 </label>
-                                <label><i class="ti-mobile"></i>
-                                    <input type="text" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number"/>
-                                </label>
+                                <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
+                                        <select name="fcomplementPhone" id="selComplementPhone">
+                                            <option value="+52" selected="selected">+52</option>
+                                            <option value="+55">+55</option>
+                                        </select>
+
+
+                                </div>
+                                <div>
+                                    <label><i class="ti-mobile"></i>
+                                        <input type="text" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
+                                    </label>
+                                </div>
                                 <label><i class="ti-email"></i>
                                     <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="Username" />
                                 </label>
                                     <input type="hidden" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
                                     <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
+                                    <input type="hidden" autocomplete='off' id="txtStatusUser" name="fStatusUser" />
                                 <!-- <label><i class="ti-world"></i>
                                </label> -->
                             </div>
@@ -77,6 +90,10 @@ grupofns();
                                     <input type="password" class='gstdep' autocomplete='off' id="txtPassword" name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
                                 </label>
                             </div>
+                               <label><i class="ti-lock"></i>
+                                    <input type="password" class='gstdep' autocomplete='off' id="txtRepeatPassword" name="repeat_pass" placeholder="Repeat Password" />
+                               </label>
+
                         </div>
                         <div class="regsep d-none"></div>
                         <div class="sub">
@@ -136,6 +153,8 @@ cdn("npm/jquery.nicescroll@3.7.6/jquery.nicescroll.min.js");
 cdn("npm/js-cookie@2/src/js.cookie.min.js");
 
 ?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <script src="./dist/jquery.loading.block.js"></script>
 
 <script src="./dist/amazon-cognito-identity.js"></script>
