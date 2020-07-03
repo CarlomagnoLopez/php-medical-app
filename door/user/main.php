@@ -79,6 +79,8 @@ function searchOrganization($db,$organization,$secret_key){
     echo json_encode($response);
 }
 
+
+
 function getDataUserByPhone($db,$email ){
     $sql = "SELECT * FROM gr_users WHERE email = '$email'";
     try {

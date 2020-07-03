@@ -388,6 +388,11 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
 
 });
 
+
+function toast(message){
+    $.toast(message);
+}
+
 function generateCode(){
     var length = 5,
     charsetnum = "0123456789",

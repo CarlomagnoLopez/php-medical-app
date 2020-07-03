@@ -3,27 +3,27 @@ function gr_register($do) {
     if (gr_default('get', 'userreg') == 'enable') {
         if (!empty($do["g-recaptcha-response"]) && gr_captcha($do["g-recaptcha-response"]) || gr_default('get', 'recaptcha') != 'enable') {
             if (gr_usip('check')) {
-                gr_prnt('say("'.gr_lang('get', 'ip_blocked').'","e");');
+                gr_prnt('$.toast("'.gr_lang('get', 'ip_blocked').'","e");');
                 exit;
             }
             $do["email"] = vc($do["email"], 'email');
             $do["name"] = vc($do["name"], 'alphanum');
             $do["fname"] = vc($do["fname"], 'strip');
             if (empty($do["fname"]) || empty($do["name"]) || empty($do["email"]) || empty($do["pass"]) || empty($do["fphonenumber"]) || empty($do['fcomplementPhone'])  ) { 
-              //gr_prnt('say("'.gr_lang('get', 'invalid_value').'");');
+              //gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");');
                 gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");$.loadingBlockHide();');
 
             } else if (usr('Grupo', 'exist', $do["name"])) {
-                gr_prnt('say("'.gr_lang('get', 'username_exists').'");');
+                gr_prnt('$.toast("'.gr_lang('get', 'username_exists').'");');
             } else if (usr('Grupo', 'exist', $do["email"])) {
-                gr_prnt('say("'.gr_lang('get', 'email_exists').'");');
+                gr_prnt('$.toast("'.gr_lang('get', 'email_exists').'");');
             } else {
                 $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"], $do["fIdOrganization"], $do['fStatusUser'], $do['fcomplementPhone']  );
                 if ($reg[0]) {
                     $id = $reg[1];
                     gr_data('i', 'profile', 'name', $do["fname"], $id);
                     gr_mail('verify', $id, 0, rn(5));
-                    gr_prnt('say("'.gr_lang('get', 'check_inbox').'","s");');
+                    gr_prnt('$.toast("'.gr_lang('get', 'check_inbox').'","s");');
 
                     gr_prnt('setTimeout(function() { location.reload(); }, 2000);');
                 }else{
@@ -31,7 +31,7 @@ function gr_register($do) {
                 }
             }
         } else {
-            gr_prnt('say("'.gr_lang('get', 'invalid_captcha').'");');
+            gr_prnt('$.toast("'.gr_lang('get', 'invalid_captcha').'");');
         }
     }
 }
@@ -39,7 +39,7 @@ function gr_register($do) {
 function gr_login($do) {
     if (!empty($do["g-recaptcha-response"]) && gr_captcha($do["g-recaptcha-response"]) || gr_default('get', 'recaptcha') != 'enable') {
         if (gr_usip('check')) {
-            gr_prnt('say("'.gr_lang('get', 'ip_blocked').'","e");');
+            gr_prnt('$.toast("'.gr_lang('get', 'ip_blocked').'","e");');
             exit;
         }
         if (empty($do["sign"]) && empty($do["pass"]) && gr_default('get', 'guest_login') == 'enable') {
@@ -60,33 +60,36 @@ function gr_login($do) {
                 gr_prnt('location.reload();');
             } else {
                 if ($login[1] === 'blocked') {
-                    gr_prnt('say("'.gr_lang('get', 'device_blocked').'");');
+                  //  gr_prnt('$.toast("'.gr_lang('get', 'device_blocked').'");');
+                    gr_prnt('$.toast("'.gr_lang('get', 'device_blocked').'");$.loadingBlockHide();');
+
                 } else {
-                    gr_prnt('say("'.gr_lang('get', 'invalid_login').'");');
+                    gr_prnt('$.toast("'.gr_lang('get', 'invalid_login').'");$.loadingBlockHide();');
+                    //gr_prnt('$.toast("'.gr_lang('get', 'invalid_login').'");');
                 }
             }
         }
     } else {
-        gr_prnt('say("'.gr_lang('get', 'invalid_captcha').'");');
+        gr_prnt('$.toast("'.gr_lang('get', 'invalid_captcha').'");');
     }
 }
 
 function gr_forgot($do) {
     if (!empty($do["g-recaptcha-response"]) && gr_captcha($do["g-recaptcha-response"]) || gr_default('get', 'recaptcha') != 'enable') {
         if (empty($do["sign"])) {
-            gr_prnt('say("'.gr_lang('get', 'invalid_value').'");');
+            gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");');
         } else {
             $usr = usr('Grupo', 'select', $do["sign"]);
             if (isset($usr['id'])) {
                 gr_mail('reset', $usr['id'], 0, rn(5));
-                gr_prnt('say("'.gr_lang('get', 'check_inbox').'","s");');
+                gr_prnt('$.toast("'.gr_lang('get', 'check_inbox').'","s");');
                 gr_prnt('setTimeout(function() { location.reload(); }, 2000);');
             } else {
-                gr_prnt('say("'.gr_lang('get', 'user_does_not_exist').'","e");');
+                gr_prnt('$.toast("'.gr_lang('get', 'user_does_not_exist').'","e");');
             }
         }
     } else {
-        gr_prnt('say("'.gr_lang('get', 'invalid_captcha').'");');
+        gr_prnt('$.toast("'.gr_lang('get', 'invalid_captcha').'");');
     }
 }
 
