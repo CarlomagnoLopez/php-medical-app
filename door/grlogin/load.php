@@ -54,7 +54,8 @@ function gr_login($do) {
             gr_prnt('location.reload();');
             exit;
         } else {
-            $login = usr('Grupo', 'login', $do["sign"], $do["pass"], 3, $do["rmbr"]);
+            $phone_number = $do["fcomplementPhoneLogin"].''.$do["fphonenumberlogin"];
+            $login = usr('Grupo', 'login', $do["sign"], $do["pass"], 3, $do["rmbr"],$phone_number);
             if ($login[0]) {
                 gr_prnt('location.reload();');
             } else {

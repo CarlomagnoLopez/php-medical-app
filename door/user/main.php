@@ -10,9 +10,9 @@ $db          = Connection();
 $json = json_decode(file_get_contents("php://input"));
 $method = $json->method;
 switch($method){
-    case 'getDataUserByEmail':
-        $email = $json->email;
-        getDataUserByEmail($db,$email);
+    case 'getDataUserByPhone':
+        $phone = $json->phone;
+        getDataUserByPhone($db,$phone);
     break;
     case 'searchOrganization':
         $organization = $json->organization;
@@ -79,7 +79,7 @@ function searchOrganization($db,$organization,$secret_key){
     echo json_encode($response);
 }
 
-function getDataUserByEmail($db,$email ){
+function getDataUserByPhone($db,$email ){
     $sql = "SELECT * FROM gr_users WHERE email = '$email'";
     try {
         $response = array();

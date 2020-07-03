@@ -213,18 +213,16 @@ function usr() {
         }
         return $r;
     } else if ($t === 'login') {
-        $p = $arg[3];
-        $u = strtolower(vc($arg[2], 'email'));
-        $f = 'email';
-        $r[0] = false;
-        $r[1] = 'invalid';
-        if (empty($u)) {
-            $f = 'name';
-            $u = strtolower(vc($arg[2], 'alphanum'));
-        }
-        if (isset($arg[4]) && usr($d, 'exist', $u)) {
+        $p           = $arg[3]; // password
+        $u           = strtolower(vc($arg[2], 'email'));
+        $f           = 'email';
+        $r[0]        = false;
+        $r[1]        = 'invalid';
+        $pone_number = $arg[6]; // phone number
+        $existPhone = usr($d, 'existPhone', $pone_number);
+        if (isset($arg[4]) && $existPhone) {
             $block = vc($arg[4], 'num');
-            $uid = usr($d, 'select', $u)['id'];
+            $uid = usr($d, 'selectByPhone', $pone_number)['id'];
             $bc = db($d, 's,try', 'session', 'uid,device', $uid, 'bs.'.ip().ip('dev'), 'ORDER BY id DESC LIMIT 1');
             if (count($bc) > 0) {
                 $bc = $bc[0]['try'];
@@ -244,8 +242,8 @@ function usr() {
                 $r[1] = 'blocked';
             }
         }
-        if (!empty($u)) {
-            $kr = db($d, 's', 'users', $f, $u, 'ORDER BY id DESC LIMIT 1');
+        if (!empty($pone_number)) {
+            $kr = db($d, 's', 'users', 'phone', $pone_number, 'ORDER BY id DESC LIMIT 1');
             if (count($kr) > 0) {
                 $kr = $kr[0];
                 $p = en($p, $kr['depict'], $kr['mask'])['pass'];
@@ -253,11 +251,11 @@ function usr() {
                     db($d, 'd', 'session', 'uid,device', $kr['id'], 'bs.'.ip().ip('dev'));
                    // if ($kr['role'] != '0') {
                         ses($d, 'add', $kr['id']);
-                        if (isset($arg[5]) && $arg[5] == 1) {
+                      //  if (isset($arg[5]) && $arg[5] == 1) {
                             setcookie($d.'usrdev', $_SESSION[$d.'usrdev'], time() + (86400 * 30), "/");
                             setcookie($d.'usrcode', $_SESSION[$d.'usrcode'], time() + (86400 * 30), "/");
                             setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
-                        }
+                       // }
                         $r[0] = true;
                     // } else {
                     //     $r[1] = 'banned';
@@ -282,6 +280,15 @@ function usr() {
             $r = $r[0];
         }
         return $r;
+    } else if ($t === 'selectByPhone') {
+        $v  = $arg[2];
+        $sr = 'phone';
+        $r = db($d, 's', 'users', $sr, $v, 'ORDER BY id DESC LIMIT 1');
+        if (isset($r[0])) {
+            $r = $r[0];
+        }
+        return $r;
+
     } else if ($t === 'exist') {
         $v = strtolower($arg[2]);
         $sr = 'name';
@@ -294,7 +301,17 @@ function usr() {
         } else {
             return false;
         }
-    } else if ($t === 'remember') {
+    } else if ($t === 'existPhone') {
+            $v = strtolower($arg[2]);
+            $sr = 'phone';
+            $r = db($d, 's,count(*)', 'users', $sr, $v)[0][0];
+            if ($r > 0) {
+                return true;
+            } else {
+                return false;
+            }
+       
+    }else if ($t === 'remember') {
         if (isset($_COOKIE[$d.'usrses']) && isset($_COOKIE[$d.'usrcode']) && isset($_COOKIE[$d.'usrdev'])) {
             $_SESSION[$d.'usrdev'] = $_COOKIE[$d.'usrdev'];
             $_SESSION[$d.'usrcode'] = $_COOKIE[$d.'usrcode'];

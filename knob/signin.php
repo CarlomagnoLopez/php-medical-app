@@ -63,8 +63,6 @@ grupofns();
                                             <option value="+52" selected="selected">+52</option>
                                             <option value="+55">+55</option>
                                         </select>
-
-
                                 </div>
                                 <div>
                                     <label><i class="ti-mobile"></i>
@@ -77,22 +75,35 @@ grupofns();
                                     <input type="hidden" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
                                     <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
                                     <input type="hidden" autocomplete='off' id="txtStatusUser" name="fStatusUser" />
-                                <!-- <label><i class="ti-world"></i>
-                               </label> -->
                             </div>
                             <div class='login'>
-                                <label><i class="ti-user"></i>
+                                <!-- <label><i class="ti-user"></i>
                                     <input type="text" autocomplete='off' id="txtEmailLogin" name="sign" placeholder="Username" />
-                                </label>
+                                </label> -->
+
+
+
+                                <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
+                                        <select name="fcomplementPhoneLogin" id="selComplementPhoneLogin">
+                                            <option value="+52" selected="selected">+52</option>
+                                            <option value="+55">+55</option>
+                                        </select>
+                                </div>
+                                <div>
+                                    <label><i class="ti-mobile"></i>
+                                        <input type="text" autocomplete='off' id="txtPhoneNumberLogin" name="fphonenumberlogin" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
+                                    </label>
+                                </div>
+
                             </div>
                             <div class='global'>
                                 <label><i class="ti-lock"></i>
                                     <input type="password" class='gstdep' autocomplete='off' id="txtPassword" name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
                                 </label>
                             </div>
-                               <label><i class="ti-lock"></i>
-                                    <input type="password" class='gstdep' autocomplete='off' id="txtRepeatPassword" name="repeat_pass" placeholder="Repeat Password" />
-                               </label>
+                            <label id="fieldRepeatPassword"><i class="ti-lock"></i>
+                                <input type="password" class='gstdep' autocomplete='off' id="txtRepeatPassword" name="repeat_pass" placeholder="Repeat Password" />
+                            </label>
 
                         </div>
                         <div class="regsep d-none"></div>

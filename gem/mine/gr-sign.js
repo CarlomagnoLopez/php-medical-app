@@ -32,7 +32,7 @@ function showSigUp(){
     $('.sign > section > div > div form > .switch').attr('btn', btn2);
     $('body').fadeIn();    
     window.isLogin = false;
-
+    $("#fieldRepeatPassword").show();
 }
 
 
@@ -51,6 +51,8 @@ $('.sign > section > div > div form > .switch').on('click', function() {
         $('.sign > section > div > div form > .sub').removeClass('d-none');
         $(this).removeClass('log');
         window.isLogin = true;
+        $("#fieldRepeatPassword").hide();
+
     } else {
         $('.two > section > div > div form > .submit.global').attr('do', 'register');
         $('.two > section > div > div form .doz').val('register');
@@ -59,6 +61,8 @@ $('.sign > section > div > div form > .switch').on('click', function() {
         $('.sign > section > div > div form > .sub').addClass('d-none');
         $(this).addClass('log');
         window.isLogin = false;
+        $("#fieldRepeatPassword").show();
+
     }
     var qn = $('.sign > section > div > div form > .switch > i').text();
     $('.sign > section > div > div form > .switch > i').text($('.sign > section > div > div form > .switch').attr('qn'));
@@ -183,10 +187,10 @@ function searchOrganization(organization, secret_key){
 }
 
 
-function getDataUserByEmail(email){
+function getDataUserByPhone(phone){
     var getData = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "getDataUserByEmail", "email" :  email}),
+        data: JSON.stringify({ "method" : "getDataUserByPhone", "phone" :  phone}),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -218,24 +222,12 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
     if (doer === 1) {
     
 
-
-
-
-
-/*
-        if(!validatePhoneNumber($("#txtPhoneNumber").val())){
-            $.toast("Phone number format incorrect.");
-            $("#txtPhoneNumber").focus();
-            return false;
-        }*/
-
         var _self = $(this);    
 
         if(window.isLogin){
-            
-            if($("#txtEmailLogin").val()=="") {
-                $.toast("the email is requited");
-                $("#txtEmailLogin").focus();
+            if($("#txtPhoneNumberLogin").val()=="") {
+                $.toast("the phone number is requited");
+                $("#txtPhoneNumberLogin").focus();
                 return false;
             }
             
@@ -251,55 +243,37 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
             });
  
-            var searchDataUser = getDataUserByEmail($("#txtEmailLogin").val());
-            var dataUser  = JSON.parse(searchDataUser);
-            if(dataUser.exist){
-                var phone = dataUser.data.phone;
-                var code = generateCode();
+          
+                var phone = $("#selComplementPhoneLogin").val()+$("#txtPhoneNumberLogin").val();
+                var code  = generateCode();
                 console.log(code);
-
-                        $.ajax({
-                            url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-                            data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
-                            processData: false,
-                            contentType: "application/json",
-                            type: 'POST',
-                            beforeSend: function(){
-                                var username = $("#txtEmail").val().split("@")[0];
-                                $("#txtUsername").val(username);
-                            },
-                            success: function ( data ) {
-                                console.log(data);
-                                var verificationCode = prompt('Please input verification code', '');
-                                if(verificationCode === code){
-                                    var s = 'eval(data);';
-                                    ajxx(_self, '', s, 0, e);
-                                }else{
-                                    $.toast("invalida code");
-                                }
-                            },
-                            error: function(error){
-                                $.loadingBlockHide();
-                            }
-                        });
-            }
-            
-     
-
-
+                $.ajax({
+                    url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+                    data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
+                    processData: false,
+                    contentType: "application/json",
+                    type: 'POST',
+                    beforeSend: function(){
+                        var username = $("#txtEmail").val().split("@")[0];
+                        $("#txtUsername").val(username);
+                    },
+                    success: function ( data ) {
+                        console.log(data);
+                        var verificationCode = prompt('Please input verification code', '');
+                        if(verificationCode === code){
+                            var s = 'eval(data);';
+                            ajxx(_self, '', s, 0, e);
+                        }else{
+                            $.toast("invalida code");
+                        }
+                    },
+                    error: function(error){
+                        $.loadingBlockHide();
+                    }
+                });
         }else{
-            // if($("#txtOrganizationName").val()=="") {
-            //     $.toast("the company name is requited");
-            //     $("#txtOrganizationName").focus();
-            //     return false;
-            // }
-            // if($("#txtSecretKey").val()=="") {
-            //     $.toast("the secret key is requited");
-            //     $("#txtSecretKey").focus();
-            //     return false;
-            // }
+
             if($("#txtName").val()=="") {
-                //$.toast("the name is requited");
                 $.toast('the name is requited');
                 $("#txtName").focus();
                 return false;
@@ -407,57 +381,6 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         
         } // end else
 
-
-
-
-        // var s = 'eval(data);';
-        // ajxx(_self, '', s, 0, e);
-
-
-
-
-
-
-
-       // var s = '';
-        // signup
-        // var values = {
-        //     txtName        : $("#txtName").val(),
-        //     txtLastName    : $("#txtLastName").val(),
-        //     txtAddress     : $("#txtAddress").val(),
-        //     txtZipCode     : $("#txtZipCode").val(),
-        //     txtPhoneNumber : $("#txtPhoneNumber").val(),
-        //     txtEmail       : $("#txtEmail").val(),
-        //     txtUsername    : $("#txtUsername").val(),
-        //     txtPassword    : $("#txtPassword").val()
-        // }
-        // signUpCognito(values).then(function(data){
-        //     var cognitoUser = data.user;
-        //     var userSub = data.userSub;
-        //     var userConfirmed = data.userConfirmed;
-        //  }).catch(function(err) {
-        //      console.log(err.message || JSON.stringify(err));
-       //  });
- 
-        // data = new FormData();
-        // data.append('act',1);
-        // data.append('do','register');
-        // data.append('fname', 'george');
-        // data.append('email', 'george@george.com' );
-        // data.append('name','George' );
-        // data.append('pass', 'george' );
-        // data.append('sign', '');
-        // data.append('rmbr', '');        
-        // $.ajax({
-        //     url: './signin',
-        //     data: data,
-        //     processData: false,
-        //     type: 'POST',
-        //     success: function ( data ) {
-        //         $.toast( data );
-        //     }
-        // });
-
     } else {
         $.loadingBlockHide();
         say($('.two > section > div > div form > .submit.global').attr('em'));
@@ -521,18 +444,3 @@ $('.two > section > div > div form > .submit').trigger('click');
  }
 });
 
-// $('body').on('keyup', '.gstdep', function() {
-//     if (!$('.sign > section > div > div form > .switch').hasClass('log')) {
-//         var dlg = $('.two > section > div > div form > .submit.global').attr('dlg');
-//         var gst = $('.two > section > div > div form > .submit.global').attr('gst');
-//         if ($(this).val().length != 0 && gst == 0) {
-//             $('.two > section > div > div form > .submit.global').attr('dlg', $('.two > section > div > div form > .submit.global').text());
-//             $('.two > section > div > div form > .submit.global').attr('gst', 1);
-//             $('.two > section > div > div form > .submit.global').text(dlg);
-//         } else if ($(this).val().length == 0 && gst == 1) {
-//             $('.two > section > div > div form > .submit.global').attr('dlg', $('.two > section > div > div form > .submit.global').text());
-//             $('.two > section > div > div form > .submit.global').attr('gst', 0);
-//             $('.two > section > div > div form > .submit.global').text(dlg);
-//         }
-//     }
-// });
