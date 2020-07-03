@@ -56,7 +56,7 @@ grupofns();
                                     <input type="text" autocomplete='off' id="txtAddress" name="faddress" placeholder="Address" />
                                 </label>
                                 <label><i class="ti-location-pin"></i>
-                                    <input type="number" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
+                                    <input type="text" class="only-numbers zipCodeLimit" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
                                 </label>
                                 <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
                                         <select name="fcomplementPhone" id="selComplementPhone">
@@ -66,7 +66,7 @@ grupofns();
                                 </div>
                                 <div>
                                     <label><i class="ti-mobile"></i>
-                                        <input type="text" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
+                                        <input type="text" class="only-numbers phoneNumberLimit" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
                                     </label>
                                 </div>
                                 <label><i class="ti-email"></i>
@@ -91,7 +91,7 @@ grupofns();
                                 </div>
                                 <div>
                                     <label><i class="ti-mobile"></i>
-                                        <input type="text" autocomplete='off' id="txtPhoneNumberLogin" name="fphonenumberlogin" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
+                                        <input type="text" class="only-numbers phoneNumberLimit" autocomplete='off' id="txtPhoneNumberLogin" name="fphonenumberlogin" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
                                     </label>
                                 </div>
 
