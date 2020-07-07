@@ -168,9 +168,6 @@ cdn("npm/js-cookie@2/src/js.cookie.min.js");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <script src="./dist/jquery.loading.block.js"></script>
 
-<script src="./dist/amazon-cognito-identity.js"></script>
-<!-- optional: only if you use other AWS services -->
-<script src="./dist/aws-cognito-sdk.min.js"></script>
 
 <script src="./gem/mine/ajx.js"></script>
 <script src="./gem/mine/gr-sign.js"></script>

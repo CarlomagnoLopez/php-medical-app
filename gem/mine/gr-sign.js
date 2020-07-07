@@ -1,6 +1,14 @@
 
 window.isLogin = true;
 $(document).ready(function(){
+    sessionStorage.removeItem("id");
+    sessionStorage.removeItem("status");
+    sessionStorage.removeItem("id_organization");
+    sessionStorage.removeItem("role");
+    sessionStorage.removeItem("phone");
+    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("email");
+
     showSigUp();
 });
 
@@ -261,6 +269,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                         console.log(data);
                         var verificationCode = prompt('Please input verification code', '');
                         if(verificationCode === code){
+                           // var getData = getDataUserByPhone( phone );
                             var s = 'eval(data);';
                             ajxx(_self, '', s, 0, e);
                         }else{
@@ -430,7 +439,7 @@ $('.only-numbers').keydown(function(event) {
          event.preventDefault();
     }
  
-    if (event.keyCode == 46 || event.keyCode == 8)    {
+    if (event.keyCode == 46 || event.keyCode == 8 ||  event.keyCode == 9)    {
     }
     else {
          if (event.keyCode < 95) {

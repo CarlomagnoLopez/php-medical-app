@@ -45,6 +45,7 @@ function fast_login($id_username, $email, $password, $psw_encrypt){
                         setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
                   //  }
                     $r[0] = true;
+                    $r[2] = '';
                 // } else {
                 //     $r[1] = 'banned';
                 // }
@@ -243,7 +244,8 @@ function usr() {
             }
         }
         if (!empty($pone_number)) {
-            $kr = db($d, 's', 'users', 'phone', $pone_number, 'ORDER BY id DESC LIMIT 1');
+            $kr = db($d, 's', 'users', 'phone', $pone_number, 'ORDER BY id DESC LIMIT 1'); // info database by user
+            $r[2] = $kr[0];
             if (count($kr) > 0) {
                 $kr = $kr[0];
                 $p = en($p, $kr['depict'], $kr['mask'])['pass'];

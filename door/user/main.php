@@ -81,8 +81,8 @@ function searchOrganization($db,$organization,$secret_key){
 
 
 
-function getDataUserByPhone($db,$email ){
-    $sql = "SELECT * FROM gr_users WHERE email = '$email'";
+function getDataUserByPhone($db,$phone ){
+    $sql = "SELECT * FROM gr_users WHERE phone = '$phone'";
     try {
         $response = array();
         $stmt = $db->query($sql); 

@@ -57,7 +57,22 @@ function gr_login($do) {
             $phone_number = $do["fcomplementPhoneLogin"].''.$do["fphonenumberlogin"];
             $login = usr('Grupo', 'login', $do["sign"], $do["pass"], 3, $do["rmbr"],$phone_number);
             if ($login[0]) {
-                gr_prnt('location.reload();');
+                $id              = $login[2]['id'];
+                $status          = $login[2]['status'];
+                $id_organization = $login[2]['id_organization'];
+                $role            = $login[2]['role'];
+                $phone           = $login[2]['phone'];
+                $name            = $login[2]['name'];
+                $email           = $login[2]['email'];
+
+                gr_prnt('sessionStorage.setItem("id","'.$id.'");
+                         sessionStorage.setItem("status","'.$status.'");
+                         sessionStorage.setItem("id_organization","'.$id_organization.'");
+                         sessionStorage.setItem("role","'.$role.'");
+                         sessionStorage.setItem("phone","'.$phone.'");
+                         sessionStorage.setItem("name","'.$name.'");
+                         sessionStorage.setItem("email","'.$email.'");
+                        location.reload();');
             } else {
                 if ($login[1] === 'blocked') {
                   //  gr_prnt('$.toast("'.gr_lang('get', 'device_blocked').'");');
