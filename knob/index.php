@@ -352,7 +352,61 @@ gr_usip('add');
         <input type='hidden' class='hidid' value=1/>
         <li class='loadside ruserz' act='rusers' zero='0' zval='<?php pr(gr_lang('get', 'zero_users')) ?>' side='rside'><?php pr(gr_lang('get', 'users')) ?></li>
     </div>
+
+ 
+    <section id="modalCreateUser" class="grupo-pop" style="display: block;">
+        <div>
+            <form autocomplete="off" id="formCreateUser" class="grform" style="height: 750px !important;"> 
+                <span class="head">Create User</span>
+                <div class="fields scroller" tabindex="5">
+                     <label class="color-label">Name</label>
+                     <input type="text" name="fName" id="txtName" class="margin-input">
+                     <label class="color-label">Last Name</label>
+                     <input type="text" name="fLastName" id="txtLastName" class="margin-input">
+                     <label class="color-label">Address</label>
+                     <input type="text" name="fAddress" id="txtAddress" class="margin-input">
+                     <label class="color-label">ZipCode</label>
+                     <input type="text" name="fZipCode" id="txtZipCode" class="margin-input only-numbers zipCodeLimit">
+                     <div style="margin-top: 30px;position: absolute;">
+                        <select name="fcomplementPhone" id="selComplementPhone">
+                            <option value="+52" selected="selected">+52</option>
+                            <option value="+55">+55</option>
+                        </select>
+                     </div>
+                     <label class="color-label">Phone Number</label>
+                     <input type="text" name="fPhoneNumber" id="txtPhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
+                     <label class="color-label">Username</label>
+                     <input type="text" name="fEmail" id="txtEmail" class="margin-input">   
+                     <label class="color-label">Password</label>
+                     <input type="password"  name="fPassword" id="txtPassword" class="margin-input">    
+                     <label class="color-label">Repeat Password</label>
+                     <input type="password"  name="fRepeatPass" id="txtRepeatPassword" class="margin-input">    
+                     <label class="color-label">Role</label>
+                     <select name="sent" class="margin-input color-label" id="selRole">
+                      <option value="0">-----</option>
+                      <option value="admin">Admin</option>
+                      <option value="supervisor">Supervisor</option>
+                      <option value="user">User</option>
+                     </select>
+
+                     <input type="hidden" autocomplete='off' id="txtUsername" name="fUsername"/>
+                     <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
+                     <input type="hidden" autocomplete='off' id="txtStatusUser" name="fStatusUser" />
+
+                </div>
+                <input type="hidden" name="act" value="1">
+                <input type="hidden" name="do" class="grdo" value="create">
+                <input type="hidden" name="type" class="grtype" value="user">
+                <input type="submit" id="formCreateUser" onclick="onClickFormCreateUser()" class="ajx grsub" form=".grform" value="Create">
+                <span class="cancel">Cancel</span>
+            </form>
+        </div>
+    </section>
+
+
+
 </body>
+
 <?php
 css("custom");
 cdn("npm/jquery@3.3.1/dist/jquery.min.js");
@@ -364,8 +418,20 @@ cdn("npm/bootstrap-colorpicker@3.1.1/dist/css/bootstrap-colorpicker.min.css");
 cdn("npm/jquery.nicescroll@3.7.6/jquery.nicescroll.min.js");
 cdn("libs/emojionearea/3.4.1/emojionearea.min.js");
 cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
+?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+<script src="./dist/jquery.loading.block.js"></script>
+<?php
 js("ajx", "caret", "grupo");
 gr_core('hf', 'footer');
 gr_reactprof();
 ?>
+
+
+<!-- 
+<script src="./gem/mine/ajx.js"></script>
+<script src="./gem/mine/caret.js"></script>
+
+-->
+<script src="./gem/mine/grupo.js"></script> 
 </html>

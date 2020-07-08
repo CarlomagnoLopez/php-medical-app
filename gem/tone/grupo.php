@@ -1473,14 +1473,14 @@ justify-content: center;
 
 .grupo-pop > div > form
 {
-display: inline-block;
-background: #000000;
-background: linear-gradient(to right,#232630,#252d40);
-text-align: center;
-box-shadow: 0px 0px 6px #00000085;
-border-radius: 5px;
-color: white;
-width: 300px;
+    display: inline-block;
+    background: #f0f2f5;
+    background: linear-gradient(to right,#f6faff,#ffffff);
+    text-align: center;
+    box-shadow: 0px 0px 6px #d0cdcd85;
+    border-radius: 5px;
+    color: white;
+    width: 300px;
 }
 
 .grupo-pop > div > form > .head
@@ -1491,16 +1491,15 @@ text-align: center;
 font-size: 14px;
 font-weight: 600;
 padding: 14px 0px;
-background: linear-gradient(to right,#E91E63,#9C27B0);
+background: linear-gradient(to right,#464646,#444444);
 border-radius: 5px 5px 0px 0px;
 }
 
 .grupo-pop > div > form > div
 {
 padding: 0px 30px;
-max-height: 350px;
-overflow: hidden;
-overflow-y: auto;
+max-height: 550px;
+
 }
 
 .grupo-pop > div > form > div > .imglist
@@ -1536,7 +1535,7 @@ width: 0px;
 .grupo-pop > div > form > div > label
 {
 display: block;
-color: #ffffffd1;
+color: black;
 text-align: left;
 font-size: 14px;
 padding: 8px 0px;
@@ -1549,7 +1548,7 @@ background: #35353500;
 border: 0px;
 border-bottom: 1px solid #ffffff63;
 outline: 0px;
-color: #9fabb1e3;
+color: #000000e3;
 border-radius: 0px;
 padding: 10px 0px;
 cursor: pointer;
@@ -1565,18 +1564,18 @@ display: block;
 
 .grupo-pop > div > form > div > input,.grupo-pop > div > form > div > select,.grupo-pop > div > form > div > textarea
 {
-display: block;
-background: #35353500;
-border: 0px;
-border-bottom: 1px solid #ffffff63;
-outline: 0px;
-color: #9fabb1e3;
-border-radius: 0px;
-padding: 0px 0px;
-padding-bottom: 5px;
-width: 100%;
-margin-bottom: 5px;
-font-family: 'Montserrat', sans-serif;
+    display: block;
+    background: #35353500;
+    border: 0px;
+    border-bottom: 1px solid #00000063;
+    outline: 0px;
+    color: #000000e3;
+    border-radius: 0px;
+    padding: 0px 0px;
+    padding-bottom: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .grupo-pop > div > form > div > select > option
@@ -1587,7 +1586,7 @@ background: #232630;
 
 .grupo-pop > div > form > input[type="submit"]
 {
-background: linear-gradient(to right,#E91E63,#9C27B0);
+background: linear-gradient(to right,#000000,#000000);
 border: 0px;
 border-radius: 66px;
 color: white;
@@ -1626,7 +1625,7 @@ display: block;
 display: block;
 font-size: 13px;
 margin-top: 11px;
-color: #c7c7c796;
+color: #00000096;
 margin-bottom: 22px;
 cursor: pointer;
 }
@@ -2142,4 +2141,12 @@ box-shadow: 0 0 0 10px rgba(204,169,44, 0);
 -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
 box-shadow: 0 0 0 0 rgba(204,169,44, 0);
 }
+}
+
+.margin-input{
+    margin-top: -18px;
+}
+
+.color-label{
+    color:black !important;
 }

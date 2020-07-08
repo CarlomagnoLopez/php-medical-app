@@ -752,6 +752,14 @@ $('body').on('click', '.grupo-pop > div > form > div > .imglist > li', function(
     $(this).addClass('active');
 });
 $('body').on('click', '.formpop', function(e) {
+
+     switch(e.target.outerText){
+         case "Create User":
+             $("#modalCreateUser").fadeIn();
+             return;
+         break;
+     }
+
     $(this).attr('type', 'json');
     $(this).attr('turn', 'off');
     id = $(this).attr('no');
