@@ -28,8 +28,44 @@ switch($method){
         $secret_key   = $json->secret_key;
         saveOrganization($db,$organization,$secret_key);
     break;
+    case 'existUser':
+        $email = $json->email;
+        $phone = $json->phone;
+        existUser($db,$email,$phone);
+    break;
 
 }
+
+
+
+
+function existUser($db,$email,$phone){
+  //  $sql = "SELECT * FROM `gr_users` WHERE  email = '$email' OR phone = '$phone'";
+    $sql = "SELECT * FROM `gr_users` WHERE  email = '$email'";
+    try {
+        $response = array();
+        $stmt = $db->query($sql); 
+        $rs   =  $stmt->fetchAll();
+        if(count($rs)>0){
+            $response['exist'] = true; 
+            $response['data'] = $rs[0];
+            $response['message'] = "The user '$email' exist.";             
+        }else{
+            $response['exist'] = false; 
+            $response['data'] = [];
+            $response['message'] = "";             
+        }
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['exist'] = false; 
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+}
+
+
 
 function searchOrganizationBySecretKey($db,$secret_key){
     $sql = "SELECT * FROM `gr_organizations` WHERE  secret_key = '$secret_key'";

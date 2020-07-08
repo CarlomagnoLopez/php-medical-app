@@ -178,6 +178,25 @@ function searchOrganizationBySecretKey(secret_key){
     return JSON.parse(searchOrg);
 }
 
+
+
+function existUser(email,phone){
+    var searchOrg = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "existUser", "email" : email, "phone" : phone}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
+}
+
+
 function searchOrganization(organization, secret_key){
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
@@ -358,12 +377,21 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                     $("#txtStatusUser").val(1);
                 }
             }
+            var phone = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
+            var exist = existUser($("#txtEmail").val(), phone);
+
+            if(exist.exist){
+                $.loadingBlockHide();
+                $.toast(exist.message);
+                return false;
+            }
+            
 
             var code = generateCode();
             console.log(code);
             $.ajax({
                 url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : $("#selComplementPhone").val() + $("#txtPhoneNumber").val() } ),
+                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
                 processData: false,
                 contentType: "application/json",
                 type: 'POST',
