@@ -14,11 +14,6 @@ switch($method){
     case 'createUser':
         createUser($db,$json);
     break;
-    case 'existUser':
-        $email = $json->email;
-        $phone = $json->phone;
-        existUser($db,$email,$phone);
-    break;
     case 'existGroup':
         $group = $json->group;
         existGroup($db,$group);
@@ -49,7 +44,6 @@ function createGroup($db,$group,$password){
     0,
     NOW())";
     try {
-        $p = en($json->password);
         $response = array();
         $stmt = $db->prepare($sql); 
         $stmt->bindValue("group",    $group);
@@ -80,33 +74,6 @@ function existGroup($db,$group){
               $response['exist'] = true; 
               $response['data'] = $rs[0];
               $response['message'] = "The group '$email' exist.";             
-          }else{
-              $response['exist'] = false; 
-              $response['data'] = [];
-              $response['message'] = "";             
-          }
-          $response['error'] = false; 
-      } catch(PDOException $e) {
-          $response['exist'] = false; 
-          $response['data'] = null;
-          $response['error'] = true; 
-          $response['message'] = "An error occurred, try again.".$e->getMessage();    
-      }
-      echo json_encode($response);
-  }
-  
-
-  function existUser($db,$email,$phone){
-    //  $sql = "SELECT * FROM `gr_users` WHERE  email = '$email' OR phone = '$phone'";
-      $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone'";
-      try {
-          $response = array();
-          $stmt = $db->query($sql); 
-          $rs   =  $stmt->fetchAll();
-          if(count($rs)>0){
-              $response['exist'] = true; 
-              $response['data'] = $rs[0];
-              $response['message'] = "The user with phone '$phone' exist.";             
           }else{
               $response['exist'] = false; 
               $response['data'] = [];

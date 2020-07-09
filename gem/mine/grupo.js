@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 function existGroup(group){
     var searchOrg = $.ajax({
-        url: 'door/user/main.php',
+        url: 'door/grform/main.php',
         data: JSON.stringify({ "method" : "existGroup", "group" : group }),
         processData: false,
         type: 'POST',
@@ -37,6 +37,9 @@ function existUser(email,phone){
     return JSON.parse(searchOrg);
 }
 
+function validatePasswords(password, repeatPassword){
+    return password===repeatPassword;
+}
 
 function onClickFormCreateGroup(){
     if($("#txtGroupName").val()=="") {
@@ -49,6 +52,14 @@ function onClickFormCreateGroup(){
         $("#txtGroupPassword").focus();
         return false;
     }
+
+    if(!validatePasswords($("#txtGroupPassword").val(),$("#txtGroupRepeatPassword").val())){
+        say("The given passwords do not match","s");
+        $("#txtGroupRepeatPassword").focus();
+        return false;
+    }
+
+
     $.loadingBlockShow({
         imgPath: './asset/default.svg',
         text: 'Loading...',
@@ -81,10 +92,15 @@ function onClickFormCreateGroup(){
             if(data.data == 0){
                 say("Please try again","s");
             }else{
+
+                $('#liGroups').click();
+
                 say("The group: "+ $("#txtGroupName").val() +" was creaded successfully","s");
                 $("#txtGroupPassword").val("");
+                $("#txtGroupRepeatPassword").val("");
                 $("#txtGroupName").val("");
                 $("#modalCreateGroup").fadeOut();
+                
             }
            },
            error : function(err){

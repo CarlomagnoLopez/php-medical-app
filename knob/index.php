@@ -152,7 +152,7 @@ gr_usip('add');
                         </div>
                         <div class="tabs">
                             <ul>
-                                <li class='active' act='groups' side='lside' zero='0' unseen='<?php pr(gr_group('unseen')) ?>' zval='<?php pr(gr_lang('get', 'zero_groups')) ?>'><?php pr(gr_lang('get', 'groups')) ?> <i></i></li>
+                                <li id="liGroups" class='active' act='groups' side='lside' zero='0' unseen='<?php pr(gr_group('unseen')) ?>' zval='<?php pr(gr_lang('get', 'zero_groups')) ?>'><?php pr(gr_lang('get', 'groups')) ?> <i></i></li>
                                 <?php
                                 if (gr_role('access', 'privatemsg', '2')) {
                                     ?>
@@ -407,13 +407,15 @@ gr_usip('add');
  
     <section id="modalCreateGroup" class="grupo-pop" style="display: none;">
         <div>
-            <form autocomplete="off" id="formCreateGroup" class="grform" style="height: 480px !important;"> 
+            <form autocomplete="off" id="formCreateGroup" class="grform" style="height: 420px !important;"> 
                 <span class="head">Create Group</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
                     <label>Group Name</label>
-                    <input type="text" name="name" id="txtGroupName" class=" " >
+                    <input type="text" name="name" id="txtGroupName" >
                     <label>Password</label>
-                    <input type="text" name="password" id="txtGroupPassword" class=" " >
+                    <input type="password" name="password" id="txtGroupPassword" >
+                    <label>Repeat Password</label>
+                    <input type="password" name="password" id="txtGroupRepeatPassword" >
                     <!-- <label>Icon</label>
                     <span class="fileup"> -->
                     <!-- <input type="file" name="img" class=" "  style="display: none;">

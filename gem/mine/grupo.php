@@ -865,6 +865,8 @@ $("body").on("click", ".dumb .liveupdate", function(e) {
     };
     var s = 'eval(data);';
     var f = 'grliveupdates();';
+    console.log("data:");
+    console.log(data);
     ajxx($(this), data, s, e, f);
 });
 function grliveupdates(t, data, ex) {
