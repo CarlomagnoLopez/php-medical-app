@@ -33,10 +33,30 @@ switch($method){
         $phone = $json->phone;
         existUser($db,$email,$phone);
     break;
+    case 'updateStatusUser':
+        $phone = $json->phone;
+        updateStatusUser($db,$phone);
+    break;
 
 }
 
-
+function updateStatusUser($db,$phone,$status){
+    $sql = "UPDATE gr_users SET STATUS = $status WHERE phone = '$phone'";
+    try {
+        $response = array();
+        $stmt = $db->prepare($sql); 
+        $stmt->execute();
+        $db = null;     
+        $response['data'] = null;
+        $response['error'] = false; 
+        $response['message'] = "";             
+    } catch(PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+ }
 
 
 function existUser($db,$email,$phone){

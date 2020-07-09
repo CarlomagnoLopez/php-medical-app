@@ -403,6 +403,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                     console.log(data);
                     var verificationCode = prompt('Please input verification code', '');
                     if(verificationCode === code){
+                        $("#txtStatusUser").val(1);
                         var s = 'eval(data);';
                         ajxx(_self, '', s, 0, e);
                     }else{
