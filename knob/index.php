@@ -1,6 +1,7 @@
 <?php if(!defined('s7V9pz')) {die();}?><?php
 fnc('grupo');
 $usr = usr('Grupo');
+//var_dump($usr);
 if (!$usr['active']) {
     rt('signin');
 }

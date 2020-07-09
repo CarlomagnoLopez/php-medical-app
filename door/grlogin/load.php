@@ -14,9 +14,9 @@ function gr_register($do) {
                 gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");$.loadingBlockHide();');
 
             } else if (usr('Grupo', 'exist', $do["name"])) {
-                gr_prnt('$.toast("'.gr_lang('get', 'username_exists').'");');
+                gr_prnt('$.toast("'.gr_lang('get', 'username_exists').'"); $.loadingBlockHide();');
             } else if (usr('Grupo', 'exist', $do["email"])) {
-                gr_prnt('$.toast("'.gr_lang('get', 'email_exists').'");');
+                gr_prnt('$.toast("'.gr_lang('get', 'email_exists').'"); $.loadingBlockHide();');
             } else {
                 $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"], $do["fIdOrganization"], $do['fStatusUser'], $do['fcomplementPhone']  );
                 if ($reg[0]) {
@@ -25,13 +25,29 @@ function gr_register($do) {
                    // gr_mail('verify', $id, 0, rn(5));
                    // gr_prnt('$.toast("'.gr_lang('get', 'check_inbox').'","s");');
 
-                    gr_prnt('setTimeout(function() { location.reload(); }, 2000);');
+                   $id              = $reg[2]['id'];
+                   $status          = $reg[2]['status'];
+                   $id_organization = $reg[2]['id_organization'];
+                   $role            = $reg[2]['role'];
+                   $phone           = $reg[2]['phone'];
+                   $name            = $reg[2]['name'];
+                   $email           = $reg[2]['email'];
+   
+                    gr_prnt('setTimeout(function() {
+                            sessionStorage.setItem("id","'.$id.'");
+                            sessionStorage.setItem("status","'.$status.'");
+                            sessionStorage.setItem("id_organization","'.$id_organization.'");
+                            sessionStorage.setItem("role","'.$role.'");
+                            sessionStorage.setItem("phone","'.$phone.'");
+                            sessionStorage.setItem("name","'.$name.'");
+                            sessionStorage.setItem("email","'.$email.'");
+                            location.reload(); }, 2000);');
                 }else{
                     gr_prnt('$.toast("plese try again.");$.loadingBlockHide();');
                 }
             }
         } else {
-            gr_prnt('$.toast("'.gr_lang('get', 'invalid_captcha').'");');
+            gr_prnt('$.toast("'.gr_lang('get', 'invalid_captcha').'");$.loadingBlockHide();');
         }
     }
 }

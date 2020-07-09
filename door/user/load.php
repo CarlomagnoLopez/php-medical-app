@@ -1,10 +1,10 @@
 <?php if(!defined('s7V9pz')) {die();}?><?php
 
 
-function fast_login($id_username, $email, $password, $psw_encrypt){
+function fast_login($id_username, $email, $password, $psw_encrypt, $phone){
     $p = $password; //
-    $u = $email;
-    $f = 'email';
+    $u = $phone;
+    $f = 'phone';
     $r[0] = false;
     $r[1] = 'invalid';
     $d = 'Grupo';
@@ -45,11 +45,15 @@ function fast_login($id_username, $email, $password, $psw_encrypt){
                         setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
                   //  }
                     $r[0] = true;
-                    $r[2] = '';
+                    $r[2] = $kr;
                 // } else {
                 //     $r[1] = 'banned';
                 // }
-            }}
+            }else{
+                $r[0] = false;
+                $r[2] = '';
+            }
+        }
     }
     return $r;
 }
@@ -84,8 +88,8 @@ function usr() {
                 }else{
                     $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user);
                 }
-                $fast_login = fast_login($r[1], $e , $psw_normal, $p);
-                $r[0] = true;
+                $flogin = fast_login($r[1], $e , $psw_normal, $p, $phone);
+                $r[0] = $flogin[0];
                 // $r[1] id user
                 // $i; // username
                 // $e; // email
@@ -94,7 +98,8 @@ function usr() {
                 // $p['type'] // depict
                 // $rl // role
                 //  dt() // created and altered
-           
+                //$kr = db($d, 's', 'users', 'phone', $phone, 'ORDER BY id DESC LIMIT 1'); // info database by user
+                $r[2] = $flogin[2];
            
            
            
