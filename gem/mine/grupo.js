@@ -4,8 +4,100 @@ $(document).ready(function(){
 });
 
 
+function existGroup(group){
+    var searchOrg = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "existGroup", "group" : group }),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
+}
+
+
+function existUser(email,phone){
+    var searchOrg = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "existUser", "email" : email, "phone" : phone}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
+}
+
+
+function onClickFormCreateGroup(){
+    if($("#txtGroupName").val()=="") {
+        say("the group name is requited","s");
+        $("#txtGroupName").focus();
+        return false;
+    }
+    if($("#txtGroupPassword").val()=="") {
+        say("the password group is requited","s");
+        $("#txtGroupPassword").focus();
+        return false;
+    }
+    $.loadingBlockShow({
+        imgPath: './asset/default.svg',
+        text: 'Loading...',
+        style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+    });
+
+    var exist = existGroup($("#txtGroupName").val());
+
+    if(exist.exist){
+        $.loadingBlockHide();
+        say(exist.message,"s");
+        return false;
+    }
+
+    var payload = {
+         method   : "createGroup",
+         group    : $("#txtGroupName").val(),
+         password : $("#txtGroupPassword").val()
+     }
+
+        $.ajax({
+           type: "POST",
+           contentType: "application/json",
+           processData: false,
+           url: 'door/grform/main.php',
+           data: JSON.stringify(payload), 
+           success: function(data)
+           {
+            $.loadingBlockHide();
+            if(data.data == 0){
+                say("Please try again","s");
+            }else{
+                say("The group: "+ $("#txtGroupName").val() +" was creaded successfully","s");
+                $("#txtGroupPassword").val("");
+                $("#txtGroupName").val("");
+                $("#modalCreateGroup").fadeOut();
+            }
+           },
+           error : function(err){
+             say("Please try again","s");
+              $.loadingBlockHide();
+           }
+         });
+
+
+}
+
+
 function onClickFormCreateUser(){
-    var form = $("#formCreateUser");
     if($("#txtName").val()=="") {
         say("the name is requited","s");
         $("#txtName").focus();
@@ -68,8 +160,20 @@ function onClickFormCreateUser(){
         text: 'Loading...',
         style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
     });
-    var phone = $("#selComplementPhone").val()+$("#txtPhoneNumber").val();
+
+    var phone    = $("#selComplementPhone").val()+$("#txtPhoneNumber").val();
     var username = $("#txtEmail").val().split("@")[0];
+
+    var exist    = existUser($("#txtEmail").val(), phone);
+
+    if(exist.exist){
+        $.loadingBlockHide();
+        say(exist.message,"s");
+        return false;
+    }
+
+
+
     var payload = {
          method  : "createUser",
          name    : $("#txtName").val() ,

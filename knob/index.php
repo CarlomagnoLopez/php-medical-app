@@ -355,7 +355,7 @@ gr_usip('add');
     </div>
 
  
-    <section id="modalCreateUser" class="grupo-pop" style="display: block;">
+    <section id="modalCreateUser" class="grupo-pop" style="display: none;">
         <div>
             <form autocomplete="off" id="formCreateUser" class="grform" style="height: 750px !important;"> 
                 <span class="head">Create User</span>
@@ -403,6 +403,34 @@ gr_usip('add');
             </form>
         </div>
     </section>
+
+ 
+    <section id="modalCreateGroup" class="grupo-pop" style="display: none;">
+        <div>
+            <form autocomplete="off" id="formCreateGroup" class="grform" style="height: 480px !important;"> 
+                <span class="head">Create Group</span>
+                <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
+                    <label>Group Name</label>
+                    <input type="text" name="name" id="txtGroupName" class=" " >
+                    <label>Password</label>
+                    <input type="text" name="password" id="txtGroupPassword" class=" " >
+                    <label>Icon</label>
+                    <span class="fileup">
+                    <!-- <input type="file" name="img" class=" "  style="display: none;">
+                    <span>Choose a file</span>
+                    </span> -->
+                </div>
+                <input type="hidden" name="act" value="1">
+                <input type="hidden" name="do" class="grdo" value="create">
+                <input type="hidden" name="type" class="grtype" value="group">
+                <input type="submit" id="formCreateGroup" onclick="onClickFormCreateGroup()" class="ajx grsub" form=".grform" value="Create">
+                <span class="cancel">Cancel</span>
+            </form>
+
+
+        </div>
+    </section>
+
 
 
 

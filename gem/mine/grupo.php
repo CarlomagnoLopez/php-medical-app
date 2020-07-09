@@ -754,8 +754,12 @@ $('body').on('click', '.grupo-pop > div > form > div > .imglist > li', function(
 $('body').on('click', '.formpop', function(e) {
 
      switch(e.target.outerText){
-         case "Create User":
+        case "Create User":
              $("#modalCreateUser").fadeIn();
+             return;
+         break;
+         case "Create Group":
+             $("#modalCreateGroup").fadeIn();
              return;
          break;
      }
