@@ -414,8 +414,8 @@ gr_usip('add');
                     <input type="text" name="name" id="txtGroupName" class=" " >
                     <label>Password</label>
                     <input type="text" name="password" id="txtGroupPassword" class=" " >
-                    <label>Icon</label>
-                    <span class="fileup">
+                    <!-- <label>Icon</label>
+                    <span class="fileup"> -->
                     <!-- <input type="file" name="img" class=" "  style="display: none;">
                     <span>Choose a file</span>
                     </span> -->

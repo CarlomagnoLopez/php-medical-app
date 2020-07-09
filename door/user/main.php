@@ -41,7 +41,7 @@ switch($method){
 
 function existUser($db,$email,$phone){
   //  $sql = "SELECT * FROM `gr_users` WHERE  email = '$email' OR phone = '$phone'";
-    $sql = "SELECT * FROM `gr_users` WHERE  email = '$email'";
+    $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone'";
     try {
         $response = array();
         $stmt = $db->query($sql); 
@@ -49,7 +49,7 @@ function existUser($db,$email,$phone){
         if(count($rs)>0){
             $response['exist'] = true; 
             $response['data'] = $rs[0];
-            $response['message'] = "The user '$email' exist.";             
+            $response['message'] = "The user with phone '$phone' exist.";             
         }else{
             $response['exist'] = false; 
             $response['data'] = [];
