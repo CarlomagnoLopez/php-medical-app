@@ -22,8 +22,8 @@ function gr_register($do) {
                 if ($reg[0]) {
                     $id = $reg[1];
                     gr_data('i', 'profile', 'name', $do["fname"], $id);
-                    gr_mail('verify', $id, 0, rn(5));
-                    gr_prnt('$.toast("'.gr_lang('get', 'check_inbox').'","s");');
+                   // gr_mail('verify', $id, 0, rn(5));
+                   // gr_prnt('$.toast("'.gr_lang('get', 'check_inbox').'","s");');
 
                     gr_prnt('setTimeout(function() { location.reload(); }, 2000);');
                 }else{
