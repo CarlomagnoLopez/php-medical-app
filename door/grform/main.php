@@ -103,7 +103,9 @@ function createUser($db,$json){
    extra,
    phone,
    id_organization,
-   status
+   status,
+   address,
+   zipcode
    )
    VALUES
    (:name,
@@ -117,7 +119,10 @@ function createUser($db,$json){
    :extra,
    :phone,
    :id_organization,
-   0)";
+   0,
+   :address,
+   :zipcode
+   )";
    try {
        $p = en($json->password);
        $response = array();
@@ -131,10 +136,12 @@ function createUser($db,$json){
        $stmt->bindValue("extra",            0);
        $stmt->bindValue("phone",            $json->phone);
        $stmt->bindValue("id_organization",  $json->id_organization);
+       $stmt->bindValue("address",          $json->address);
+       $stmt->bindValue("zipcode",          $json->zipcode);
        $stmt->execute();
        $id = $db->lastInsertId();
        $lastInsertId = $id > 0 ? $id : 0;
-       $db = null;     
+      // $db = null;     
        $response['data'] = $lastInsertId;
        $response['error'] = false; 
        $response['message'] = "User '". $json->email ."' created successfully.";             
@@ -145,6 +152,70 @@ function createUser($db,$json){
    }
    echo json_encode($response);
 }
+
+
+function saveGrSession($db,$json){
+    $sql = "INSERT INTO `gr_users`
+    (name,
+    email,
+    pass,
+    mask,
+    depict,
+    role,
+    created,
+    altered,
+    extra,
+    phone,
+    id_organization,
+    status,
+    address,
+    zipcode
+    )
+    VALUES
+    (:name,
+    :email,
+    :pass,
+    :mask,
+    :depict,
+    :role,
+    NOW(),
+    NOW(),
+    :extra,
+    :phone,
+    :id_organization,
+    0,
+    :address,
+    :zipcode
+    )";
+    try {
+        $p = en($json->password);
+        $response = array();
+        $stmt = $db->prepare($sql); 
+        $stmt->bindValue("name",             $json->name.' '.$json->lastname);
+        $stmt->bindValue("email",            $json->email);
+        $stmt->bindValue("pass",             $p['pass']);
+        $stmt->bindValue("mask",             $p['mask']);
+        $stmt->bindValue("depict",           $p['type']);
+        $stmt->bindValue("role",             $json->role);
+        $stmt->bindValue("extra",            0);
+        $stmt->bindValue("phone",            $json->phone);
+        $stmt->bindValue("id_organization",  $json->id_organization);
+        $stmt->bindValue("address",          $json->address);
+        $stmt->bindValue("zipcode",          $json->zipcode);
+        $stmt->execute();
+        $id = $db->lastInsertId();
+        $lastInsertId = $id > 0 ? $id : 0;
+        $db = null;     
+        $response['data'] = $lastInsertId;
+        $response['error'] = false; 
+        $response['message'] = "User '". $json->email ."' created successfully.";             
+    } catch(PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+ }
 
 
 function en($v, $t = 0, $m = 0) {

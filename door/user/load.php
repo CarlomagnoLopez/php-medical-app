@@ -392,8 +392,11 @@ function ses($d, $t = 0, $v = 0) {
         if (isset($_SESSION[$d.'usrses']) && isset($_SESSION[$d.'usrcode'])) {
             $c = db($d, 's', 'session', 'id,device,code', $_SESSION[$d.'usrses'], $_SESSION[$d.'usrdev'], $_SESSION[$d.'usrcode'], 'ORDER BY id DESC');
             if (count($c) > 0) {
-                $r['active'] = true;
-                $r['id'] = $c[0]['uid'];
+                $dataUsr = db('Grupo', 's', 'users', 'id', $c[0]['uid'], 'ORDER BY id DESC LIMIT 1');
+                $r['active']          = true;
+                $r['id']              = $c[0]['uid'];
+                $r['role']            = $dataUsr[0]['role']; // session role
+                $r['id_organization'] = $dataUsr[0]['id_organization']; // session id_organization
             } else {
                 $_SESSION[$d.'usrdev'] = $_SESSION[$d.'usrcode'] = $_SESSION[$d.'usrses'] = null;
                 if (isset($_COOKIE[$d.'usrses'])) {

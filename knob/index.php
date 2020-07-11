@@ -9,6 +9,9 @@ grupofns();
 gr_unverified();
 gr_profile('ustatus', 'online');
 gr_usip('add');
+$org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.$usr['id_organization']);
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -32,6 +35,7 @@ gr_usip('add');
     gr_core('hf', 'header');
     ?>
 </head>
+<input type="hidden" id="global_id_organization" value="<?php pr($usr['id_organization']); ?>">
 <body>
 
     <div class='gr-preloader'>
@@ -103,7 +107,7 @@ gr_usip('add');
                                     </div>
                                 </i>
                             </span>
-                            <span class='logo'><?php pr(gr_default('get', 'sitename')); ?></span>
+                            <span class='logo'><?php pr( $org[0]['organization'] ); ?></span>
                             <span class='icons'>
                                 <i class='ti-bell malert goright d-md-none' data-block='alerts'><?php gr_alerts('count', 1); ?></i>
                                 <i class="ti-plus subnav">

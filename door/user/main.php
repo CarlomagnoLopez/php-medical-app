@@ -29,25 +29,31 @@ switch($method){
         saveOrganization($db,$organization,$secret_key);
     break;
     case 'existUser':
-        $email = $json->email;
         $phone = $json->phone;
-        existUser($db,$email,$phone);
+        existUser($db,$phone);
     break;
     case 'updateStatusUser':
-        $phone = $json->phone;
-        updateStatusUser($db,$phone);
+        $phone  = $json->phone;
+        $status = $json->status;
+        updateStatusUser($db,$phone,$status);
     break;
-
+    case 'fastLogin':
+        fastLogin($db,$phone,$status);
+    break;
 }
 
-function updateStatusUser($db,$phone,$status){
-    $sql = "UPDATE gr_users SET STATUS = $status WHERE phone = '$phone'";
+
+function updateSession($db,$uid){
+    $sql = "UPDATE `gr_session` SET try=:try,device=:device WHERE uid=:uid";
     try {
         $response = array();
         $stmt = $db->prepare($sql); 
+        $stmt->bindValue("uid",    $uid);
+        $stmt->bindValue("device", 'bs.'.ip().ip('dev'));
+        $stmt->bindValue("try",    0);
         $stmt->execute();
-        $db = null;     
-        $response['data'] = null;
+        $rs = $stmt->rowCount() ? 1 : 0;
+        $response['data'] = $rs;
         $response['error'] = false; 
         $response['message'] = "";             
     } catch(PDOException $e) {
@@ -55,12 +61,58 @@ function updateStatusUser($db,$phone,$status){
         $response['error'] = true; 
         $response['message'] = "An error occurred, try again.".$e->getMessage();    
     }
+
+ return $response;
+}
+
+
+ function existSession($db,$uid){
+    $sql = "SELECT * FROM `gr_session` WHERE  uid = '$uid'";
+    try {
+        $response = array();
+        $stmt = $db->query($sql); 
+        $rs   =  $stmt->fetchAll();
+        if(count($rs)>0){
+            $response['exist'] = true; 
+            $response['data'] = $rs[0];
+            $response['message'] = "The user with phone '$phone' exist.";             
+        }else{
+            $response['exist'] = false; 
+            $response['data'] = [];
+            $response['message'] = "";             
+        }
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['exist'] = false; 
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    return $response;
+}
+
+
+function updateStatusUser($db,$phone,$status){
+    $sql = "UPDATE gr_users SET STATUS = $status WHERE phone = '$phone'";
+    try {
+        $response = array();
+        $stmt = $db->prepare($sql); 
+        $stmt->execute();
+        $rs = $stmt->rowCount() ? 1 : 0;
+        $db = null;     
+        $response['data']    = $rs;
+        $response['error']   = false; 
+        $response['message'] = "";             
+    } catch(PDOException $e) {
+        $response['data']    = null;
+        $response['error']   = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
     echo json_encode($response);
  }
 
 
-function existUser($db,$email,$phone){
-  //  $sql = "SELECT * FROM `gr_users` WHERE  email = '$email' OR phone = '$phone'";
+function existUser($db,$phone){
     $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone'";
     try {
         $response = array();
@@ -84,6 +136,35 @@ function existUser($db,$email,$phone){
     }
     echo json_encode($response);
 }
+
+
+function saveSession($db,$uid){
+        $sql = "INSERT INTO `gr_session`(uid,device,code,tms,try) VALUES(:uid,:device,:code,NOW(),:try)";
+        try {
+            $response = array();
+            $stmt = $db->prepare($sql); 
+            $stmt->bindValue("uid",    $uid);
+            $stmt->bindValue("device", 'bs.'.ip().ip('dev'));
+            $stmt->bindValue("try",    0);
+            $stmt->bindValue("code",   rn(20));
+            $stmt->execute();
+            $id = $db->lastInsertId();
+            $lastInsertId = $id > 0 ? $id : 0;
+            $response['data'] = $lastInsertId;
+            $response['error'] = false; 
+            $response['message'] = "";             
+        } catch(PDOException $e) {
+            $response['data'] = null;
+            $response['error'] = true; 
+            $response['message'] = "An error occurred, try again.".$e->getMessage();    
+        }
+
+    return $response;
+ }
+
+
+
+
 
 
 
@@ -187,6 +268,97 @@ function saveOrganization($db,$organization,$secret_key){
        $response['message'] = "An error occurred, try again.".$e->getMessage();    
    }
    echo json_encode($response);
+}
+
+
+/********************* */
+function ip($t = 0) {
+    if ($t === 'dev') {
+        $dev = $_SERVER ['HTTP_USER_AGENT'];
+        $dev = preg_replace("/[^A-Za-z0-9.]/", "", $dev);
+        $dev = strtolower($dev);
+        return $dev;
+    } else {
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR')?:
+        getenv('HTTP_X_FORWARDED')?:
+        getenv('HTTP_FORWARDED_FOR')?:
+        getenv('HTTP_FORWARDED');
+        if (empty($ipaddress)) {
+            return getenv('REMOTE_ADDR');
+        } else {
+            return $ipaddress;
+        }
+    }
+}
+
+
+function en($v, $t = 0, $m = 0) {
+    if ($t == '0') {
+        $t = rand(1, 10);
+    }
+    function depict($t, $v, $m) {
+        $r["type"] = $t;
+        $r["mask"] = $m;
+        if ($r["mask"] == '0') {
+            $r["mask"] = rn(rand(8, 15));
+        }
+        if ($r["type"] == '1') {
+            $r["pass"] = md5(md5(sha1(sha1(md5($r["mask"] . $v)))));
+        } else if ($r["type"] == '2') {
+            $r["pass"] = hash('ripemd128', (md5(md5($r["mask"] . $v))));
+        } else if ($r["type"] == '3') {
+            $r["pass"] = hash('sha256', (crc32($r["mask"] . $v)));
+        } else if ($r["type"] == '4') {
+            $r["pass"] = hash('ripemd128', (crc32(crc32($r["mask"] . $v))));
+        } else if ($r["type"] == '5') {
+            $r["pass"] = hash('md4', (md5($r["mask"] . $v)));
+        } else if ($r["type"] == '6') {
+            $r["pass"] = md5(hash('sha256', (md5($r["mask"] . $v))));
+        } else if ($r["type"] == '7') {
+            $r["pass"] = hash('ripemd128', (sha1($r["mask"] . $v)));
+        } else if ($r["type"] == '8') {
+            $r["pass"] = hash('md2', (md5(sha1($r["mask"] . $v))));
+        } else if ($r["type"] == '9') {
+            $r["pass"] = sha1(crc32(sha1(crc32(md5($r["mask"] . $v)))));
+        } else if ($r["type"] == '10') {
+            $r["pass"] = md5(md5(sha1(sha1(crc32($r["mask"] . $v)))));
+        }
+        return $r;
+    }
+    return depict($t, $v, $m);
+}
+
+function rn($number) {
+    if (empty($number)) {
+        $length = rand(8, 20);
+    } else {
+        $length = $number;
+    }
+    
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $size = strlen($chars);
+    $str = "";
+    for ($i = 0; $i < $length; $i++) {
+        $str .= $chars[rand(0, $size - 1)]; $str .= $chars[rand(0, $size - 1)];
+    } $str = substr($str, 0, $length);
+    if (isset($arg[2])) {
+        $sym = $arg[2];
+        if (!isset($arg[3])) {
+            $str = $str.$sym;
+            $str = str_shuffle($str);
+        } else if ($arg[3] == 'left') {
+            $str = $sym.$str;
+        } else if ($arg[3] == 'right') {
+            $str = $str.$sym;
+        } else if ($arg[3] == 'mid') {
+            $m = strlen($str)/2;
+            $f = substr($str, 0, $m);
+            $l = substr($str, $m);
+            $str = $f.$sym.$l;
+        }
+       // $str = vc($str);
+    }
+    return $str;
 }
 
 

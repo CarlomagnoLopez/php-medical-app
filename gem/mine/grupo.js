@@ -198,9 +198,11 @@ function onClickFormCreateUser(){
          email   : $("#txtEmail").val(),
          username: username, 
          password: $("#txtPassword").val(), 
+         address: $("#txtAddress").val(), 
+         zipcode: $("#txtZipCode").val(), 
         // role    : $("#selRole").val(),
          role    : 2,
-         id_organization : parseInt(sessionStorage.getItem("id_organization"))
+         id_organization : parseInt($("#global_id_organization").val())
      }
 
         $.ajax({
