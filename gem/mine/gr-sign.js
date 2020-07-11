@@ -180,10 +180,10 @@ function searchOrganizationBySecretKey(secret_key){
 
 
 
-function existUser(email,phone){
+function existUser(phone){
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "existUser", "email" : email, "phone" : phone}),
+        data: JSON.stringify({ "method" : "existUser", "phone" : phone}),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -210,7 +210,7 @@ function searchOrganization(organization, secret_key){
             console.log(err);
         }
     }).responseText;
-    return searchOrg;
+    return JSON.parse(searchOrg);
 }
 
 
@@ -230,6 +230,62 @@ function getDataUserByPhone(phone){
     }).responseText;
     return getData;
 }
+
+
+function sendSMS(code,phone){
+    console.log(code);
+    var getData = $.ajax({
+        url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+        data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+function createUser(payload){
+    console.log(code);
+    var getData = $.ajax({
+        url: 'door/grform/main.php',
+        data: JSON.stringify( payload ),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+
+function updateStatusUser(phone,status){
+    console.log(code);
+    var getData = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify( {phone:phone,status:status} ),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+
+ 
 
 
 $('.two > section > div > div form > .submit.global').on('click', function(e) {
@@ -359,62 +415,50 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 text: 'Loading...',
                 style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
             });
-
-
-
-            if( $("#txtOrganizationName").val() == "" && $("#txtSecretKey").val() == "" ){
-                $("#txtStatusUser").val(0);
-            }else{    
-                var searchOrg = searchOrganization( $("#txtOrganizationName").val(), $("#txtSecretKey").val());
-                var dataOrg = JSON.parse(searchOrg);
-                console.log(searchOrg);
-                if(!dataOrg.exist){
-                    $.loadingBlockHide();
-                    $.toast("The organization name and secret key doesn't exist.");
-                    return false;
-                }else{
-                    $("#txtIdOrganization").val(dataOrg.data.id_organization);
-                    $("#txtStatusUser").val(1);
-                }
-            }
-            var phone = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
-            var exist = existUser($("#txtEmail").val(), phone);
-
+            var username = $("#txtEmail").val().split("@")[0];
+            $("#txtUsername").val(username);
+            var phone     = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
+            var exist     = existUser(phone);
+            
             if(exist.exist){
                 $.loadingBlockHide();
                 $.toast(exist.message);
                 return false;
             }
+
+            if( $("#txtOrganizationName").val() == "" && $("#txtSecretKey").val() == "" ){
+                $("#txtStatusUser").val(0);
+            }else{    
+                var searchOrg = searchOrganization( $("#txtOrganizationName").val(), $("#txtSecretKey").val());
+                console.log(searchOrg);
+                if(!searchOrg.exist){
+                    $.loadingBlockHide();
+                    $.toast("The organization name and secret key doesn't exist.");
+                    return false;
+                }else{
+                    $("#txtIdOrganization").val(searchOrg.data.id_organization);
+                    $("#txtStatusUser").val(1);
+                }
+            }
             
 
             var code = generateCode();
+            var sms  = sendSMS(code,phone);
             console.log(code);
-            $.ajax({
-                url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-                data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
-                processData: false,
-                contentType: "application/json",
-                type: 'POST',
-                beforeSend: function(){
-                    var username = $("#txtEmail").val().split("@")[0];
-                    $("#txtUsername").val(username);
-                },
-                success: function ( data ) {
-                    console.log(data);
-                    var verificationCode = prompt('Please input verification code', '');
-                    if(verificationCode === code){
-                        $("#txtStatusUser").val(1);
-                        var s = 'eval(data);';
-                        ajxx(_self, '', s, 0, e);
-                    }else{
-                        $.toast("invalida code");
-                    }
-                },
-                error: function(error){
-                    $.loadingBlockHide();
+            if(sms.statusCode==200){
+                var verificationCode = prompt('Please input verification code', '');
+                if(verificationCode === code){
+                    $("#txtStatusUser").val(1);
+                    var s = 'eval(data);';
+                    ajxx(_self, '', s, 0, e);
+                }else{
+                    $.toast("invalida code");
+                    return;
                 }
-            });
-        
+            }else{
+                $.loadingBlockHide();
+            }
+
         
         
         } // end else

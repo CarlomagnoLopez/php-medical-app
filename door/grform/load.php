@@ -166,18 +166,23 @@ function gr_form($do) {
         $fields->sent = array(gr_lang('get', 'mail_login_info'), 'select', '0', '-----', '1', gr_lang('get', 'yes'), '0', gr_lang('get', 'no'));
 
     } else if ($do["type"] == "profileact") {
+        $stms = db('Grupo', 'q', 'SELECT * FROM gr_users WHERE id='.$do['id']);
+        $dataUsr = $stms[0];
+        $status = $dataUsr['status'];
         if (gr_role('access', 'users', '3')) {
-            $fields->opted = array(gr_lang('get', 'select_option'), 'select', '0', '-----', 'delete', gr_lang('get', 'delete'));
+            $fields->opted = array(gr_lang('get', 'select_option'), 'select', '0', '-----', 'delete', gr_lang('get', 'delete'), ($status=="0")?'Enable':'Disable', ($status==0)?'Enable':'Disable' );
         }
         if (gr_role('access', 'users', '8')) {
-            $fields->opted = array(gr_lang('get', 'select_option'), 'select', '0', '-----', 'ban', gr_lang('get', 'ban'));
-
+            $fields->opted = array(gr_lang('get', 'select_option'), 'select', '0', '-----', 'ban', gr_lang('get', 'ban'), ($status=="0")?'Enable':'Disable', ($status==0)?'Enable':'Disable');
         }
         if (gr_role('access', 'users', '8') && gr_role('access', 'users', '3')) {
-            $fields->opted = array(gr_lang('get', 'select_option'), 'select', '0', '-----', 'delete', gr_lang('get', 'delete'), 'ban', gr_lang('get', 'ban'));
+            $fields->opted = array(gr_lang('get', 'select_option'), 'select', '0', '-----', 'delete', gr_lang('get', 'delete'), ($status=="0")?'Enable':'Disable', ($status==0)?'Enable':'Disable' , 'ban', gr_lang('get', 'ban'));
         }
+       
+
         $fields->id = array('hidden', 'input', 'hidden', '"'.$do["id"].'"');
 
+        
     } else if ($do["type"] == "editlanguage") {
         if (!gr_role('access', 'languages', '2')) {
             exit;
