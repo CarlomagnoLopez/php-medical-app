@@ -60,8 +60,12 @@ grupofns();
                                 </label>
                                 <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
                                         <select name="fcomplementPhone" id="selComplementPhone">
-                                            <option value="+52" selected="selected">+52</option>
-                                            <option value="+55">+55</option>
+                                            <option value="1" selected>+1</option>
+                                            <option value="86">+86</option>
+                                            <option value="87">+87</option>
+                                            <option value="91">+91</option>
+                                            <option value="55">+55</option>
+                                            <option value="52">+52</option>
                                         </select>
                                 </div>
                                 <div>
@@ -85,8 +89,12 @@ grupofns();
 
                                 <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
                                         <select name="fcomplementPhoneLogin" id="selComplementPhoneLogin">
-                                            <option value="+52" selected="selected">+52</option>
-                                            <option value="+55">+55</option>
+                                            <option value="1" selected>+1</option>
+                                            <option value="86">+86</option>
+                                            <option value="87">+87</option>
+                                            <option value="91">+91</option>
+                                            <option value="55">+55</option>
+                                            <option value="52">+52</option>
                                         </select>
                                 </div>
                                 <div>

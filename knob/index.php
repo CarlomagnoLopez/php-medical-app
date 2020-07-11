@@ -374,8 +374,12 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                      <input type="text" name="fZipCode" id="txtZipCode" class="margin-input only-numbers zipCodeLimit">
                      <div style="margin-top: 30px;position: absolute;">
                         <select name="fcomplementPhone" id="selComplementPhone">
-                            <option value="+52" selected="selected">+52</option>
-                            <option value="+55">+55</option>
+                            <option value="1" selected>+1</option>
+                            <option value="86">+86</option>
+                            <option value="87">+87</option>
+                            <option value="91">+91</option>
+                            <option value="55">+55</option>
+                            <option value="52">+52</option>
                         </select>
                      </div>
                      <label class="color-label">Phone Number</label>

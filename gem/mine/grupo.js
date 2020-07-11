@@ -284,6 +284,7 @@ function onClickFormCreateUser(event){
                 $("#txtPhoneNumber").val("");
                 $("#selRole").val("0");
                 say("The user: "+username+" was creaded successfully","s");
+                sendSMS(phone);
                 $("#modalCreateUser").fadeOut();
             }
            },
@@ -294,6 +295,23 @@ function onClickFormCreateUser(event){
          });
 }
 
+
+function sendSMS(phone){
+    var getData = $.ajax({
+        url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+        data: JSON.stringify( { "sms" : "", "type" : "signin" , phone : phone } ),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
 
 function validatePasswords(password, repeatPassword){
     return password===repeatPassword;
