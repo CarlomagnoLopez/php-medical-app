@@ -154,7 +154,7 @@ $('.gr-consent > span > i').on('click', function() {
 
 
 $("#txtSecretKey").change(function(event){
-    if ( $(this).val().length >= 8 ) {
+    if ( $(this).val().length >= 5 ) {
        var searchOrganization = searchOrganizationBySecretKey($(this).val());
        if(searchOrganization.exist){
             $("#txtOrganizationName").val(searchOrganization.data.organization);
@@ -420,7 +420,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             var phone     = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
             var exist     = existUser(phone);
             
-            if(exist.exist){
+            if(exist.exist && exist.data.status==1){
                 $.loadingBlockHide();
                 $.toast(exist.message);
                 return false;

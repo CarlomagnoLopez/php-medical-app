@@ -116,7 +116,7 @@ float: left;
 .swr-grupo .aside > .head > .logo
 {
 display: inline-block;
-background: linear-gradient(to right,#E91E63,#9C27B0);
+background: linear-gradient(to right,#000000,#000000);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 font-size: 16px;

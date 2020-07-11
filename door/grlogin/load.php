@@ -13,10 +13,6 @@ function gr_register($do) {
               //gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");');
                 gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");$.loadingBlockHide();');
 
-            } else if (usr('Grupo', 'exist', $do["name"])) {
-                gr_prnt('$.toast("'.gr_lang('get', 'username_exists').'"); $.loadingBlockHide();');
-            } else if (usr('Grupo', 'exist', $do["email"])) {
-                gr_prnt('$.toast("'.gr_lang('get', 'email_exists').'"); $.loadingBlockHide();');
             } else {
                 $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"], $do["fIdOrganization"], $do['fStatusUser'], $do['fcomplementPhone']  );
                 if ($reg[0]) {
