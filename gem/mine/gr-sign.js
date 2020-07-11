@@ -154,7 +154,7 @@ $('.gr-consent > span > i').on('click', function() {
 
 
 $("#txtSecretKey").change(function(event){
-    if ( $(this).val().length == 5 ) {
+    if ( $(this).val().length >= 8 ) {
        var searchOrganization = searchOrganizationBySecretKey($(this).val());
        if(searchOrganization.exist){
             $("#txtOrganizationName").val(searchOrganization.data.organization);
