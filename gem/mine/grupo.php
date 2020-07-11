@@ -1,4 +1,5 @@
 <?php if(!defined('s7V9pz')) {die();}?>
+window.idUserSelectedAct = '';
 $('.swr-grupo .aside > .tabs > ul > li,.loadside').on('click', function(e) {
     $(this).attr('type', 'json');
     $(this).find('i').html('');
@@ -752,7 +753,8 @@ $('body').on('click', '.grupo-pop > div > form > div > .imglist > li', function(
     $(this).addClass('active');
 });
 $('body').on('click', '.formpop', function(e) {
-
+    console.log('outerText:'+e.target.outerText);
+    console.log('id:'+$(this).attr('no'));
      switch(e.target.outerText){
         case "Create User":
              $("#modalCreateUser").fadeIn();
@@ -760,6 +762,11 @@ $('body').on('click', '.formpop', function(e) {
          break;
          case "Create Group":
              $("#modalCreateGroup").fadeIn();
+             return;
+         break;
+         case "Act":
+             window.idUserSelectedAct = $(this).attr('uid');
+             $("#modalTakeAction").fadeIn();
              return;
          break;
      }
@@ -1090,6 +1097,7 @@ $(window).load(function() {
         $('.swr-grupo .rside > .tabs > ul > li').eq(0).trigger('click');
     }
     grliveupdates();
+
 });
 
 $(".scroller").niceScroll({

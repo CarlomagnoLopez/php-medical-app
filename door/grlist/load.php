@@ -254,7 +254,7 @@ function gr_list($do) {
 
                 if (gr_role('access', 'users', '3') || gr_role('access', 'users', '8')) {
                     $list[$i]->oc = gr_lang('get', 'act');
-                    $list[$i]->oct = 'class="formpop" pn=2 title="'.gr_lang('get', 'take_action').'" do="profile" btn="'.gr_lang('get', 'confirm').'" act="act"';
+                    $list[$i]->oct = 'class="formpop" uid="'.$f['id'].'" pn=2 title="'.gr_lang('get', 'take_action').'" do="profile" btn="'.gr_lang('get', 'confirm').'" act="act"';
                 }
                 $osort = 1;
                 if (gr_profile('get', $f['id'], 'status') == 'online') {

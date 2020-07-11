@@ -170,7 +170,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                     <?php
                                 } ?>
 
-                                <li side='lside' class='xtra'></li>
+                                <li id="liOptions" side='lside' class='xtra'></li>
                             </ul>
                         </div>
                         <div class="content">
@@ -355,13 +355,13 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
             <source src="gem/ore/grupo/global/alert.mp3" />
         </audio>
         <input type='hidden' class='hidid' value=1/>
-        <li class='loadside ruserz' act='rusers' zero='0' zval='<?php pr(gr_lang('get', 'zero_users')) ?>' side='rside'><?php pr(gr_lang('get', 'users')) ?></li>
+        <li  class='loadside ruserz' act='rusers' zero='0' zval='<?php pr(gr_lang('get', 'zero_users')) ?>' side='rside'><?php pr(gr_lang('get', 'users')) ?></li>
     </div>
 
  
     <section id="modalCreateUser" class="grupo-pop" style="display: none;">
         <div>
-            <form autocomplete="off" id="formCreateUser" class="grform" style="height: 750px !important;"> 
+            <form autocomplete="off" style="height: 750px !important;"> 
                 <span class="head">Create User</span>
                 <div class="fields scroller" tabindex="5">
                      <label class="color-label">Name</label>
@@ -402,7 +402,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <input type="hidden" name="act" value="1">
                 <input type="hidden" name="do" class="grdo" value="create">
                 <input type="hidden" name="type" class="grtype" value="user">
-                <input type="submit" id="formCreateUser" onclick="onClickFormCreateUser()" class="ajx grsub" form=".grform" value="Create">
+                <input type="button" onclick="onClickFormCreateUser(this)" class="button-submit-form ajx grsub" value="Create User">
                 <span class="cancel">Cancel</span>
             </form>
         </div>
@@ -411,7 +411,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
  
     <section id="modalCreateGroup" class="grupo-pop" style="display: none;">
         <div>
-            <form autocomplete="off" id="formCreateGroup" class="grform" style="height: 420px !important;"> 
+            <form autocomplete="off" style="height: 420px !important;"> 
                 <span class="head">Create Group</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
                     <label>Group Name</label>
@@ -429,7 +429,29 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <input type="hidden" name="act" value="1">
                 <input type="hidden" name="do" class="grdo" value="create">
                 <input type="hidden" name="type" class="grtype" value="group">
-                <input type="submit" id="formCreateGroup" onclick="onClickFormCreateGroup()" class="ajx grsub" form=".grform" value="Create">
+                <input type="button" onclick="onClickFormCreateGroup(this)" class="button-submit-form ajx grsub" value="Create Group">
+                <span class="cancel">Cancel</span>
+            </form>
+
+
+        </div>
+    </section>
+
+
+    <section id="modalTakeAction" class="grupo-pop" style="display: none;">
+        <div>
+           <form autocomplete="off" style="height: 250px !important;"> 
+                <span class="head">Take Action</span>
+                <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
+                    <label>Select Option from Dropdown</label>
+                    <select name="opted" class="" id="selActionUser">
+                    <option value="">-----</option>
+                    <option value="delete">Delete</option>
+                    <option value="0">Disable</option>
+                    <option value="1">Enable</option>
+                    </select>
+                </div>
+                <button type="button" onclick="onClickStatusUser(this)" class="button-submit-form  ajx grsub">Confirm Change</button>
                 <span class="cancel">Cancel</span>
             </form>
 

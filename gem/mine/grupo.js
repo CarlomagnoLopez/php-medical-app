@@ -41,7 +41,67 @@ function validatePasswords(password, repeatPassword){
     return password===repeatPassword;
 }
 
-function onClickFormCreateGroup(){
+function updateStatusUser(uid,status){
+    var getData = $.ajax({
+        url: 'door/grform/main.php',
+        data: JSON.stringify( {method:'updateStatusUser',uid:uid,status:status} ),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+
+ 
+
+function onClickStatusUser(event){
+    if($("#selActionUser").val()=="") {
+        say("Please select any option.","s");
+        $("#selActionUser").focus();
+        return false;
+    }
+    if(window.idUserSelectedAct!==''){
+        $.loadingBlockShow({
+            imgPath: './asset/default.svg',
+            text: 'Loading...',
+            style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+        });
+        
+        var exist = updateStatusUser(window.idUserSelectedAct,$("#selActionUser").val());
+        if(exist.data==0){
+            say("Please try again.","s");
+        }else{
+            $("#modalTakeAction").fadeOut();
+            window.idUserSelectedAct = '';
+            // $("#liOptions").children().html()
+            $("#liOptions").click();
+            $.loadingBlockHide();
+            if($("#selActionUser").val()=="0") {
+                say("The user was disables.","s");
+            }else{
+                say("The user was enabled.","s");
+            }
+            
+            $("#selActionUser").val("");
+
+            
+        }
+
+    }
+
+
+}
+
+function onClickFormCreateGroup(event){
+    if(event.value!=="Create Group"){
+        return false;
+    }
     if($("#txtGroupName").val()=="") {
         say("the group name is requited","s");
         $("#txtGroupName").focus();
@@ -113,7 +173,7 @@ function onClickFormCreateGroup(){
 }
 
 
-function onClickFormCreateUser(){
+function onClickFormCreateUser(event){
     if($("#txtName").val()=="") {
         say("the name is requited","s");
         $("#txtName").focus();

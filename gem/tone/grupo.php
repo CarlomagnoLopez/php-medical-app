@@ -1581,7 +1581,7 @@ display: block;
 .grupo-pop > div > form > div > select > option
 {
 outline: none;
-background: #232630;
+background: #c0cae8;
 }
 
 .grupo-pop > div > form > input[type="submit"]
@@ -2149,4 +2149,31 @@ box-shadow: 0 0 0 0 rgba(204,169,44, 0);
 
 .color-label{
     color:black !important;
+}
+
+
+.button-submit-form {
+    background: linear-gradient(to right,#000000,#000000);
+    border: 0px;
+    border-radius: 66px;
+    color: white;
+    width: 100%;
+    padding: 8px 0px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    margin-top: 21px;
+    font-weight: 600;
+    outline: none;
+    width: 200px;
+}
+
+.style-form-modal {
+    display: inline-block;
+    background: #f0f2f5;
+    background: linear-gradient(to right,#f6faff,#ffffff);
+    text-align: center;
+    box-shadow: 0px 0px 6px #d0cdcd85;
+    border-radius: 5px;
+    color: white;
+    width: 300px;
 }

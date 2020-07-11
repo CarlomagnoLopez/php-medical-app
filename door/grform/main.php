@@ -23,7 +23,34 @@ switch($method){
         $password   = $json->password;
         createGroup($db,$group,$password);
     break;    
+    case 'updateStatusUser':
+        $uid    = $json->uid;
+        $status = $json->status;
+        updateStatusUser($db,$uid,$status);
+    break;    
 }
+
+
+
+function updateStatusUser($db,$uid,$status){
+    $sql = "UPDATE gr_users SET STATUS = $status WHERE id = '$uid'";
+    try {
+        $response = array();
+        $stmt = $db->prepare($sql); 
+        $stmt->execute();
+        $rs = $stmt->rowCount() ? 1 : 0;
+        $db = null;     
+        $response['data']    = $rs;
+        $response['error']   = false; 
+        $response['message'] = "";             
+    } catch(PDOException $e) {
+        $response['data']    = null;
+        $response['error']   = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+ }
+
 
 function createGroup($db,$group,$password){
     $sql = "INSERT INTO `gr_options`
