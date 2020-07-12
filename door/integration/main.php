@@ -17,7 +17,7 @@ switch ($method) {
     break;
     case 'saveOrganization':
         $organization = $json->summaryOrg->orgName;
-        $secret_key   = $json->summaryOrg->orgName;
+        $secret_key   = $json->summaryOrg->secretKey;
         $contact_email   = $json->summaryOrg->contactEmail;
         $contact_name   = $json->summaryOrg->contactName;
         $web_site   = $json->summaryOrg->orgWesite;
@@ -113,28 +113,38 @@ function addUserToGroup($db, $idGroupCreated, $log, $nameUser)
     (type,
     v1,
     v2,
-    v3
+    v3,
+    v4,
+    v5
     )
     VALUES
     (:group,
     :organization,
     :idUser,
+    0,
+    0,
     0
   ),
   (:lview,
     :organization,
     :idUser,
+    0,
+    0,
     0
   ),
   (profile,
     name,
     :nameUser,
-    :idUser
+    :idUser,
+    0,
+    0
   ),
   (profile,
   status,
     offline,
-    :idUser
+    :idUser,
+    0,
+    0
   )
   ";
     try {
