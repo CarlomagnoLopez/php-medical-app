@@ -137,7 +137,10 @@ function onClickFormCreateGroup(event){
     var payload = {
          method   : "createGroup",
          group    : $("#txtGroupName").val(),
-         password : $("#txtGroupPassword").val()
+         password : $("#txtGroupPassword").val(),
+         id_user  : $("#global_id_user").val(),
+         role     : $("#global_role").val(),
+         id_organization : $("#global_id_organization").val() 
      }
 
         $.ajax({
@@ -170,6 +173,16 @@ function onClickFormCreateGroup(event){
          });
 
 
+}
+
+function onClickCancelCreateUser(){
+    $("#modalCreateUser").fadeOut();
+}
+function onClickCancelCreateGroup(){
+    $("#modalCreateGroup").fadeOut();
+}
+function onClickCancelTakeAction(){
+    $("#modalTakeAction").fadeOut();
 }
 
 

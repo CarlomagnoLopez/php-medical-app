@@ -758,16 +758,16 @@ $('body').on('click', '.formpop', function(e) {
      switch(e.target.outerText){
         case "Create User":
              $("#modalCreateUser").fadeIn();
-             return;
+             return false;
          break;
          case "Create Group":
              $("#modalCreateGroup").fadeIn();
-             return;
+             return false;
          break;
          case "Act":
              window.idUserSelectedAct = $(this).attr('uid');
              $("#modalTakeAction").fadeIn();
-             return;
+             return false;
          break;
      }
 

@@ -581,6 +581,26 @@ function gr_group() {
         }
         return $r;
     } else if ($arg[0] === 'sendmsg') {
+        /*************SEND SMS***************** */
+        $organizations = db('Grupo', 'q', 'SELECT * FROM gr_options where v1 = "'.$arg[1]["id"].'" and type="gruser" ORDER BY id DESC');
+        foreach ($organizations as $org) {
+            $id_user = $org['v2']; // iduser
+            $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where id = "'.$id_user.'"');
+            $phone   = $usr[0]['phone'];
+            if(!empty($phone)){
+                 $data_array =  array(
+                     "sms"   => trim($arg[1]["msg"]),
+                     "type"  =>"MFA",
+                     "phone" => $phone
+                 );
+                 $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+                 $response  = json_decode($make_call, true);
+                 $data    = $response['body']['MessageId'];
+                 $statusCode = $response['statusCode'];
+            }
+        }
+        /*************SEND SMS***************** */
+
         if (!isset($arg[1]["ldt"]) || empty($arg[1]["ldt"])) {
             $arg[1]["ldt"] = 'group';
         }
@@ -1740,6 +1760,38 @@ function gr_lang() {
         gr_prnt('location.reload();');
     }
 }
+
+
+function callAPI($method, $url, $data){
+    $curl = curl_init();
+    switch ($method){
+       case "POST":
+          curl_setopt($curl, CURLOPT_POST, 1);
+          if ($data)
+             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+          break;
+       case "PUT":
+          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+          if ($data)
+             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);			 					
+          break;
+       default:
+          if ($data)
+             $url = sprintf("%s?%s", $url, http_build_query($data));
+    }
+    // OPTIONS:
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+       'Content-Type: application/json',
+    ));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    // EXECUTE:
+    $result = curl_exec($curl);
+    if(!$result){die("Connection Failure");}
+    curl_close($curl);
+    return $result;
+ }
 
 function gr_data() {
     $arg = vc(func_get_args());

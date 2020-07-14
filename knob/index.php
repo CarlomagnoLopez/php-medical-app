@@ -35,6 +35,8 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     gr_core('hf', 'header');
     ?>
 </head>
+<input type="hidden" id="global_role" value="<?php pr($usr['role']); ?>">
+<input type="hidden" id="global_id_user" value="<?php pr($usr['id']); ?>">
 <input type="hidden" id="global_id_organization" value="<?php pr($usr['id_organization']); ?>">
 <body>
 
@@ -359,7 +361,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     </div>
 
  
-    <section id="modalCreateUser" class="grupo-pop" style="display: none;">
+    <section id="modalCreateUser" class="grupo-pop-modal" style="display: none;">
         <div>
             <form autocomplete="off" style="height: 750px !important;"> 
                 <span class="head">Create User</span>
@@ -407,13 +409,13 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <input type="hidden" name="do" class="grdo" value="create">
                 <input type="hidden" name="type" class="grtype" value="user">
                 <input type="button" onclick="onClickFormCreateUser(this)" class="button-submit-form ajx grsub" value="Create User">
-                <span class="cancel">Cancel</span>
+                <span class="cancel" onclick="onClickCancelCreateUser()" >Cancel</span>
             </form>
         </div>
     </section>
 
  
-    <section id="modalCreateGroup" class="grupo-pop" style="display: none;">
+    <section id="modalCreateGroup" class="grupo-pop-modal" style="display: none;">
         <div>
             <form autocomplete="off" style="height: 420px !important;"> 
                 <span class="head">Create Group</span>
@@ -434,7 +436,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <input type="hidden" name="do" class="grdo" value="create">
                 <input type="hidden" name="type" class="grtype" value="group">
                 <input type="button" onclick="onClickFormCreateGroup(this)" class="button-submit-form ajx grsub" value="Create Group">
-                <span class="cancel">Cancel</span>
+                <span class="cancel" onclick="onClickCancelCreateGroup()" >Cancel</span>
             </form>
 
 
@@ -442,7 +444,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     </section>
 
 
-    <section id="modalTakeAction" class="grupo-pop" style="display: none;">
+    <section id="modalTakeAction" class="grupo-pop-modal" style="display: none;">
         <div>
            <form autocomplete="off" style="height: 250px !important;"> 
                 <span class="head">Take Action</span>
@@ -456,7 +458,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                     </select>
                 </div>
                 <button type="button" onclick="onClickStatusUser(this)" class="button-submit-form  ajx grsub">Confirm Change</button>
-                <span class="cancel">Cancel</span>
+                <span class="cancel" onclick="onClickCancelTakeAction()">Cancel</span>
             </form>
 
 

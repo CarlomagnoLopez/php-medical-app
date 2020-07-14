@@ -19,9 +19,12 @@ switch($method){
         existGroup($db,$group);
     break;    
     case 'createGroup':
+        $id_user    = $json->id_user;
+        $id_organization    = $json->id_organization;
         $group      = $json->group;
         $password   = $json->password;
-        createGroup($db,$group,$password);
+        $role       = $json->role;
+        createGroup($db,$group,$password,$id_user,$role,$id_organization);
     break;    
     case 'updateStatusUser':
         $uid    = $json->uid;
@@ -52,36 +55,39 @@ function updateStatusUser($db,$uid,$status){
  }
 
 
-function createGroup($db,$group,$password){
-    $sql = "INSERT INTO `gr_options`
-    (type,
-    v1,
-    v2,
-    v3,
-    v4,
-    v5,
-    tms
-    )
-    VALUES
-    ('group',
-    :group,
-    :password,
-    0,
-    0,
-    0,
-    NOW())";
+function createGroup($db,$group,$password,$id_user,$role,$id_organization){
+    $sql = "INSERT INTO `gr_options`(type,v1,v2,v3,v4,v5,tms,id_organization) VALUES('group',:group,:password,0,0,0,NOW(),:id_organization);";
     try {
+        $p = en($password);
         $response = array();
         $stmt = $db->prepare($sql); 
+        $stmt->bindValue("id_organization",    $id_organization);
         $stmt->bindValue("group",    $group);
-        $stmt->bindValue("password", $password);
+        $stmt->bindValue("password", $p['pass']);
         $stmt->execute();
-        $id = $db->lastInsertId();
-        $lastInsertId = $id > 0 ? $id : 0;
-        $db = null;     
-        $response['data'] = $lastInsertId;
-        $response['error'] = false; 
-        $response['message'] = "Group '". $group ."' created successfully.";             
+        $id_group     = $db->lastInsertId();
+        $lastInsertId = $id_group > 0 ? $id_group : 0;
+        if($lastInsertId!=0){
+            $sql = "INSERT INTO gr_options(type,v1,v2,v3,v4,v5,tms) VALUES('gruser','$id_group','$id_user','$role',0,0,NOW());";
+            $stmt = $db->prepare($sql); 
+            $stmt->execute();
+            $sql = " SELECT * FROM `gr_options` where type = 'lview' ORDER BY `v3` DESC;";
+            $stmt = $db->query($sql); 
+            $rs   =  $stmt->fetchAll();
+            $v3   = $rs[0]['v3'];
+            $sql = "INSERT INTO gr_options(type,v1,v2,v3,v4,v5,tms) VALUES('lview','$id_group','$id_user','v3',0,0,NOW());";
+            $stmt = $db->prepare($sql); 
+            $stmt->execute();
+            $response['data'] = $lastInsertId;
+            $response['error'] = false; 
+            $response['message'] = "Group '". $group ."' created successfully.";             
+        }else{
+            $response['data'] = 0;
+            $response['error'] = false; 
+            $response['message'] = "Error.";             
+
+        }
+
     } catch(PDOException $e) {
         $response['data'] = null;
         $response['error'] = true; 

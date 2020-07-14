@@ -2177,3 +2177,194 @@ box-shadow: 0 0 0 0 rgba(204,169,44, 0);
     color: white;
     width: 300px;
 }
+
+
+
+.grupo-pop-modal
+{
+position: fixed;
+bottom: 0px;
+z-index: 999;
+left: 0px;
+width: 100%;
+height: 100%;
+text-align: center;
+display: none;
+background: linear-gradient(to right,#000000e0,#000000f5);
+}
+
+.grupo-pop-modal > div
+{
+display: -webkit-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+-webkit-box-align: center;
+-webkit-align-items: center;
+-ms-flex-align: center;
+align-items: center;
+min-height: 100%;
+-webkit-box-pack: center;
+-webkit-justify-content: center;
+-ms-flex-pack: center;
+justify-content: center;
+}
+
+.grupo-pop-modal > div > form
+{
+    display: inline-block;
+    background: #f0f2f5;
+    background: linear-gradient(to right,#f6faff,#ffffff);
+    text-align: center;
+    box-shadow: 0px 0px 6px #d0cdcd85;
+    border-radius: 5px;
+    color: white;
+    width: 300px;
+}
+
+.grupo-pop-modal > div > form > .head
+{
+display: block;
+margin-bottom: 18px;
+text-align: center;
+font-size: 14px;
+font-weight: 600;
+padding: 14px 0px;
+background: linear-gradient(to right,#464646,#444444);
+border-radius: 5px 5px 0px 0px;
+}
+
+.grupo-pop-modal > div > form > div
+{
+padding: 0px 30px;
+max-height: 550px;
+
+}
+
+.grupo-pop-modal > div > form > div > .imglist
+{
+list-style: none;
+padding: 0px;
+}
+
+.grupo-pop-modal > div > form > div > .imglist > li
+{
+display: inline-block;
+padding: 2px 2px;
+cursor: pointer;
+}
+
+.grupo-pop-modal > div > form > div > .imglist > li.active
+{
+opacity: 0.3;
+}
+
+.grupo-pop-modal > div > form > div > .imglist > li > img
+{
+width: 52px;
+border: 2px solid white;
+}
+
+.grupo-pop-modal > div > form > div > .imglist > li > input
+{
+opacity: 0;
+width: 0px;
+}
+
+.grupo-pop-modal > div > form > div > label
+{
+display: block;
+color: black;
+text-align: left;
+font-size: 14px;
+padding: 8px 0px;
+}
+
+.grupo-pop-modal > div > form > .fields > span
+{
+display: block;
+background: #35353500;
+border: 0px;
+border-bottom: 1px solid #ffffff63;
+outline: 0px;
+color: #000000e3;
+border-radius: 0px;
+padding: 10px 0px;
+cursor: pointer;
+margin-bottom: 3px;
+font-family: 'Montserrat', sans-serif;
+text-align: left;
+}
+
+.grupo-pop-modal > div > form > .fields > span > span
+{
+display: block;
+}
+
+.grupo-pop-modal > div > form > div > input,.grupo-pop-modal > div > form > div > select,.grupo-pop-modal > div > form > div > textarea
+{
+    display: block;
+    background: #35353500;
+    border: 0px;
+    border-bottom: 1px solid #00000063;
+    outline: 0px;
+    color: #000000e3;
+    border-radius: 0px;
+    padding: 0px 0px;
+    padding-bottom: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.grupo-pop-modal > div > form > div > select > option
+{
+outline: none;
+background: #c0cae8;
+}
+
+.grupo-pop-modal > div > form > input[type="submit"]
+{
+background: linear-gradient(to right,#000000,#000000);
+border: 0px;
+border-radius: 66px;
+color: white;
+width: 100%;
+padding: 8px 0px;
+font-family: 'Montserrat', sans-serif;
+font-size: 14px;
+margin-top: 21px;
+font-weight: 600;
+outline: none;
+width: 200px;
+}
+
+.grupo-pop-modal > div > form > .fields > div.checkbox
+{
+text-align: left;
+color: #9fabb1e3;
+}
+
+.grupo-pop-modal > div > form > .fields > div.checkbox > span > input
+{
+margin-right: 4px;
+float: left;
+margin-top: 6px;
+}
+
+.grupo-pop-modal > div > form > .fields > div.checkbox >span
+{
+margin-right: 4px;
+font-size: 15px;
+display: block;
+}
+
+.grupo-pop-modal > div > form > span.cancel
+{
+display: block;
+font-size: 13px;
+margin-top: 11px;
+color: #00000096;
+margin-bottom: 22px;
+cursor: pointer;
+}
