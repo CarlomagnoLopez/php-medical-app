@@ -590,7 +590,7 @@ function gr_group() {
             if(!empty($phone)){
                  $data_array =  array(
                      "sms"   => trim($arg[1]["msg"]),
-                     "type"  =>"MFA",
+                     "type"  =>"chat",
                      "phone" => $phone
                  );
                  $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
