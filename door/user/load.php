@@ -73,7 +73,7 @@ function usr() {
         $e = strtolower(vc($arg[3], 'email'));
         $p = $arg[4];
         $psw_normal      = $arg[4];
-        $phone           = $arg[8].''.$arg[5];
+        $phone           = '+'.$arg[8].''.$arg[5];
         $id_organization = $arg[6];
         $status_user     = (int)$arg[7];
         $complementPhone = $arg[8];
@@ -81,7 +81,8 @@ function usr() {
         //     $rl = vc($arg[5], 'num');
         // }
         if (!empty($d) && !empty($i) && !empty($e) && !empty($p)) {
-            if (!usr($d, 'exist', $i) && !usr($d, 'exist', $e)) {
+            // if (!usr($d, 'exist', $i) && !usr($d, 'exist', $e)) {
+            if (!usr($d, 'existPhoneReg', $phone)) {
                 $p = en($p);
                 if(empty($id_organization)){
                     $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user);
@@ -308,6 +309,18 @@ function usr() {
         }
         return $r;
 
+    } else if ($t === 'existPhoneReg') {
+        $v = strtolower($arg[2]);
+        // $sr = 'name';
+        // if (!empty(vc($arg[2], 'email'))) {
+        //     $sr = 'email';
+        // }
+        $r = db($d, 's,count(*)', 'users', 'phone', $v)[0][0];
+        if ($r > 0) {
+            return true;
+        } else {
+            return false;
+        }
     } else if ($t === 'exist') {
         $v = strtolower($arg[2]);
         $sr = 'name';
