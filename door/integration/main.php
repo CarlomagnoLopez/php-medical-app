@@ -10,11 +10,11 @@ $db          = Connection();
 $json = json_decode(file_get_contents("php://input"));
 $method = $json->method;
 switch ($method) {
-    
+
     case 'saveOrganizationtest':
         // sleep(3000);
-       test();
-    break;
+        test();
+        break;
     case 'saveOrganization':
         $organization = $json->summaryOrg->orgName;
         $secret_key   = $json->summaryOrg->secretKey;
@@ -28,16 +28,60 @@ switch ($method) {
         break;
 }
 
-
+function callAPI($method, $url, $data)
+{
+    $curl = curl_init();
+    switch ($method) {
+        case "POST":
+            curl_setopt($curl, CURLOPT_POST, 1);
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        case "PUT":
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        default:
+            if ($data)
+                $url = sprintf("%s?%s", $url, http_build_query($data));
+    }
+    // OPTIONS:
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+    ));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    // EXECUTE:
+    $result = curl_exec($curl);
+    if (!$result) {
+        die("Connection Failure");
+    }
+    curl_close($curl);
+    return $result;
+}
 
 function test()
 {
 
     try {
+
+        // $data_array =  array(
+        //     "sms"   => "",
+        //     "type"  => "signuplink",
+        //     "phone" => "+525567733943"
+        // );
+        // $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        // $response  = json_decode($make_call, true);
+        // $data    = $response['body']['MessageId'];
+        // $statusCode = $response['statusCode'];
+        $data = "message test";
+
         $response = array();
-        $response['data'] = null;
-        $response['error'] = true;
-        $response['message'] = "An error occurred, try again.";
+        $response['data'] = true;
+        $response['error'] = false;
+        $response['message'] = $data;
     } catch (PDOException $e) {
         $response['data'] = null;
         $response['error'] = true;
@@ -90,12 +134,12 @@ function saveOrganization($db, $organization, $secret_key, $contact_email, $cont
         $log[3] = createUser($db, $json->usersOrg[2], $lastInsertId, $idGruoup);
         $log[4] = createUser($db, $json->usersOrg[3], $lastInsertId, $idGruoup);
 
-        
 
 
 
 
-        $db = null; 
+
+        $db = null;
         $response['data'] = "success";
         $response['error'] = false;
         $response['message'] = "Organization created successfully.";
@@ -132,16 +176,16 @@ function addUserToGroup($db, $idGroupCreated, $log, $nameUser)
     0,
     0
   ),
-  (profile,
-    name,
+  (:profile,
+    :name,
     :nameUser,
     :idUser,
     0,
     0
   ),
-  (profile,
-  status,
-    offline,
+  (:profile,
+  :status,
+    :offline,
     :idUser,
     0,
     0
@@ -150,6 +194,10 @@ function addUserToGroup($db, $idGroupCreated, $log, $nameUser)
     try {
         $response = array();
         $stmt = $db->prepare($sql);
+        $stmt->bindValue("profile",             "profile");
+        $stmt->bindValue("name",             "name");
+        $stmt->bindValue("status",             "status");
+        $stmt->bindValue("offline",             "offline");
         $stmt->bindValue("group",             "gruser");
         $stmt->bindValue("lview",             "lview");
         $stmt->bindValue("organization",       $idGroupCreated);
@@ -277,6 +325,16 @@ function createUser($db, $value, $org, $idGruoup)
         $lastInsertId = $id > 0 ? $id : 0;
 
 
+        $data_array =  array(
+            "sms"   => "",
+            "type"  => "signuplink",
+            "phone" => $value->phoneNumber
+        );
+        $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        $response  = json_decode($make_call, true);
+        $data    = $response['body']['MessageId'];
+        $statusCode = $response['statusCode'];
+
         addUserToGroup($db, $idGruoup, $lastInsertId, $value->contactName);
 
         // $db = null;
@@ -293,6 +351,23 @@ function createUser($db, $value, $org, $idGruoup)
     // return json_encode($response);
 }
 
+
+// function sendSMS(phone){
+//     var getData = $.ajax({
+//         url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+//         data: JSON.stringify( { "sms" : "", "type" : "signin" , phone : phone } ),
+//         processData: false,
+//         type: 'POST',
+//         contentType: "application/json",
+//         success: function (data) {},
+//         async: false,
+//         error: function(error){
+//             console.log(error);
+//             $.loadingBlockHide();
+//         }
+//     }).responseText;
+//     return JSON.parse(getData);
+// }
 
 function en($v, $t = 0, $m = 0)
 {

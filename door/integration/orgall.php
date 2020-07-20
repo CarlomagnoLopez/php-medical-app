@@ -34,7 +34,7 @@ $json = json_decode(file_get_contents("php://input"));
 
 // function saveOrganization($db, $organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json)
 // {
-    $sql = "SELECT `id_organization`, `organization` as orgname, `secret_key` as secretcode, `contact_email` as contactEmail, `contact_name` as contactName, `phone_number` as phoneNumber, `tax_number` as taxNumber FROM `gr_organizations` WHERE 1";
+    $sql = "SELECT `id_organization` as 'mcp-1-sk', `web_site` as website, `organization` as orgname, `secret_key` as secretcode, `contact_email` as contactEmail, `contact_name` as contactName, `phone_number` as phoneNumber, `tax_number` as taxNumber FROM `gr_organizations` WHERE 1";
     try {
         $response = array();
         // $log = array();
