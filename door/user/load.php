@@ -67,7 +67,7 @@ function usr() {
     }
     $r = false;
     if ($t === 'register') {
-        $rl = 2; // if is 1 or 4 redirect to failed
+        $rl = 6; // if is 1 or 4 redirect to failed
         $r[0] = false;
         $i = strtolower(vc($arg[2], 'alphanum'));
         $e = strtolower(vc($arg[3], 'email'));
