@@ -58,12 +58,12 @@ function updateStatusUser($db,$uid,$status){
 function createGroup($db,$group,$password,$id_user,$role,$id_organization){
     $sql = "INSERT INTO `gr_options`(type,v1,v2,v3,v4,v5,tms,id_organization) VALUES('group',:group,:password,0,0,0,NOW(),:id_organization);";
     try {
-        $p = en($password);
+       // $p = en($password);
         $response = array();
         $stmt = $db->prepare($sql); 
         $stmt->bindValue("id_organization",    $id_organization);
         $stmt->bindValue("group",    $group);
-        $stmt->bindValue("password", $p['pass']);
+        $stmt->bindValue("password", md5($password));
         $stmt->execute();
         $id_group     = $db->lastInsertId();
         $lastInsertId = $id_group > 0 ? $id_group : 0;
