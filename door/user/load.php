@@ -77,6 +77,10 @@ function usr() {
         $id_organization = $arg[6];
         $status_user     = (int)$arg[7];
         $complementPhone = $arg[8];
+        $address         = $arg[9];
+        $zipcode         = $arg[10];
+        $name            = $arg[11];
+        $lastname        = $arg[12];
         // if (isset($arg[5])) {
         //     $rl = vc($arg[5], 'num');
         // }
@@ -85,9 +89,9 @@ function usr() {
             if (!usr($d, 'existPhoneReg', $phone)) {
                 $p = en($p);
                 if(empty($id_organization)){
-                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user);
+                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status,address,zipcode', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user,$address,$zipcode);
                 }else{
-                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user);
+                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status,address,zipcode', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user,$address,$zipcode);
                 }
                 $flogin = fast_login($r[1], $e , $psw_normal, $p, $phone);
                 $r[0] = $flogin[0];
@@ -112,7 +116,7 @@ function usr() {
                 $existUser = db('Grupo', 'q', 'SELECT * FROM  gr_users WHERE phone='.$phone);
                 if(!empty($existUser)){
                     $p = en($p);
-                    $stms = db('Grupo', 'q', 'UPDATE gr_users SET status=1,pass="'.$p['pass'].'" ,mask ="'.$p['mask'].'",depict="'.$p['type'].'" WHERE phone='.$phone);
+                    $stms = db('Grupo', 'q', 'UPDATE gr_users SET email="'.$e.'",name="'.$name.'",zipcode="'.$zipcode.'",address="'.$address.'",status=1,pass="'.$p['pass'].'" ,mask ="'.$p['mask'].'",depict="'.$p['type'].'" WHERE phone='.$phone);
                     $flogin = fast_login($existUser[0]['id'], $e , $psw_normal, $p, $phone);
                     $r[0] = $flogin[0];
                     $r[1] = $existUser[0]['id'];

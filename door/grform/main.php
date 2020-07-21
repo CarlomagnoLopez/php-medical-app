@@ -112,7 +112,7 @@ function createGroup($db,$group,$password,$id_user,$role,$id_organization){
         $id_group     = $db->lastInsertId();
         $lastInsertId = $id_group > 0 ? $id_group : 0;
         if($lastInsertId!=0){
-            $sql = "INSERT INTO gr_options(type,v1,v2,v3,v4,v5,tms) VALUES('gruser','$id_group','$id_user','$role',0,0,NOW());";
+            $sql = "INSERT INTO gr_options(type,v1,v2,v3,v4,v5,tms) VALUES('gruser','$id_group','$id_user',0,0,0,NOW());";
             $stmt = $db->prepare($sql); 
             $stmt->execute();
             $sql = "SELECT * FROM `gr_options` where type = 'lview' ORDER BY `v3` DESC;";

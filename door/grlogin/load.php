@@ -14,7 +14,7 @@ function gr_register($do) {
                 gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");$.loadingBlockHide();');
 
             } else {
-                $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"], $do["fIdOrganization"], $do['fStatusUser'], $do['fcomplementPhone']  );
+                $reg = usr('Grupo', 'register', $do["name"], $do["email"], $do["pass"], $do["fphonenumber"], $do["fIdOrganization"], $do['fStatusUser'], $do['fcomplementPhone'], $do['faddress'] , $do['fzipcode'], $do['fname'], $do['flastname']);
                 if ($reg[0]) {
                     $id = $reg[1];
                     gr_data('i', 'profile', 'name', $do["fname"], $id);

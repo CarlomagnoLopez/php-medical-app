@@ -84,9 +84,6 @@ grupofns();
                                 <!-- <label><i class="ti-user"></i>
                                     <input type="text" autocomplete='off' id="txtEmailLogin" name="sign" placeholder="Username" />
                                 </label> -->
-
-
-
                                 <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
                                         <select name="fcomplementPhoneLogin" id="selComplementPhoneLogin">
                                             <option value="1" selected>+1</option>

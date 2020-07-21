@@ -452,7 +452,8 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                     var s = 'eval(data);';
                     ajxx(_self, '', s, 0, e);
                 }else{
-                    $.toast("invalida code");
+                    $.loadingBlockHide();
+                    $.toast("Invalid code");
                     return;
                 }
             }else{
