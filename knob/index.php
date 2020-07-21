@@ -395,9 +395,9 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                      <label class="color-label">Role</label>
                      <select name="sent" class="margin-input color-label" id="selRole">
                       <option value="0">-----</option>
-                      <option value="admin">Admin</option>
-                      <option value="supervisor">Supervisor</option>
-                      <option value="user">User</option>
+                      <option value="6">User</option>
+                      <option value="5">Approver</option>
+                      <option value="2">Org Admin</option>
                      </select>
 
                      <input type="hidden" autocomplete='off' id="txtUsername" name="fUsername"/>
@@ -452,7 +452,6 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                     <label>Select Option from Dropdown</label>
                     <select name="opted" class="" id="selActionUser">
                     <option value="">-----</option>
-                    <option value="delete">Delete</option>
                     <option value="0">Disable</option>
                     <option value="1">Enable</option>
                     </select>

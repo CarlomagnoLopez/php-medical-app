@@ -1,5 +1,6 @@
 <?php if(!defined('s7V9pz')) {die();}?><?php
 function gr_list($do) {
+    // list of users 
     $uid             = usr('Grupo')['id'];
     $id_organization = usr('Grupo')['id_organization'];
     $list = null;
@@ -229,7 +230,10 @@ function gr_list($do) {
             if ($f['id'] !== $uid) {
                 $list[$i] = new stdClass();
                 $list[$i]->img = gr_img('users', $f['id']);
-                $list[$i]->name = gr_profile('get', $f['id'], 'name');
+                //$list[$i]->name = gr_profile('get', $f['id'], 'name');
+                $list[$i]->name = explode("@", $f['email'])[0];
+
+                
                 $list[$i]->count = 0;
                 $role = db('Grupo', 's', 'permissions', 'id', $f['role']);
                 if (isset($role[0])) {

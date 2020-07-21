@@ -35,7 +35,51 @@ switch($method){
 
 
 
+
+
+function getDataUserById($db,$id){
+    $sql = "SELECT * FROM gr_users WHERE id = $id";
+    try {
+        $response = array();
+        $stmt     = $db->query($sql); 
+        $rs       =  $stmt->fetchAll();
+        $response['data']  = $rs[0];
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['data']  = null;
+        $response['error'] = true; 
+    }
+    return $response;
+}
+
 function updateStatusUser($db,$uid,$status){
+    $getData         = getDataUserById($db,$uid);
+    $role            = $getData['data']['role'];
+    $id_organization = $getData['data']['id_organization'];
+    if($role==2 || $role==5){
+        $countRole = countRole($db,$role,$id_organization);
+        if($status=='0'){
+            if($countRole['count']==2){
+              $response = array();
+              $response['data']    = 0;
+              $response['error']   = true; 
+              $response['message'] = ($role==2)?"You can’t remove less than 2 org admin" : "You can’t remove less than 2 approver";    
+              echo json_encode($response);
+              exit;
+            }
+        }else{
+            if($countRole['count']>=4){
+                $response = array();
+                $response['data']    = 0;
+                $response['error']   = true; 
+                $response['message'] = ($role==2)?"You can’t create more than 4 org admin" : "You can’t create more than 4 approver";    
+                echo json_encode($response);
+                exit;
+            }
+        }
+     }
+
+
     $sql = "UPDATE gr_users SET STATUS = $status WHERE id = '$uid'";
     try {
         $response = array();
@@ -71,7 +115,7 @@ function createGroup($db,$group,$password,$id_user,$role,$id_organization){
             $sql = "INSERT INTO gr_options(type,v1,v2,v3,v4,v5,tms) VALUES('gruser','$id_group','$id_user','$role',0,0,NOW());";
             $stmt = $db->prepare($sql); 
             $stmt->execute();
-            $sql = " SELECT * FROM `gr_options` where type = 'lview' ORDER BY `v3` DESC;";
+            $sql = "SELECT * FROM `gr_options` where type = 'lview' ORDER BY `v3` DESC;";
             $stmt = $db->query($sql); 
             $rs   =  $stmt->fetchAll();
             $v3   = $rs[0]['v3'];
@@ -123,7 +167,42 @@ function existGroup($db,$group){
   }
   
 
+
+function countRole($db,$role,$id_organization){
+    $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1";
+    try {
+        $response = array();
+        $stmt = $db->query($sql); 
+        $rs   =  $stmt->fetchAll();
+        if(count($rs)>0){
+            $response['count'] = (int) $rs[0]['count'];
+        }else{
+            $response['count'] = (int) $rs[0]['count'];
+        }
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['exist'] = false; 
+        $response['count'] = 0;
+
+    }
+    return $response;
+}
+
+
 function createUser($db,$json){
+    
+   if($json->role==2 || $json->role==5){
+      $countRole = countRole($db,$json->role,$json->id_organization);
+      if($countRole['count']>=4){
+        $response = array();
+        $response['data']    = 0;
+        $response['error']   = true; 
+        $response['message'] = ($json->role==2)?"You can’t create more than 4 org admin" : "You can’t create more than 4 approver";    
+        echo json_encode($response);
+        exit;
+      }
+   }
+   
    $sql = "INSERT INTO `gr_users`
    (name,
    email,
@@ -174,7 +253,6 @@ function createUser($db,$json){
        $stmt->execute();
        $id = $db->lastInsertId();
        $lastInsertId = $id > 0 ? $id : 0;
-      // $db = null;     
        $response['data'] = $lastInsertId;
        $response['error'] = false; 
        $response['message'] = "User '". $json->email ."' created successfully.";             

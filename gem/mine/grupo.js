@@ -74,8 +74,9 @@ function onClickStatusUser(event){
         });
         
         var exist = updateStatusUser(window.idUserSelectedAct,$("#selActionUser").val());
-        if(exist.data==0){
-            say("Please try again.","s");
+        if(exist.error){
+            say(exist.message,"s");
+            $.loadingBlockHide();
         }else{
             $("#modalTakeAction").fadeOut();
             window.idUserSelectedAct = '';
@@ -264,17 +265,16 @@ function onClickFormCreateUser(event){
 
 
     var payload = {
-         method  : "createUser",
-         name    : $("#txtName").val() ,
-         lastname: $("#txtLastName").val(),
-         phone   : phone,
-         email   : $("#txtEmail").val(),
-         username: username, 
-         password: $("#txtPassword").val(), 
-         address: $("#txtAddress").val(), 
-         zipcode: $("#txtZipCode").val(), 
-        // role    : $("#selRole").val(),
-         role    : 2,
+         method          : "createUser",
+         name            : $("#txtName").val() ,
+         lastname        : $("#txtLastName").val(),
+         phone           : phone,
+         email           : $("#txtEmail").val(),
+         username        : username, 
+         password        : $("#txtPassword").val(), 
+         address         : $("#txtAddress").val(), 
+         zipcode         : $("#txtZipCode").val(), 
+         role            : parseInt($("#selRole").val()),
          id_organization : parseInt($("#global_id_organization").val())
      }
 
@@ -288,14 +288,18 @@ function onClickFormCreateUser(event){
            {
             $.loadingBlockHide();
             if(data.data == 0){
-                say("Please try again","s");
+                say(data.message,"s");
             }else{
                 $("#txtName").val("");
                 $("#txtLastName").val("");
+                $("#txtAddress").val("");
+                $("#txtZipCode").val("");
                 $("#txtEmail").val("");
                 $("#txtPassword").val("");
+                $("#txtRepeatPassword").val("");
                 $("#txtPhoneNumber").val("");
                 $("#selRole").val("0");
+                $("#selComplementPhone").val("1");
                 say("The user: "+username+" was creaded successfully","s");
                 sendSMS(phone);
                 $("#modalCreateUser").fadeOut();

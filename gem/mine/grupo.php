@@ -27,7 +27,7 @@ $('.swr-grupo .aside > .tabs > ul > li,.loadside').on('click', function(e) {
     s = s+'$(".swr-grupo .'+$(this).attr('side')+' > .content > .list").hide();';
     s = s+'var tcount=0;var list="";$.each(data, function(k, v) {';
     s = s+'list=list+"<li "+data[k].id+"> <div><span class= left><img loadimg="+data[k].img+">';
-    s = s+'</span><span class=center><b><span data-toggle=tooltip title='+"'"+'"+htmlDecode(data[k].name)+"'+ ' | "+htmlDecode(data[k].status)+"'+  "'"+'>"+htmlDecode(data[k].name)+"</span></b><i class="+data[k].icon+"></i>";';
+    s = s+'</span><span class=center><b><span data-toggle=tooltip title='+"'"+'"+htmlDecode(data[k].name)+"'+"'"+'>"+htmlDecode(data[k].name)+"</span></b><i class="+data[k].icon+"></i>";';
     s = s+'if(data[k].count!="0"){tcount=parseInt(tcount)+parseInt(data[k].count);if(data[k].countag!="0"){list=list+"<u cnt="+data[k].count+">"+data[k].count+" "+data[k].countag+"</u>";}}';
     s = s+'list=list+"<span>"+data[k].sub+"</span></span><span class=right>';
     s = s+'<span class=opt "+data[k].rtag+"><i>"+data[k].right+"</i><ul>";';
