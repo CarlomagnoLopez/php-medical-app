@@ -256,7 +256,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                 <span class="vwp" no="<?php pr($usr['id']); ?>">
                                     <img src="<?php pr(gr_img('users', $usr['id'])); ?>">
                                     <span><?php pr(gr_profile('get', $usr['id'], 'name')); ?>
-                                        <span>@<?php pr(usr('Grupo', 'select', $usr['id'])['name']); ?></span>
+                                        <span>@<?php pr(   explode("@", usr('Grupo', 'select', $usr['id'])['email'])[0] );  ?></span>
                                     </span>
                                 </span></span>
                             <span class='right'>

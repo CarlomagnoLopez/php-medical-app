@@ -237,7 +237,7 @@ padding: 12px 10px;
 {
 font-weight: 600;
 color: black;
-border-bottom: 3px solid #E91E63;
+border-bottom: 3px solid #0c0c0c;
 }
 
 .swr-grupo .aside > .tabs > ul > li > i > i
@@ -1215,7 +1215,7 @@ height: 24px;
 {
 position: absolute;
 z-index: 1000;
-background: linear-gradient(to right,#E91E63,#9C27B0);
+background: linear-gradient(to right,#969696,#a9a0ab);
 font-family: 'Montserrat', sans-serif;
 font-weight: 500;
 color: #ffffff;
