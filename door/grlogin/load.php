@@ -7,7 +7,8 @@ function gr_register($do) {
                 exit;
             }
             $do["email"] = vc($do["email"], 'email');
-            $do["name"] = vc($do["name"], 'alphanum');
+            // $do["name"] = vc($do["name"], 'alphanum');
+            $do["name"] = vc($do["name"]);
             $do["fname"] = vc($do["fname"], 'strip');
             if (empty($do["fname"]) || empty($do["name"]) || empty($do["email"]) || empty($do["pass"]) || empty($do["fphonenumber"]) || empty($do['fcomplementPhone'])  ) { 
               //gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");');
