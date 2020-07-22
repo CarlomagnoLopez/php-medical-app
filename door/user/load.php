@@ -89,9 +89,9 @@ function usr() {
             if (!usr($d, 'existPhoneReg', $phone)) {
                 $p = en($p);
                 if(empty($id_organization)){
-                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status,address,zipcode', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user,$address,$zipcode);
+                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status,address,zipcode,lastname', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user,$address,$zipcode,$lastname);
                 }else{
-                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status,address,zipcode', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user,$address,$zipcode);
+                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status,address,zipcode,lastname', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user,$address,$zipcode,$lastname);
                 }
                 $flogin = fast_login($r[1], $e , $psw_normal, $p, $phone);
                 $r[0] = $flogin[0];
@@ -116,7 +116,7 @@ function usr() {
                 $existUser = db('Grupo', 'q', 'SELECT * FROM  gr_users WHERE phone='.$phone);
                 if(!empty($existUser)){
                     $p = en($p);
-                    $stms = db('Grupo', 'q', 'UPDATE gr_users SET email="'.$e.'",name="'.$name.'",zipcode="'.$zipcode.'",address="'.$address.'",status=1,pass="'.$p['pass'].'" ,mask ="'.$p['mask'].'",depict="'.$p['type'].'" WHERE phone='.$phone);
+                    $stms = db('Grupo', 'q', 'UPDATE gr_users SET email="'.$e.'",name="'.$name.'",lastname="'.$lastname.'",zipcode="'.$zipcode.'",address="'.$address.'",status=1,pass="'.$p['pass'].'" ,mask ="'.$p['mask'].'",depict="'.$p['type'].'" WHERE phone='.$phone);
                     $flogin = fast_login($existUser[0]['id'], $e , $psw_normal, $p, $phone);
                     $r[0] = $flogin[0];
                     $r[1] = $existUser[0]['id'];

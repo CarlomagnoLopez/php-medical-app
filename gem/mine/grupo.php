@@ -628,6 +628,8 @@ $('body').on('click keyup', '.emojionearea-editor', function(e) {
             $(".swr-grupo .panel > .textbox > .mentions > input").val(memser);
             $.post("", data, function(data) {
                 var data = $.parseJSON(data);
+                console.log("parseJSON");
+                console.log(data);
                 $(".swr-grupo .panel > .textbox > .mentions > ul").html("");
                 $.each(data, function(k, v) {
                     $(".swr-grupo .panel > .textbox > .mentions > ul").append("<li> <img src="+data[k].img+"><span>"+data[k].name+"<i>@"+data[k].uname+"</i> </span> </li>");
@@ -752,6 +754,83 @@ $('body').on('click', '.grupo-pop > div > form > div > .imglist > li', function(
     $(this).find('input').prop("checked", true);
     $(this).addClass('active');
 });
+
+function getDataUser(id){
+    var getData = $.ajax({
+        url: 'door/grform/main.php',
+        data: JSON.stringify( {method:'getDataUser',id:id} ),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+
+
+function onClickFormUpdateUserProfile(event){
+    if($("#txtProfilePassword").val()!=='' || $("#txtProfileRepeatPassword").val()!==''){
+        if(!checkPassword($("#txtProfilePassword").val())) {
+            say("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.","s");
+            $("#txtProfilePassword").focus();
+            return false;
+        }
+        if(!validatePasswords($("#txtPassword").val(),$("#txtRepeatPassword").val())){
+            say("The given passwords do not match","s");
+            return false;
+        }    
+    }
+    var phone    = $("#selProfileComplementPhone").val()+$("#txtProfilePhoneNumber").val();
+    var username = $("#txtProfileEmail").val().split("@")[0];
+    var payload = {
+        method          : "updateUser",
+        name            : $("#txtProfileName").val() ,
+        lastname        : $("#txtProfileLastName").val(),
+        phone           : phone,
+        email           : $("#txtProfileEmail").val(),
+        username        : username, 
+        password        : $("#txtProfilePassword").val(), 
+        address         : $("#txtProfileAddress").val(), 
+        zipcode         : $("#txtProfileZipCode").val(), 
+        id              : parseInt($("#txtProfileIdUser").val()),
+        changePassword  : ($("#txtProfilePassword").val()!=='')?true:false
+    };
+       $.ajax({
+          type: "POST",
+          contentType: "application/json",
+          processData: false,
+          url: 'door/grform/main.php',
+          data: JSON.stringify(payload), 
+          success: function(data){
+           $.loadingBlockHide();
+           if(data.error){
+               say(data.message,"s");
+           }else{
+               $("#txtProfileName").val("");
+               $("#txtProfileLastName").val("");
+               $("#txtProfileEmail").val("");
+               $("#txtProfilePassword").val("");
+               $("#txtProfileRepeatPassword").val("");
+               $("#txtProfileAddress").val("");
+               $("#txtProfileZipCode").val("");
+               $("#txtProfileIdUser").val("");
+               $("#selProfileComplementPhone").val("+1");
+               say(data.message,"s");
+               onClickCancelProfileUser();
+           }
+          },
+          error : function(err){
+            say("Please try again","s");
+             $.loadingBlockHide();
+          }
+        });
+}
+
 $('body').on('click', '.formpop', function(e) {
     console.log('outerText:'+e.target.outerText);
     console.log('id:'+$(this).attr('no'));
@@ -768,6 +847,28 @@ $('body').on('click', '.formpop', function(e) {
              window.idUserSelectedAct = $(this).attr('uid');
              $("#modalTakeAction").fadeIn();
              return false;
+         break;
+         case "Edit Profile":
+            var dataUser = getDataUser( $("#global_id_user").val() );
+            if(!dataUser.error){
+                
+                $("#txtProfileIdUser").val(dataUser.data.id);
+                $("#txtProfileName").val(dataUser.data.name);
+                $("#txtProfileLastName").val(dataUser.data.lastname);
+                $("#txtProfileAddress").val(dataUser.data.address);
+                $("#txtProfileZipCode").val(dataUser.data.zipcode);
+                if(dataUser.data.phone.substring(0, 2)=='+1'){
+                    $("#selProfileComplementPhone").val('+1');
+                    $("#txtProfilePhoneNumber").val(dataUser.data.phone.substring(2));
+                
+                }else{
+                    $("#selProfileComplementPhone").val(dataUser.data.phone.substring(0, 3));
+                    $("#txtProfilePhoneNumber").val( dataUser.data.phone.substring(3) );
+                }
+                $("#txtProfileEmail").val(dataUser.data.email);
+                $("#modalEditProfile").fadeIn();
+            }
+            return false;
          break;
      }
 

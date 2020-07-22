@@ -150,6 +150,8 @@ function ajxx(e, d, s, na, f) {
             }) .done(function(data) {
                 if (type === "json") {
                     var data = $.parseJSON(data);
+                    console.log("parseJSON");
+                    console.log(data);
                 }
                 if (out !== undefined && out.length !== 0) {
                     $(out).html(data);

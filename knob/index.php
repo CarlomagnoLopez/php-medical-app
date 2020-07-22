@@ -459,8 +459,49 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <button type="button" onclick="onClickStatusUser(this)" class="button-submit-form  ajx grsub">Confirm Change</button>
                 <span class="cancel" onclick="onClickCancelTakeAction()">Cancel</span>
             </form>
+        </div>
+    </section>
 
-
+    <section id="modalEditProfile" class="grupo-pop-modal" style="display: none;">
+       <div>
+            <form autocomplete="off" style="height: 750px !important;"> 
+                <span class="head">Edit Profile</span>
+                <div class="fields scroller" tabindex="5">
+                     <label class="color-label">Name</label>
+                     <input type="text" name="fName" id="txtProfileName" class="margin-input">
+                     <label class="color-label">Last Name</label>
+                     <input type="text" name="fLastName" id="txtProfileLastName" class="margin-input">
+                     <label class="color-label">Address</label>
+                     <input type="text" name="fAddress" id="txtProfileAddress" class="margin-input">
+                     <label class="color-label">ZipCode</label>
+                     <input type="text" name="fZipCode" id="txtProfileZipCode" class="margin-input only-numbers zipCodeLimit">
+                     <div style="margin-top: 30px;position: absolute;">
+                        <select name="fcomplementPhone" id="selProfileComplementPhone">
+                            <option value="+1" selected>+1</option>
+                            <option value="+86">+86</option>
+                            <option value="+87">+87</option>
+                            <option value="+91">+91</option>
+                            <option value="+55">+55</option>
+                            <option value="+52">+52</option>
+                        </select>
+                     </div>
+                     <label class="color-label">Phone Number</label>
+                     <input type="text" name="fPhoneNumber" id="txtProfilePhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
+                     <label class="color-label">Username</label>
+                     <input type="text" name="fEmail" id="txtProfileEmail" class="margin-input">   
+                     <label class="color-label">Password</label>
+                     <input type="password"  name="fPassword" id="txtProfilePassword" class="margin-input">    
+                     <label class="color-label">Repeat Password</label>
+                     <input type="password"  name="fRepeatPass" id="txtProfileRepeatPassword" class="margin-input">    
+   
+                     <input type="hidden" autocomplete='off' id="txtProfileIdUser"/>
+                </div>
+                <input type="hidden" name="act" value="1">
+                <input type="hidden" name="do" class="grdo" value="create">
+                <input type="hidden" name="type" class="grtype" value="user">
+                <input type="button" onclick="onClickFormUpdateUserProfile(this)" class="button-submit-form ajx grsub" value="Update Profile">
+                <span class="cancel" onclick="onClickCancelProfileUser()" >Cancel</span>
+            </form>
         </div>
     </section>
 

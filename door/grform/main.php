@@ -31,6 +31,14 @@ switch($method){
         $status = $json->status;
         updateStatusUser($db,$uid,$status);
     break;    
+    case 'getDataUser':
+        $id = $json->id;
+        $data = getDataUserById($db,$id);
+        echo json_encode( $data );
+    break;  
+    case 'updateUser':
+        updateUser($db,$json);
+    break;  
 }
 
 
@@ -187,6 +195,38 @@ function countRole($db,$role,$id_organization){
     }
     return $response;
 }
+
+function updateUser($db,$json){
+    try {
+        if($json->changePassword){
+            $p = en($json->password);
+            $pass = $p['pass'];
+            $mask = $p['mask'];
+            $type = $p['type'];
+            $sql = "UPDATE gr_users SET name= '$json->name',lastname= '$json->lastname',email= '$json->email',address= '$json->address',zipcode= '$json->zipcode',phone= '$json->phone',pass= '$pass' ,mask= '$mask',depict= '$type' WHERE id= '$json->id'";
+        }else{
+            $sql = "UPDATE gr_users SET name= '$json->name',lastname= '$json->lastname',email= '$json->email',address= '$json->address',zipcode= '$json->zipcode',phone= '$json->phone' WHERE id= '$json->id'";
+        }   
+        $response = array();
+        $stmt = $db->prepare($sql); 
+        $stmt->execute();
+        $rs = $stmt->rowCount() ? 1 : 0;
+        $response['data'] = $rs;
+        if($rs>0){
+            $response['error'] = false; 
+            $response['message'] = "User '". $json->email ."' update successfully.";             
+        }else{
+            $response['error'] = true; 
+            $response['message'] = "Please try again.";             
+        }
+    } catch(PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+ }
+ 
 
 
 function createUser($db,$json){

@@ -1199,7 +1199,7 @@ padding: 10px;
 position: absolute;
 border-radius: 100%;
 cursor: pointer;
-background: linear-gradient(to right,#F44336,#9C27B0);
+background: linear-gradient(to right,#000000,#101010);
 }
 
 .swr-grupo .panel > .textbox > .box > i > i

@@ -41,6 +41,8 @@ function validatePasswords(password, repeatPassword){
     return password===repeatPassword;
 }
 
+
+
 function updateStatusUser(uid,status){
     var getData = $.ajax({
         url: 'door/grform/main.php',
@@ -57,6 +59,8 @@ function updateStatusUser(uid,status){
     }).responseText;
     return JSON.parse(getData);
 }
+
+
 
  
 
@@ -185,6 +189,10 @@ function onClickCancelCreateGroup(){
 function onClickCancelTakeAction(){
     $("#modalTakeAction").fadeOut();
 }
+function onClickCancelProfileUser(){
+    $("#modalEditProfile").fadeOut();
+}
+
 
 
 function onClickFormCreateUser(event){
@@ -261,8 +269,6 @@ function onClickFormCreateUser(event){
         say(exist.message,"s");
         return false;
     }
-
-
 
     var payload = {
          method          : "createUser",
