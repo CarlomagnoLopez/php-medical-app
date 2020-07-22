@@ -333,7 +333,8 @@ function gr_form($do) {
         if (gr_role('access', 'groups', '5') || gr_role('access', 'groups', '7')) {
             $cr = gr_group('valid', $do["id"]);
             if ($cr[0]) {
-                $fields->users = array(gr_lang('get', 'email_username'), 'input', 'text', '', '"'.gr_lang('get', 'separate_commas').'"');
+                // $fields->users = array(gr_lang('get', 'email_username'), 'input', 'text', '', '"'.gr_lang('get', 'separate_commas').'"');
+                $fields->users = array("Phone Number", 'input', 'text', '', '"'.gr_lang('get', 'separate_commas').'"');
                 $fields->id = array('hidden', 'input', 'hidden', $do["id"]);
             }
         }
