@@ -76,12 +76,11 @@ function test()
         // $response  = json_decode($make_call, true);
         // $data    = $response['body']['MessageId'];
         // $statusCode = $response['statusCode'];
-        $data = "message test";
-
+        // $data = "message test";
         $response = array();
-        $response['data'] = true;
+        $response['data'] = "success";
         $response['error'] = false;
-        $response['message'] = $data;
+        $response['message'] = "Organization created successfully.";
     } catch (PDOException $e) {
         $response['data'] = null;
         $response['error'] = true;
@@ -216,7 +215,7 @@ function addUserToGroup($db, $idGroupCreated, $log, $nameUser)
         $response['message'] = "An error occurred, try again." . $e->getMessage();
     }
     // echo json_encode($response);
-    echo json_encode($response);
+    // echo json_encode($response);
 }
 
 
@@ -264,7 +263,7 @@ function createGroup($db, $organization, $idOrg)
         $response['error'] = true;
         $response['message'] = "An error occurred, try again." . $e->getMessage();
     }
-    echo json_encode($response);
+    // echo json_encode($response);
     // return json_encode($response);
 }
 
@@ -347,7 +346,7 @@ function createUser($db, $value, $org, $idGruoup)
         $response['error'] = true;
         $response['message'] = "An error occurred, try again." . $e->getMessage();
     }
-    echo json_encode($response);
+    // echo json_encode($response);
     // return json_encode($response);
 }
 
