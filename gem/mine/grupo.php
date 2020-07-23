@@ -849,10 +849,17 @@ $('body').on('click', '.formpop', function(e) {
              return false;
          break;
          case "Edit Profile":
-            var dataUser = getDataUser( $("#global_id_user").val() );
+            if($(this).parent().prevObject[0].dataset.no !=undefined){
+                var id = $(this).parent().prevObject[0].dataset.no;                
+                var dataUser = getDataUser( id );
+                $("#txtProfileIdUser").val(id);
+            }else{
+                var dataUser = getDataUser( $("#global_id_user").val() );
+                $("#txtProfileIdUser").val(dataUser.data.id);
+            }
+            
             if(!dataUser.error){
                 
-                $("#txtProfileIdUser").val(dataUser.data.id);
                 $("#txtProfileName").val(dataUser.data.name);
                 $("#txtProfileLastName").val(dataUser.data.lastname);
                 $("#txtProfileAddress").val(dataUser.data.address);

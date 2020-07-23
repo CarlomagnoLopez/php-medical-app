@@ -1498,7 +1498,7 @@ border-radius: 5px 5px 0px 0px;
 .grupo-pop > div > form > div
 {
 padding: 0px 30px;
-max-height: 550px;
+max-height: 400px;
 
 }
 
