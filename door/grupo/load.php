@@ -585,19 +585,27 @@ function gr_group() {
         $organizations = db('Grupo', 'q', 'SELECT * FROM gr_options where v1 = "'.$arg[1]["id"].'" and type="gruser" ORDER BY id DESC');
         foreach ($organizations as $org) {
             $id_user = $org['v2']; // iduser
-            $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where id = "'.$id_user.'"');
-            $phone   = $usr[0]['phone'];
-            if(!empty($phone)){
-                 $data_array =  array(
-                     "sms"   => trim($arg[1]["msg"]),
-                     "type"  =>"chat",
-                     "phone" => $phone
-                 );
-                 $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-                 $response  = json_decode($make_call, true);
-                 $data    = $response['body']['MessageId'];
-                 $statusCode = $response['statusCode'];
+
+            $available     = db('Grupo', 'q', 'SELECT * FROM gr_options where v3 = "'.$id_user.'" and type="profile" and v1 = "status" and v2 = "offline" ORDER BY id DESC');
+
+            if(count($available) > 0 ){
+                $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where id = "'.$id_user.'"');
+                $phone   = $usr[0]['phone'];
+                if(!empty($phone)){
+                     $data_array =  array(
+                         "sms"   => trim($arg[1]["msg"]),
+                         "type"  =>"chat",
+                         "phone" => $phone
+                     );
+                     $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+                     $response  = json_decode($make_call, true);
+                     $data    = $response['body']['MessageId'];
+                     $statusCode = $response['statusCode'];
+                }
             }
+
+           
+ 
         }
         /*************SEND SMS***************** */
 
