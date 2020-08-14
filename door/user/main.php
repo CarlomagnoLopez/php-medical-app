@@ -14,6 +14,10 @@ switch($method){
         $phone = $json->phone;
         getDataUserByPhone($db,$phone);
     break;
+    case 'getDataUserByUsername':
+        $username = $json->username;
+        getDataUserByUsername($db,$username);
+    break;
     case 'searchOrganization':
         $organization = $json->organization;
         $secret_key   = $json->secret_key;
@@ -220,6 +224,29 @@ function searchOrganization($db,$organization,$secret_key){
 
 function getDataUserByPhone($db,$phone ){
     $sql = "SELECT * FROM gr_users WHERE phone = '$phone'";
+    try {
+        $response = array();
+        $stmt = $db->query($sql); 
+        $rs   =  $stmt->fetchAll();
+        if(count($rs)>0){
+            $response['exist'] = true; 
+            $response['data'] = $rs[0];
+        }else{
+            $response['exist'] = false; 
+            $response['data'] = [];
+        }
+        $response['error'] = false; 
+        $response['message'] = "";             
+    } catch(PDOException $e) {
+        $response['exist'] = false; 
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+}
+function getDataUserByUsername($db,$username){
+    $sql = "SELECT * FROM gr_users WHERE username = '$username'";
     try {
         $response = array();
         $stmt = $db->query($sql); 

@@ -73,18 +73,21 @@ grupofns();
                                         <input type="text" class="only-numbers phoneNumberLimit" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
                                     </label>
                                 </div>
-                                <label><i class="ti-email"></i>
-                                    <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="Username" />
+                                <label><i class="ti-user"></i>
+                                    <input type="text" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
                                 </label>
-                                    <input type="hidden" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
+                                <label><i class="ti-email"></i>
+                                     <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="Email" />
+                                </label>
                                     <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
                                     <input type="hidden" autocomplete='off' id="txtStatusUser" name="fStatusUser" />
                             </div>
                             <div class='login'>
-                                <!-- <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' id="txtEmailLogin" name="sign" placeholder="Username" />
-                                </label> -->
-                                <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
+                                <label><i class="ti-user"></i>
+                                    <!-- <input type="text" autocomplete='off' id="txtEmailLogin" name="sign" placeholder="Username" /> -->
+                                    <input type="text" autocomplete='off' id="txtUsernameLogin" name="usernamelogin" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
+                                </label>
+                                <!-- <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
                                         <select name="fcomplementPhoneLogin" id="selComplementPhoneLogin">
                                             <option value="1" selected>+1</option>
                                             <option value="86">+86</option>
@@ -98,7 +101,7 @@ grupofns();
                                     <label><i class="ti-mobile"></i>
                                         <input type="text" class="only-numbers phoneNumberLimit" autocomplete='off' id="txtPhoneNumberLogin" name="fphonenumberlogin" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
                                     </label>
-                                </div>
+                                </div> -->
 
                             </div>
                             <div class='global'>

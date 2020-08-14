@@ -69,7 +69,7 @@ function usr() {
     if ($t === 'register') {
         $rl = 6; // if is 1 or 4 redirect to failed
         $r[0] = false;
-        $i = strtolower(vc($arg[2]));
+        $i = $arg[2]; // username
         $e = strtolower(vc($arg[3], 'email'));
         $p = $arg[4];
         $psw_normal      = $arg[4];
@@ -89,9 +89,9 @@ function usr() {
             if (!usr($d, 'existPhoneReg', $phone)) {
                 $p = en($p);
                 if(empty($id_organization)){
-                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status,address,zipcode,lastname', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user,$address,$zipcode,$lastname);
+                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status,address,zipcode,lastname,username', $name, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user,$address,$zipcode,$lastname,$i);
                 }else{
-                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status,address,zipcode,lastname', $i, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user,$address,$zipcode,$lastname);
+                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status,address,zipcode,lastname,username', $name, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user,$address,$zipcode,$lastname,$i);
                 }
                 $flogin = fast_login($r[1], $e , $psw_normal, $p, $phone);
                 $r[0] = $flogin[0];
@@ -241,11 +241,12 @@ function usr() {
         $f           = 'email';
         $r[0]        = false;
         $r[1]        = 'invalid';
-        $pone_number = $arg[6]; // phone number
-        $existPhone = usr($d, 'existPhone', $pone_number);
-        if (isset($arg[4]) && $existPhone) {
+        $username = $arg[6]; // username
+     //   $existPhone = usr($d, 'existPhone', $pone_number);
+        if (isset($arg[4])) {
             $block = vc($arg[4], 'num');
-            $uid = usr($d, 'selectByPhone', $pone_number)['id'];
+            //$uid = usr($d, 'selectByPhone', $pone_number)['id'];
+            $uid = usr($d, 'selectByUsername', $username)['id'];
             $bc = db($d, 's,try', 'session', 'uid,device', $uid, 'bs.'.ip().ip('dev'), 'ORDER BY id DESC LIMIT 1');
             if (count($bc) > 0) {
                 $bc = $bc[0]['try'];
@@ -265,8 +266,8 @@ function usr() {
                 $r[1] = 'blocked';
             }
         }
-        if (!empty($pone_number)) {
-            $kr = db($d, 's', 'users', 'phone', $pone_number, 'ORDER BY id DESC LIMIT 1'); // info database by user
+        if (!empty($username)) {
+            $kr = db($d, 's', 'users', 'username', $username, 'ORDER BY id DESC LIMIT 1'); // info database by user
             $r[2] = $kr[0];
             if (count($kr) > 0) {
                 $kr = $kr[0];
@@ -313,7 +314,16 @@ function usr() {
         }
         return $r;
 
-    } else if ($t === 'existPhoneReg') {
+    } else if ($t === 'selectByUsername') {
+        $v  = $arg[2];
+        $sr = 'username';
+        $r = db($d, 's', 'users', $sr, $v, 'ORDER BY id DESC LIMIT 1');
+        if (isset($r[0])) {
+            $r = $r[0];
+        }
+        return $r;
+
+    }  else if ($t === 'existPhoneReg') {
         $v = strtolower($arg[2]);
         // $sr = 'name';
         // if (!empty(vc($arg[2], 'email'))) {

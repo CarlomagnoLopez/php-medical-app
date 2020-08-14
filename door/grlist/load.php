@@ -465,21 +465,26 @@ function gr_list($do) {
             $list[$i]->name = explode('-gr-', $n, 2)[1];
             $list[$i]->sub = flr('size', $dir.$n);
             $list[$i]->count = '0';
+            //$list[$i]->right = "";
             $list[$i]->right = gr_lang('get', 'options');
             $list[$i]->rtag = 'type="files" no="'.$n.'"';
             $list[$i]->oa = $list[$i]->ob = $list[$i]->oc = 0;
-            if (gr_role('access', 'files', '4')) {
-                $list[$i]->oa = gr_lang('get', 'share');
-                $list[$i]->oat = 'class="mbopen" data-block="panel" act="share"';
-            }
-            if (gr_role('access', 'files', '2')) {
-                $list[$i]->ob = gr_lang('get', 'zip');
-                $list[$i]->obt = 'act="zip"';
-            }
-            if (gr_role('access', 'files', '3')) {
-                $list[$i]->oc = gr_lang('get', 'delete');
-                $list[$i]->oct = 'class="formpop" pn=2 title="'.gr_lang('get', 'confirm').'" do="files"  btn="'.gr_lang('get', 'delete').'" act="delete"';
-            }
+            $list[$i]->ishref = true;
+
+            $list[$i]->oa = "view";
+            $list[$i]->oat = 'class="mbopen" data-block="panel" act="view"';
+            // if (gr_role('access', 'files', '4')) {
+            //     $list[$i]->oa = gr_lang('get', 'share');
+            //     $list[$i]->oat = 'class="mbopen" data-block="panel" act="share"';
+            // }
+            // if (gr_role('access', 'files', '2')) {
+            //     $list[$i]->ob = gr_lang('get', 'zip');
+            //     $list[$i]->obt = 'act="zip"';
+            // }
+            // if (gr_role('access', 'files', '3')) {
+            //     $list[$i]->oc = gr_lang('get', 'delete');
+            //     $list[$i]->oct = 'class="formpop" pn=2 title="'.gr_lang('get', 'confirm').'" do="files"  btn="'.gr_lang('get', 'delete').'" act="delete"';
+            // }
             $list[$i]->icon = "";
             $list[$i]->id = 'class="file"';
             $i = $i+1;

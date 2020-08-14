@@ -39,9 +39,50 @@ switch($method){
     case 'updateUser':
         updateUser($db,$json);
     break;  
+    case 'getUsers':
+        getUsers($db);
+    break;  
+    // case 'invite':
+    //     invite($db,$json);
+    // break;      
 }
 
 
+// function invite($db,$json){
+//     $isByUser = $json->isByUser;
+//     $users    = $json->users;
+//     foreach ($users as $user) {
+
+//         if(!empty($user['phone'])){
+//             $data_array =  array(
+//                 "sms"   => trim($arg[1]["msg"]),
+//                 "type"  =>"chat",
+//                 "phone" => $phone
+//             );
+//             $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+//             $response  = json_decode($make_call, true);
+//             $data    = $response['body']['MessageId'];
+//             $statusCode = $response['statusCode'];
+//        }
+//     }
+
+// }
+
+
+function getUsers($db){
+    $sql = "SELECT * FROM gr_users WHERE status = 1;";
+    try {
+        $response = array();
+        $stmt     = $db->query($sql); 
+        $rs       =  $stmt->fetchAll();
+        $response['data']  = $rs;
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['data']  = null;
+        $response['error'] = true; 
+    }
+    echo json_encode($response);
+}
 
 
 

@@ -231,6 +231,23 @@ function getDataUserByPhone(phone){
     return getData;
 }
 
+function getDataUserByUsername(username){
+    var getData = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "getDataUserByUsername", "username" :  username}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return getData;
+}
+
 
 function sendSMS(code,phone){
     console.log(code);
@@ -308,9 +325,9 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
         var _self = $(this);    
 
         if(window.isLogin){
-            if($("#txtPhoneNumberLogin").val()=="") {
-                $.toast("the phone number is requited");
-                $("#txtPhoneNumberLogin").focus();
+            if($("#txtUsernameLogin").val()=="") {
+                $.toast("the username is requited");
+                $("#txtUsernameLogin").focus();
                 return false;
             }
             
@@ -319,7 +336,16 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 $("#txtPassword").focus();
                 return false;
             }
+ 
             
+
+            var getData = JSON.parse(getDataUserByUsername( $("#txtUsernameLogin").val() )); 
+            if(!getData.exist){
+                $.toast("the username:"+$("#txtUsernameLogin").val()+" doesn't exist.");
+                $("#txtUsernameLogin").focus();
+                return false;
+            }
+
             $.loadingBlockShow({
                 imgPath: './asset/default.svg',
                 text: 'Loading...',
@@ -327,7 +353,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             });
  
           
-                var phone = $("#selComplementPhoneLogin").val()+$("#txtPhoneNumberLogin").val();
+                var phone = getData.data.phone;
                 var code  = generateCode();
                 console.log(code);
                 $.ajax({
@@ -336,15 +362,11 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                     processData: false,
                     contentType: "application/json",
                     type: 'POST',
-                    beforeSend: function(){
-                        var username = $("#txtEmail").val().split("@")[0];
-                        $("#txtUsername").val(username);
-                    },
                     success: function ( data ) {
                         console.log(data);
                         var verificationCode = prompt('Please input verification code', '');
                         if(verificationCode === code){
-                           // var getData = getDataUserByPhone( phone );
+                           // var getData = getDataUserByPhone( phone ); 
                             var s = 'eval(data);';
                             ajxx(_self, '', s, 0, e);
                         }else{
@@ -382,7 +404,17 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 $("#txtPhoneNumber").focus();
                 return false;
             }
+            if($("#txtPhoneNumber").val().length != 10) {
+                $.toast("Invalid length of phone number");
+                $("#txtPhoneNumber").focus();
+                return false;
+            }
 
+            if($("#txtUsername").val()=="") {
+                $.toast("theusername is requited");
+                $("#txtUsername").focus();
+                return false;
+            }
             if($("#txtEmail").val()=="") {
                 $.toast("the email is requited");
                 $("#txtEmail").focus();
@@ -415,8 +447,8 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 text: 'Loading...',
                 style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
             });
-            var username = $("#txtEmail").val().split("@")[0];
-            $("#txtUsername").val(username);
+            var username  = $("#txtUsername").val();
+            $("#txtEmail").val(username+'@phpmedical.com');
             var phone     = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
             var exist     = existUser(phone);
             

@@ -1,3 +1,4 @@
+var clickSwitchInvite = true;
 $(document).ready(function(){
 
     $("#modalCreateUser").hide();
@@ -191,6 +192,86 @@ function onClickCancelTakeAction(){
 }
 function onClickCancelProfileUser(){
     $("#modalEditProfile").fadeOut();
+}
+function onClickCancelInvite(){
+    $("#modalInvite").fadeOut();
+}
+
+
+$("#chkFilterModalInvite").change(function(event){
+    console.log("check:");
+    if(clickSwitchInvite){
+         // show list user
+         var users    = getUsers();
+         
+         $(".divByPhone").hide();
+         $(".divByUser").show();
+         $("#formModalInvite").removeClass("sizeModalInviteByPhone")
+         $("#formModalInvite").addClass("sizeModalInviteByUser")
+         var list = '';
+         $("#ulListUsers li").remove();
+         var total = users.data.length - 1;
+         $("#totalUsers").text("Total users: "+ total);
+        users.data.forEach(function(user, index) {
+            if($("#global_id_user").val()!=user.id){
+                list = list + "<li class='list-group-item' data='"+JSON.stringify(user)+"'  >"+user.username+"</li>";
+            }
+        });
+        $("#ulListUsers").append(list);
+        $("#titleInvite").html("Invite by phone")
+         clickSwitchInvite = false;
+        }else{
+        $(".divByPhone").show();
+        $(".divByUser").hide();
+        $("#formModalInvite").removeClass("sizeModalInviteByUser")
+        $("#formModalInvite").addClass("sizeModalInviteByPhone")
+        $("#titleInvite").html("Invite by username")
+        clickSwitchInvite = true;
+    }
+    console.log(clickSwitchInvite)
+});
+
+$("#ulListUsers").on('click','li',function(){
+    if( $(this).hasClass("active")){
+        $(this).removeClass('active');
+    }else{
+        $(this).addClass('active');
+    }
+
+})
+
+
+function getUsers(){
+    var getData = $.ajax({
+        url: 'door/grform/main.php',
+        data: JSON.stringify({ "method" : "getUsers"}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+
+
+function existGroup(group){
+    var searchOrg = $.ajax({
+        url: 'door/grform/main.php',
+        data: JSON.stringify({ "method" : "existGroup", "group" : group }),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
 }
 
 

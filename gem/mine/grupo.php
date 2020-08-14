@@ -440,6 +440,7 @@ if (n == undefined) {
                 }
                 msg = msg+'<i class="usrname vwp" no="'+m.userid+'" mention="'+m.user+' ">'+m.name+'</i>'+emojione.shortnameToImage(asciiemoji(url2link(m.msg)));
             } else if (m.type === 'file') {
+                debugger;
                 msg = msg+'<i class="usrname" mention="'+m.user+' ">'+m.name+'</i><span class="block" type="files" act="download" no="'+m.msg+'">';
                 msg = msg+'<span>'+m.sfile+' <span><i class="ti-unlink"></i> '+m.expiry+'</span></span> <i>'+m.dbtn+'</i> </span>';
             }
@@ -831,6 +832,81 @@ function onClickFormUpdateUserProfile(event){
         });
 }
 
+
+function onClickInvite(event){
+    var listUsers = [];
+    var nameGroup = $(".nameGroup").parent().text().trim();
+    if(!clickSwitchInvite){
+        $("#ulListUsers li").each(function( index ) {
+            if($(this).attr('class').includes('active')){
+                var data = JSON.parse($(this).attr('data'));
+                listUsers.push(data);
+            }
+        });
+
+        listUsers.forEach( function(value, index, array) {
+            console.log("value:");
+            console.log(value);
+        });
+
+        var payload = {method:'invite',isByUser:true,users:listUsers};
+    }else{
+        if($("#txtProfilePhoneNumberInvite").val()=="") {
+                say("the phone is requited","s");
+                $("#txtProfilePhoneNumberInvite").focus();
+                return false;
+        }
+        if($("#txtProfilePhoneNumberInvite").val().length != 10) {
+                say("Invalid length of phone number","s");
+                $("#txtProfilePhoneNumberInvite").focus();
+                return false;
+        }
+        var phone = $("#selProfileComplementPhoneInvite").val()+$("#txtProfilePhoneNumberInvite").val();
+        var getData = getDataUserByPhone( phone ); 
+        if(!getData.exist){
+            say("the phone number: "+phone+" doesn't exist." ,"s");
+            return false;
+        }
+        console.log(getData.data);
+       /* sendSMS(getData.data);*/
+    }
+}
+
+
+function sendSMS(data){
+   /* var getData = $.ajax({
+        url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+        data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);*/
+}
+
+function getDataUserByPhone(phone){
+    var getData = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method" : "getDataUserByPhone", "phone" :  phone}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {},
+        async: false,
+        error: function(error){
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+
 $('body').on('click', '.formpop', function(e) {
     console.log('outerText:'+e.target.outerText);
     console.log('id:'+$(this).attr('no'));
@@ -876,6 +952,10 @@ $('body').on('click', '.formpop', function(e) {
                 $("#modalEditProfile").fadeIn();
             }
             return false;
+         break;
+         case "Invite":
+             $("#modalInvite").fadeIn();
+             return false;
          break;
      }
 

@@ -186,7 +186,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                         <div class='head groupnav d-none'>
                             <i class='icon ti-angle-double-left goback d-md-none'></i>
                             <span class='left'>
-                                <span>
+                                <span class="nameGroup">
                                     <img src="<?php pr(url()); ?>gem/ore/grupo/groups/default.png">
                                     <span></span>
                                 </span></span>
@@ -506,6 +506,54 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     </section>
 
 
+    <section id="modalInvite" class="grupo-pop-modal" style="display: none;">
+         <div>
+            <form autocomplete="off" id="formModalInvite" class="sizeModalInviteByPhone" >
+                <span class="head" id="titleInvite">Invite</span>
+                <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
+                    <div style="position: relative;">
+                        <label>Invite By</label>
+                    </div>
+                    <div style="position: relative;float: right;">
+                        <label class="switch">
+                        <input id="chkFilterModalInvite" type="checkbox" checked>
+                        <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <label>Invite by phone</label>
+
+
+                    <div class="divByPhone">
+                        <div style="margin-top: 30px;position: absolute;">
+                            <select name="fcomplementPhoneInvite" id="selProfileComplementPhoneInvite">
+                                <option value="+1" selected>+1</option>
+                                <option value="+86">+86</option>
+                                <option value="+87">+87</option>
+                                <option value="+91">+91</option>
+                                <option value="+55">+55</option>
+                                <option value="+52">+52</option>
+                            </select>
+                        </div>
+                        <label class="color-label">Phone Number</label>
+                        <input type="text" name="fPhoneNumberInvite" id="txtProfilePhoneNumberInvite" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
+                    </div>
+                    <div class="divByUser">
+                        <label style="color: black;" id="totalUsers"></label>
+                        <div>
+                            <ul id="ulListUsers" class="list-group">
+
+                            </ul>
+                        </div>
+                        
+                    </div>
+
+
+                </div>
+                <button type="button" onclick="onClickInvite(this)" class="button-submit-form  ajx grsub">Invite</button>
+                <span class="cancel" onclick="onClickCancelInvite()">Cancel</span>
+            </form>
+        </div>
+    </section>
 
 
 </body>
