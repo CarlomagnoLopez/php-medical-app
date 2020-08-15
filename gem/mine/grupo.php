@@ -845,13 +845,12 @@ function onClickInvite(event){
                 listUsers.push(data);
             }
         });
-
         listUsers.forEach( function(value, index, array) {
             console.log("value:");
             console.log(value);
+            sendSMSInvite(value);
         });
 
-        var payload = {method:'invite',isByUser:true,users:listUsers};
     }else{
         if($("#txtProfilePhoneNumberInvite").val()=="") {
                 say("the phone is requited","s");
@@ -870,15 +869,17 @@ function onClickInvite(event){
             return false;
         }
         console.log(getData.data);
-       /* sendSMS(getData.data);*/
+        sendSMSInvite(getData.data);
     }
+    say("Invitation sent." ,"s");
+    $("#modalInvite").fadeOut();
 }
 
 
-function sendSMS(data){
-   /* var getData = $.ajax({
+function sendSMSInvite(data){
+    var getData = $.ajax({
         url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-        data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
+        data: JSON.stringify( { "sms" : '', "type" : "invite" , phone : data.phone } ),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -889,7 +890,7 @@ function sendSMS(data){
             $.loadingBlockHide();
         }
     }).responseText;
-    return JSON.parse(getData);*/
+    return JSON.parse(getData);
 }
 
 function getDataUserByPhone(phone){

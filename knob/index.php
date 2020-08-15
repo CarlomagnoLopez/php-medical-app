@@ -512,7 +512,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <span class="head" id="titleInvite">Invite</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
                     <div style="position: relative;">
-                        <label>Invite By</label>
+                        <label>Invite by phone</label>
                     </div>
                     <div style="position: relative;float: right;">
                         <label class="switch">

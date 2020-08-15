@@ -218,14 +218,14 @@ $("#chkFilterModalInvite").change(function(event){
             }
         });
         $("#ulListUsers").append(list);
-        $("#titleInvite").html("Invite by phone")
+        $("#titleInvite").html("Invite by username")
          clickSwitchInvite = false;
         }else{
         $(".divByPhone").show();
         $(".divByUser").hide();
         $("#formModalInvite").removeClass("sizeModalInviteByUser")
         $("#formModalInvite").addClass("sizeModalInviteByPhone")
-        $("#titleInvite").html("Invite by username")
+        $("#titleInvite").html("Invite by phone")
         clickSwitchInvite = true;
     }
     console.log(clickSwitchInvite)
