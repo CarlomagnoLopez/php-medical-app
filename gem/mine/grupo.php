@@ -23,10 +23,11 @@ $('.swr-grupo .aside > .tabs > ul > li,.loadside').on('click', function(e) {
         hid: $('.dumb .hidid').val(),
         ex: $(this).data(),
     };
-    var s = '$(".swr-grupo .aside > .content > .list").removeClass();$(".swr-grupo .aside > .content > ul").addClass("list fh scroller '+$(this).attr('act')+'");';
+    var newStyle = ($(this).attr('act')=='files') ? 'listFiles' : '';
+    var s = '$(".swr-grupo .aside > .content > .list").removeClass();$(".swr-grupo .aside > .content > ul").addClass("list fh scroller '+$(this).attr('act')+'").attr("id","'+newStyle+'"  );';
     s = s+'$(".swr-grupo .'+$(this).attr('side')+' > .content > .list").hide();';
     s = s+'var tcount=0;var list="";$.each(data, function(k, v) {';
-    s = s+'list=list+"<li "+data[k].id+"> <div><span class= left><img loadimg="+data[k].img+">';
+    s = s+'list=list+"<li "+data[k].id+" onclick=onClickList('+"'"+'"+htmlDecode(data[k].filename)+"'+"'"+','+"'"+'"+htmlDecode(data[k].typefile)+"'+"'"+')  > <div><span class= left><img loadimg="+data[k].img+">';
     s = s+'</span><span class=center><b><span data-toggle=tooltip title='+"'"+'"+htmlDecode(data[k].name)+"'+"'"+'>"+htmlDecode(data[k].name)+"</span></b><i class="+data[k].icon+"></i>";';
     s = s+'if(data[k].count!="0"){tcount=parseInt(tcount)+parseInt(data[k].count);if(data[k].countag!="0"){list=list+"<u cnt="+data[k].count+">"+data[k].count+" "+data[k].countag+"</u>";}}';
     s = s+'list=list+"<span>"+data[k].sub+"</span></span><span class=right>';
@@ -65,6 +66,8 @@ $('.swr-grupo .aside > .tabs > ul > li,.loadside').on('click', function(e) {
     s = s+'$(".swr-grupo .'+$(this).attr('side')+' > .content > .list").fadeIn();';
     ajxx($(this), data, s, e);
 });
+
+
 
 $("body").on('mouseenter', '.swr-grupo .panel > .room > .msgs > li > div > .msg', function(e) {
     $('.swr-grupo .msgopt > ul').hide();
@@ -440,9 +443,8 @@ if (n == undefined) {
                 }
                 msg = msg+'<i class="usrname vwp" no="'+m.userid+'" mention="'+m.user+' ">'+m.name+'</i>'+emojione.shortnameToImage(asciiemoji(url2link(m.msg)));
             } else if (m.type === 'file') {
-                debugger;
-                msg = msg+'<i class="usrname" mention="'+m.user+' ">'+m.name+'</i><span class="block" type="files" act="download" no="'+m.msg+'">';
-                msg = msg+'<span>'+m.sfile+' <span><i class="ti-unlink"></i> '+m.expiry+'</span></span> <i>'+m.dbtn+'</i> </span>';
+                msg = msg+'<i class="usrname" mention="'+m.user+' ">'+m.name+'</i><span class="block" type="files" act="download" data-filename="'+m.filename+'"  data-typefile="'+m.typefile+'" no="'+m.msg+'">';
+                msg = msg+'<span>'+m.sfile+' <span><i class="ti-unlink"></i> '+m.expiry+'</span></span> <i>View</i> </span>';
             }
             msg = msg+'</i><span class="time">';
 

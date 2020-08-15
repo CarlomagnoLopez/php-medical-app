@@ -238,7 +238,39 @@ $("#ulListUsers").on('click','li',function(){
         $(this).addClass('active');
     }
 
-})
+});
+
+$(".msgs").on('click','li div span i span',function(){
+    console.log( $(this).html() );
+    var filename = $(this).parent().find('span').attr('data-filename')
+    var typefile = $(this).parent().find('span').attr('data-typefile')
+   // var routefile = "grupo/files/182"+filename;
+    showFileViewer(filename,typefile);
+});
+
+function onClickList(filename,typefile){
+    showFileViewer(filename,typefile);
+}
+function showFileViewer(filename,typefile){
+    if(filename!="undefined"){
+        if(typefile == 'application/pdf'){
+            var link = "dist/ViewerJS/#../../gem/ore/"+filename;
+        }else{
+            var link = "gem/ore/"+filename;
+        }
+        $("#iframeViewer").attr('src',link);
+        $("#modalViewer").fadeIn();
+       
+    }
+}
+
+
+function onClickCloseModalViewer(event){
+    console.log('close')
+    $("#iframeViewer").attr('src',null);
+    $("#modalViewer").fadeOut();
+}
+
 
 
 function getUsers(){

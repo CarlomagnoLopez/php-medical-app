@@ -582,6 +582,13 @@ function gr_group() {
         return $r;
     } else if ($arg[0] === 'sendmsg') {
         /*************SEND SMS***************** */
+        if ($arg[2] === 2) {
+            $filename  = $arg[3];
+            $typefile = $arg[4];
+        }else{
+            $filename =  '';
+            $typefile =  '';
+        }
         $organizations = db('Grupo', 'q', 'SELECT * FROM gr_options where v1 = "'.$arg[1]["id"].'" and type="gruser" ORDER BY id DESC');
         foreach ($organizations as $org) {
             $id_user = $org['v2']; // iduser
@@ -603,8 +610,6 @@ function gr_group() {
                      $statusCode = $response['statusCode'];
                 }
             }
-
-           
  
         }
         /*************SEND SMS***************** */
@@ -626,8 +631,10 @@ function gr_group() {
         }
         $cr = gr_group('valid', $arg[1]["id"], $arg[1]["ldt"]);
         if ($cr[0] && !empty(trim($arg[1]["msg"]))) {
-            if (isset($arg[4])) {
-                $uid = $arg[4];
+            if ($arg[2] != 2) {
+                if (isset($arg[4])) {
+                    $uid = $arg[4];
+                }
             }
             $cu = gr_group('user', $arg[1]["id"], $uid, $arg[1]["ldt"]);
             if ($cu[0] && $cu['role'] != 3) {
@@ -663,7 +670,7 @@ function gr_group() {
                     }
                     $extchkm = db('Grupo', 's,count(*)', 'msgs', 'gid', $tmpido)[0][0];
                 }
-                $mid = db('Grupo', 'i', 'msgs', 'gid,uid,msg,type,tms,rtxt,rid,rmid,rtype,cat', $tmpido, $uid, $arg[1]["msg"], $typ, $dt, $rtxt, $rid, $rmid, $rv['type'], $arg[1]["ldt"]);
+                $mid = db('Grupo', 'i', 'msgs', 'gid,uid,msg,type,tms,rtxt,rid,rmid,rtype,cat,filename,typefile', $tmpido, $uid, $arg[1]["msg"], $typ, $dt, $rtxt, $rid, $rmid, $rv['type'], $arg[1]["ldt"],$filename,$typefile);
                 if ($extchkm == 0) {
                     gr_alerts('new', 'newmsg', $arg[1]["id"], $uid, $mid, $uid);
                     gr_mail('newmsg', $arg[1]["id"], $uid, rn(5));
@@ -693,8 +700,12 @@ function gr_group() {
                         }
                     }
                 }
-                if (!isset($arg[3])) {
-                    gr_group('msgs', $arg[1]);
+                if ($arg[2] == 2) {
+                    gr_group('msgs', $arg[1]);        
+                }else{
+                    if (!isset($arg[3])) {
+                        gr_group('msgs', $arg[1]);
+                    }
                 }
 
             }
@@ -762,7 +773,8 @@ function gr_group() {
                 flr('new', $dir);
                 $fn = rn(6).rn(3).'-gr-';
                 if (flr('upload', 'attachfile', $dir, $fn)) {
-                    $do['id'] = $fn.$_FILES['attachfile']['name'];
+                    $do['id'] = $fn.$_FILES['attachfile']['name']; // name of file
+                    $do['typefile'] = $_FILES['attachfile']['type']; // type of file
                     $do['type'] = 'zip';
                     $do['r'] = 1;
                     fnc('grfiles');
@@ -771,7 +783,7 @@ function gr_group() {
                     $data["msg"] = $fn;
                     $data["from"] = $arg[1]["from"];
                     $data["ldt"] = $arg[1]["ldt"];
-                    gr_group('sendmsg', $data, 2);
+                    gr_group('sendmsg', $data, 2,$do['id'], $do['typefile'] );
                 }
             }
         }
@@ -976,6 +988,8 @@ function gr_group() {
                     $list[$i]->type = $v['type'];
                     $list[$i]->sfile = $lphr['shared_file'];
                     $list[$i]->expiry = date("h:i A", strtotime('+'.gr_default('get', 'fileexpiry').' minutes', $tmst));
+                    $list[$i]->filename = "grupo/files/".$v['uid']."/".$v['filename'];
+                    $list[$i]->typefile = $v['typefile'];
                     $i = $i+1;
                 }
             }

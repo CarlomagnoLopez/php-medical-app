@@ -556,6 +556,17 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     </section>
 
 
+    <section id="modalViewer" class="grupo-pop-modal" style="display: none;">
+        <div>
+            <div style="position: absolute;margin-top: -64%; content: url(dist/close.png);cursor:pointer;" onclick="onClickCloseModalViewer(this)">
+                <button type="button" onclick="onClickCloseModalViewer(this)" class=""></button>
+            </div>
+             <iframe id="iframeViewer" src="" width='800' height='600' allowfullscreen webkitallowfullscreen></iframe>
+        </div>
+    </section>
+
+
+
 </body>
 
 <?php

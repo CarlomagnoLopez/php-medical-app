@@ -20,30 +20,30 @@ function gr_files($do) {
             }
         }
     } else if ($do['type'] === 'download') {
-        if (!gr_role('access', 'files', '2')) {
-            gr_prnt('say("'.gr_lang('get', 'denied').'","e")'); exit;
-        }
-        $cu = gr_group('user', $do["gid"], $uid, $do["ldt"])[0];
-        if ($cu) {
-            if ($do["ldt"] == 'user') {
-                $tmpido = $do["gid"].'-'.$uid;
-                if ($do["gid"] > $uid) {
-                    $tmpido = $uid.'-'.$do["gid"];
-                }
-                $do["gid"] = $tmpido;
-            }
-            $ck = db('Grupo', 's,count(*)', 'msgs', 'gid,msg', $do["gid"], $do["id"])[0][0];
-            if ($ck != 0) {
-                $exp['type'] = 'expired';
-                gr_files($exp);
-                $zn = "gem/ore/grupo/files/dumb/zip-".$do["id"].".zip";
-                if (file_exists($zn)) {
-                    gr_prnt('window.open("'.url().'download/'.$do["id"].'/","_blank");');
-                } else {
-                    gr_prnt('say("'.gr_lang('get', 'file_expired').'");');
-                }
-            }
-        }
+        // if (!gr_role('access', 'files', '2')) {
+        //     gr_prnt('say("'.gr_lang('get', 'denied').'","e")'); exit;
+        // }
+        // $cu = gr_group('user', $do["gid"], $uid, $do["ldt"])[0];
+        // if ($cu) {
+        //     if ($do["ldt"] == 'user') {
+        //         $tmpido = $do["gid"].'-'.$uid;
+        //         if ($do["gid"] > $uid) {
+        //             $tmpido = $uid.'-'.$do["gid"];
+        //         }
+        //         $do["gid"] = $tmpido;
+        //     }
+        //     $ck = db('Grupo', 's,count(*)', 'msgs', 'gid,msg', $do["gid"], $do["id"])[0][0];
+        //     if ($ck != 0) {
+        //         $exp['type'] = 'expired';
+        //         gr_files($exp);
+        //         $zn = "gem/ore/grupo/files/dumb/zip-".$do["id"].".zip";
+        //         if (file_exists($zn)) {
+        //             gr_prnt('window.open("'.url().'download/'.$do["id"].'/","_blank");');
+        //         } else {
+        //             gr_prnt('say("'.gr_lang('get', 'file_expired').'");');
+        //         }
+        //     }
+        // }
     } else if ($do['type'] === 'zip') {
         if (!empty($do['id'])) {
             if (gr_role('access', 'files', '2')) {

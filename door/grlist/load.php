@@ -451,14 +451,19 @@ function gr_list($do) {
         if (!gr_role('access', 'files', '5')) {
             exit;
         }
+
+        $stms = db('Grupo', 'q', 'SELECT * FROM gr_msgs where uid = "'.$uid.'" and filename is not null');
         $i = 0;
         $dir = 'grupo/files/'.$uid.'/';
         $list = flr('list', $dir);
-        foreach ($list as $f) {
+        $list = [];
+        foreach ($stms as $f) {
             $list[$i] = new stdClass();
             $list[$i]->img = "gem/ore/grupo/ext/default.png";
-            $im = "gem/ore/grupo/ext/".pathinfo($f, PATHINFO_EXTENSION).".png";
-            $n = basename($f);
+            $im = "gem/ore/grupo/ext/".pathinfo($f['filename'], PATHINFO_EXTENSION).".png";
+        //    $im = "gem/ore/grupo/ext/".pathinfo($f, PATHINFO_EXTENSION).".png";
+        //    $n = basename($f);
+            $n = basename($f['filename']);
             if (file_exists($im)) {
                 $list[$i]->img = $im;
             }
@@ -469,7 +474,8 @@ function gr_list($do) {
             $list[$i]->right = gr_lang('get', 'options');
             $list[$i]->rtag = 'type="files" no="'.$n.'"';
             $list[$i]->oa = $list[$i]->ob = $list[$i]->oc = 0;
-            $list[$i]->ishref = true;
+            $list[$i]->filename = $dir.''.$n;
+            $list[$i]->typefile = $f['typefile'];
 
             $list[$i]->oa = "view";
             $list[$i]->oat = 'class="mbopen" data-block="panel" act="view"';
@@ -489,6 +495,7 @@ function gr_list($do) {
             $list[$i]->id = 'class="file"';
             $i = $i+1;
         }
+      //  echo $list;
     } else if ($do["type"] === "ufields") {
         if (gr_role('access', 'fields', '4')) {
             $i = 0;
