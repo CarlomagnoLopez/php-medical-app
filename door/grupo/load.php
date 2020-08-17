@@ -1068,25 +1068,27 @@ function gr_group() {
             gr_prnt('say("'.gr_lang('get', 'exporting').'","s");');
         }
     } else if ($arg[0] === 'delete') {
-        $role = gr_group('user', $arg[1]["id"], $uid)['role'];
-        if (gr_role('access', 'groups', '3') && $role == 2 || gr_role('access', 'groups', '7')) {
-            $cr = gr_group('valid', $arg[1]["id"]);
-            if ($cr[0]) {
-                $role = gr_group('user', $arg[1]["id"], $uid)['role'];
-                if (gr_role('access', 'groups', '7') || $role == 2) {
-                    gr_data('d', 'type,v1', 'gruser', $arg[1]["id"]);
-                    gr_data('d', 'type,v1', 'lview', $arg[1]["id"]);
-                    db('Grupo', 'd', 'msgs', 'gid', $arg[1]["id"]);
-                    gr_data('d', 'type,id', 'group', $arg[1]["id"]);
-                    db('Grupo', 'd', 'options', 'type,v1', 'loves', $arg[1]["id"]);
-                    db('Grupo', 'd', 'complaints', 'gid', $arg[1]["id"]);
-                    foreach (glob("gem/ore/grupo/groups/".$arg[1]['id']."-gr-*.*") as $filename) {
+       // removeGroup($arg);
+        $group_selected = $arg[1]['global_group_selected'];
+        // $role = gr_group('user', $arg[1]["id"], $uid)['role'];
+        // if (gr_role('access', 'groups', '3') && $role == 2 || gr_role('access', 'groups', '7')) {
+         //   $cr = gr_group('valid', $arg[1]["id"]);
+         //   if ($cr[0]) {
+               // $role = gr_group('user', $arg[1]["id"], $uid)['role'];
+               // if (gr_role('access', 'groups', '7') || $role == 2) {
+                    gr_data('d', 'type,v1', 'gruser', $group_selected);
+                    gr_data('d', 'type,v1', 'lview', $group_selected);
+                    db('Grupo', 'd', 'msgs', 'gid', $group_selected);
+                    gr_data('d', 'type,id', 'group', $group_selected);
+                    db('Grupo', 'd', 'options', 'type,v1', 'loves', $group_selected);
+                    db('Grupo', 'd', 'complaints', 'gid', $group_selected);
+                    foreach (glob("gem/ore/grupo/groups/".$group_selected."-gr-*.*") as $filename) {
                         unlink($filename);
                     }
                     gr_prnt("location.reload();");
-                }
-            }
-        }
+               // }
+          //  }
+       // }
     } else if ($arg[0] === 'join') {
         if (!gr_role('access', 'groups', '4') && !isset($arg[2]) && !gr_role('access', 'groups', '7')) {
             exit;
@@ -1783,6 +1785,11 @@ function gr_lang() {
     }
 }
 
+
+function removeGroup($params){
+    require "../../key/Connection.php";   
+    $db          = Connection(); 
+}
 
 function callAPI($method, $url, $data){
     $curl = curl_init();

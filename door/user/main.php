@@ -33,8 +33,9 @@ switch($method){
         saveOrganization($db,$organization,$secret_key);
     break;
     case 'existUser':
-        $phone = $json->phone;
-        existUser($db,$phone);
+        $phone    = $json->phone;
+        $username = $json->username;
+        existUser($db,$phone,$username);
     break;
     case 'updateStatusUser':
         $phone  = $json->phone;
@@ -116,8 +117,8 @@ function updateStatusUser($db,$phone,$status){
  }
 
 
-function existUser($db,$phone){
-    $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone'";
+function existUser($db,$phone,$username){
+    $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone' OR username = '$username'";
     try {
         $response = array();
         $stmt = $db->query($sql); 
@@ -125,7 +126,7 @@ function existUser($db,$phone){
         if(count($rs)>0){
             $response['exist'] = true; 
             $response['data'] = $rs[0];
-            $response['message'] = "The user with phone '$phone' exist.";             
+            $response['message'] = "The username: '$username' or phone : '$phone' exist.";             
         }else{
             $response['exist'] = false; 
             $response['data'] = [];

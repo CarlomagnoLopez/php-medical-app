@@ -199,7 +199,7 @@ function existGroup($db,$group){
           if(count($rs)>0){
               $response['exist'] = true; 
               $response['data'] = $rs[0];
-              $response['message'] = "The group '$email' exist.";             
+              $response['message'] = "The group '$group' exist.";             
           }else{
               $response['exist'] = false; 
               $response['data'] = [];

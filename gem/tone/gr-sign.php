@@ -227,7 +227,7 @@ font-size: 14px;
 .sign > section > div > div form > .switch
 {
 display: block;
-margin-top: 25px;
+margin-top: 0px;
 font-weight: 600;
 font-size: 12px;
 }

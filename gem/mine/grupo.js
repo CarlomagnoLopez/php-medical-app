@@ -248,6 +248,11 @@ $(".msgs").on('click','li div span i span',function(){
     showFileViewer(filename,typefile);
 });
 
+
+$("body").on("click", ".list  > li", function(e) {
+   $("#global_group_selected").val($(this).attr('no'));
+
+});
 function onClickList(filename,typefile){
     showFileViewer(filename,typefile);
 }

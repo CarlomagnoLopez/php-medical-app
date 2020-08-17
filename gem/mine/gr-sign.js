@@ -180,10 +180,10 @@ function searchOrganizationBySecretKey(secret_key){
 
 
 
-function existUser(phone){
+function existUser(phone,username){
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "existUser", "phone" : phone}),
+        data: JSON.stringify({ "method" : "existUser", "phone" : phone,"username" : username }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -450,13 +450,14 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             var username  = $("#txtUsername").val();
             $("#txtEmail").val(username+'@phpmedical.com');
             var phone     = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
-            var exist     = existUser(phone);
+            var exist     = existUser(phone,username);
             
             if(exist.exist && exist.data.status==1){
                 $.loadingBlockHide();
                 $.toast(exist.message);
                 return false;
             }
+            
 
             if( $("#txtOrganizationName").val() == "" && $("#txtSecretKey").val() == "" ){
                 $("#txtStatusUser").val(0);

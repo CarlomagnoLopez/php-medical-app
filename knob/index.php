@@ -335,6 +335,11 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <input type="hidden" name="act" value="1">
                 <input type="hidden" name="do" class="grdo">
                 <input type="hidden" name="type" class="grtype">
+                <input type="hidden" name="global_group_selected" id="global_group_selected" >
+                <input type="hidden" name="global_role" value="<?php pr($usr['role']); ?>">
+                <input type="hidden" name="global_id_user" value="<?php pr($usr['id']); ?>">
+                <input type="hidden" name="global_id_organization" value="<?php pr($usr['id_organization']); ?>">
+
                 <input type="submit" class='ajx grsub' form='.grform'>
                 <span class="cancel"><?php pr(gr_lang('get', 'cancel')) ?></span>
             </form>
