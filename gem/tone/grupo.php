@@ -2475,3 +2475,14 @@ input:checked + .slider:before {
     height: 36px;
     cursor : pointer;
 }
+
+.closeFame{
+  position: absolute;
+  margin-top: 5%;
+  border: none;
+  background: url(dist/close.png) no-repeat;
+  cursor: pointer;
+  z-index: 10000000000000000;
+  width: 66px;
+  height: 66px;
+}
