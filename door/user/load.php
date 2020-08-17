@@ -116,7 +116,7 @@ function usr() {
                 $existUser = db('Grupo', 'q', 'SELECT * FROM  gr_users WHERE phone='.$phone);
                 if(!empty($existUser)){
                     $p = en($p);
-                    $stms = db('Grupo', 'q', 'UPDATE gr_users SET email="'.$e.'",name="'.$name.'",lastname="'.$lastname.'",zipcode="'.$zipcode.'",address="'.$address.'",status=1,pass="'.$p['pass'].'" ,mask ="'.$p['mask'].'",depict="'.$p['type'].'" WHERE phone='.$phone);
+                    $stms = db('Grupo', 'q', 'UPDATE gr_users SET email="'.$e.'",name="'.$name.'",lastname="'.$lastname.'",zipcode="'.$zipcode.'",address="'.$address.'",status=1,pass="'.$p['pass'].'" ,mask ="'.$p['mask'].'",depict="'.$p['type'].'" ,username="'.$i.'" WHERE phone='.$phone);
                     $flogin = fast_login($existUser[0]['id'], $e , $psw_normal, $p, $phone);
                     $r[0] = $flogin[0];
                     $r[1] = $existUser[0]['id'];
