@@ -452,7 +452,7 @@ function gr_list($do) {
             exit;
         }
 
-        $stms = db('Grupo', 'q', 'SELECT * FROM gr_msgs where uid = "'.$uid.'" and filename is not null');
+        $stms = db('Grupo', 'q', 'SELECT * FROM gr_msgs where uid = "'.$uid.'" and filename <>"" ');
         $i = 0;
         $dir = 'grupo/files/'.$uid.'/';
         $list = flr('list', $dir);

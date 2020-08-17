@@ -1786,10 +1786,10 @@ function gr_lang() {
 }
 
 
-function removeGroup($params){
-    require "../../key/Connection.php";   
-    $db          = Connection(); 
-}
+// function removeGroup($params){
+//     require "../../key/Connection.php";   
+//     $db          = Connection(); 
+// }
 
 function callAPI($method, $url, $data){
     $curl = curl_init();
