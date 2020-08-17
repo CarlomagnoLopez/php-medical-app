@@ -1,7 +1,7 @@
 <?php if(!defined('s7V9pz')) {die();}?><?php
 
 
-function fast_login($id_username, $email, $password, $psw_encrypt, $phone){
+function fast_login($id_username, $email, $password, $psw_encrypt, $phone, $status_user){
     $p = $password; //
     $u = $phone;
     $f = 'phone';
@@ -34,21 +34,16 @@ function fast_login($id_username, $email, $password, $psw_encrypt, $phone){
         $kr = db($d, 's', 'users', $f, $u, 'ORDER BY id DESC LIMIT 1');
         if (count($kr) > 0) {
             $kr = $kr[0];
-           // $p = en($p, $kr['depict'], $kr['mask'])['pass'];
             if ($kr['pass'] === $psw_encrypt['pass']) {
-                db($d, 'd', 'session', 'uid,device', $kr['id'], 'bs.'.ip().ip('dev'));
-           //     if ($kr['role'] != '0') {
-                    ses($d, 'add', $kr['id']);
-                  //  if (isset($arg[5]) && $arg[5] == 1) {
-                        setcookie($d.'usrdev', $_SESSION[$d.'usrdev'], time() + (86400 * 30), "/");
-                        setcookie($d.'usrcode', $_SESSION[$d.'usrcode'], time() + (86400 * 30), "/");
-                        setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
-                  //  }
+                   db($d, 'd', 'session', 'uid,device', $kr['id'], 'bs.'.ip().ip('dev'));
+                    if($status_user==1){
+                            ses($d, 'add', $kr['id']);
+                            setcookie($d.'usrdev', $_SESSION[$d.'usrdev'], time() + (86400 * 30), "/");
+                            setcookie($d.'usrcode', $_SESSION[$d.'usrcode'], time() + (86400 * 30), "/");
+                            setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
+                    }
                     $r[0] = true;
                     $r[2] = $kr;
-                // } else {
-                //     $r[1] = 'banned';
-                // }
             }else{
                 $r[0] = false;
                 $r[2] = '';
@@ -93,31 +88,17 @@ function usr() {
                 }else{
                     $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status,address,zipcode,lastname,username', $name, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user,$address,$zipcode,$lastname,$i);
                 }
-                $flogin = fast_login($r[1], $e , $psw_normal, $p, $phone);
+                $flogin = fast_login($r[1], $e , $psw_normal, $p, $phone,$status_user);
                 $r[0] = $flogin[0];
-                // $r[1] id user
-                // $i; // username
-                // $e; // email
-                // $p['pass'] // password
-                // $p['mask'] // mask
-                // $p['type'] // depict
-                // $rl // role
-                //  dt() // created and altered
-                //$kr = db($d, 's', 'users', 'phone', $phone, 'ORDER BY id DESC LIMIT 1'); // info database by user
                 $r[2] = $flogin[2];
-           
-           
-           
-           
-                //     usr($d, 'login', $p);
-               // fast_login();
-
+              
+        
             } else {
                 $existUser = db('Grupo', 'q', 'SELECT * FROM  gr_users WHERE phone='.$phone);
                 if(!empty($existUser)){
                     $p = en($p);
                     $stms = db('Grupo', 'q', 'UPDATE gr_users SET email="'.$e.'",name="'.$name.'",lastname="'.$lastname.'",zipcode="'.$zipcode.'",address="'.$address.'",status=1,pass="'.$p['pass'].'" ,mask ="'.$p['mask'].'",depict="'.$p['type'].'" ,username="'.$i.'" WHERE phone='.$phone);
-                    $flogin = fast_login($existUser[0]['id'], $e , $psw_normal, $p, $phone);
+                    $flogin = fast_login($existUser[0]['id'], $e , $psw_normal, $p, $phone,$status_user);
                     $r[0] = $flogin[0];
                     $r[1] = $existUser[0]['id'];
                     $r[2] = $existUser[0];

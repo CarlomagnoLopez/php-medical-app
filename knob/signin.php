@@ -41,22 +41,22 @@ grupofns();
                             <input type="hidden" name="do" class='doz' value='login' />
                             <div class='register d-none'>
                                 <label><i class="ti-key"></i>
-                                    <input type="text" autocomplete='off' id="txtSecretKey" name="fsecretkey" placeholder="Secret Key"/>
+                                    <input type="text" autocomplete='off' id="txtSecretKey" name="fsecretkey" class="clearValues" placeholder="Secret Key"/>
                                 </label>
                                 <label><i class="ti-layout-cta-right"></i>
-                                    <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" placeholder="Organization name"/>
+                                    <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" class="clearValues" placeholder="Organization name"/>
                                 </label>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' id="txtName" name="fname" placeholder="Name" />
+                                    <input type="text" autocomplete='off' id="txtName" name="fname" class="clearValues" placeholder="Name" />
                                 </label>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' id="txtLastName" name="flastname" placeholder="Last Name" />
+                                    <input type="text" autocomplete='off' id="txtLastName" name="flastname" class="clearValues" placeholder="Last Name" />
                                 </label>
                                 <label><i class="ti-home"></i>
-                                    <input type="text" autocomplete='off' id="txtAddress" name="faddress" placeholder="Address" />
+                                    <input type="text" autocomplete='off' id="txtAddress" name="faddress" class="clearValues" placeholder="Address" />
                                 </label>
                                 <label><i class="ti-location-pin"></i>
-                                    <input type="text" class="only-numbers zipCodeLimit" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
+                                    <input type="text" class="only-numbers zipCodeLimit clearValues" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
                                 </label>
                                 <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
                                         <select name="fcomplementPhone" id="selComplementPhone">
@@ -70,17 +70,17 @@ grupofns();
                                 </div>
                                 <div>
                                     <label><i class="ti-mobile"></i>
-                                        <input type="text" class="only-numbers phoneNumberLimit" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
+                                        <input type="text" class="only-numbers phoneNumberLimit clearValues" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
                                     </label>
                                 </div>
                                 <label><i class="ti-user"></i>
-                                    <input type="text" autocomplete='off' id="txtUsername" name="name" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
+                                    <input type="text" autocomplete='off' id="txtUsername" name="name" class="clearValues" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
                                 </label>
                                 <label><i class="ti-email"></i>
-                                     <input type="email" autocomplete='off' id="txtEmail" name="email" placeholder="Email" />
+                                     <input type="email" autocomplete='off' id="txtEmail" name="email" class="clearValues" placeholder="Email" />
                                 </label>
-                                    <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
-                                    <input type="hidden" autocomplete='off' id="txtStatusUser" name="fStatusUser" />
+                                    <input type="hidden" autocomplete='off' id="txtIdOrganization" class="clearValues" name="fIdOrganization" />
+                                    <input type="hidden" autocomplete='off' id="txtStatusUser" class="clearValues" name="fStatusUser" />
                             </div>
                             <div class='login'>
                                 <label><i class="ti-user"></i>
@@ -106,11 +106,11 @@ grupofns();
                             </div>
                             <div class='global'>
                                 <label><i class="ti-lock"></i>
-                                    <input type="password" class='gstdep' autocomplete='off' id="txtPassword" name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
+                                    <input type="password" class='gstdep clearValues' autocomplete='off' id="txtPassword" name="pass" placeholder="<?php pr(gr_lang('get', 'password')) ?>" />
                                 </label>
                             </div>
                             <label id="fieldRepeatPassword"><i class="ti-lock"></i>
-                                <input type="password" class='gstdep' autocomplete='off' id="txtRepeatPassword" name="repeat_pass" placeholder="Repeat Password" />
+                                <input type="password" class='gstdep clearValues' autocomplete='off' id="txtRepeatPassword" name="repeat_pass" placeholder="Repeat Password" />
                             </label>
 
                         </div>

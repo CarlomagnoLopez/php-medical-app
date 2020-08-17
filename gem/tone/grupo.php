@@ -2476,7 +2476,7 @@ input:checked + .slider:before {
     cursor : pointer;
 }
 
-.closeFame{
+.closeFrame{
   position: absolute;
   margin-top: 5%;
   border: none;

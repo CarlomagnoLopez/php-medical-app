@@ -481,7 +481,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             if(sms.statusCode==200){
                 var verificationCode = prompt('Please input verification code', '');
                 if(verificationCode === code){
-                    $("#txtStatusUser").val(1);
+                  //  $("#txtStatusUser").val(1);
                     var s = 'eval(data);';
                     ajxx(_self, '', s, 0, e);
                 }else{

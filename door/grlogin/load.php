@@ -8,7 +8,7 @@ function gr_register($do) {
             }
             $do["email"] = vc($do["email"], 'email');
             // $do["name"] = vc($do["name"], 'alphanum');
-            $do["name"] = vc($do["name"]);
+            $do["name"]  = vc($do["name"]);
             $do["fname"] = vc($do["fname"], 'strip');
             if (empty($do["fname"]) || empty($do["name"]) || empty($do["email"]) || empty($do["pass"]) || empty($do["fphonenumber"]) || empty($do['fcomplementPhone'])  ) { 
               //gr_prnt('$.toast("'.gr_lang('get', 'invalid_value').'");');
@@ -21,24 +21,28 @@ function gr_register($do) {
                     gr_data('i', 'profile', 'name', $do["fname"], $id);
                    // gr_mail('verify', $id, 0, rn(5));
                    // gr_prnt('$.toast("'.gr_lang('get', 'check_inbox').'","s");');
-
-                   $id              = $reg[2]['id'];
-                   $status          = $reg[2]['status'];
-                   $id_organization = $reg[2]['id_organization'];
-                   $role            = $reg[2]['role'];
-                   $phone           = $reg[2]['phone'];
-                   $name            = $reg[2]['name'];
-                   $email           = $reg[2]['email'];
-   
-                    gr_prnt('setTimeout(function() {
-                            sessionStorage.setItem("id","'.$id.'");
-                            sessionStorage.setItem("status","'.$status.'");
-                            sessionStorage.setItem("id_organization","'.$id_organization.'");
-                            sessionStorage.setItem("role","'.$role.'");
-                            sessionStorage.setItem("phone","'.$phone.'");
-                            sessionStorage.setItem("name","'.$name.'");
-                            sessionStorage.setItem("email","'.$email.'");
-                            location.reload(); }, 2000);');
+                   if($do["fStatusUser"] == '1'){
+                        $id              = $reg[2]['id'];
+                        $status          = $reg[2]['status'];
+                        $id_organization = $reg[2]['id_organization'];
+                        $role            = $reg[2]['role'];
+                        $phone           = $reg[2]['phone'];
+                        $name            = $reg[2]['name'];
+                        $email           = $reg[2]['email'];
+                        
+                        gr_prnt('setTimeout(function() {
+                                sessionStorage.setItem("id","'.$id.'");
+                                sessionStorage.setItem("status","'.$status.'");
+                                sessionStorage.setItem("id_organization","'.$id_organization.'");
+                                sessionStorage.setItem("role","'.$role.'");
+                                sessionStorage.setItem("phone","'.$phone.'");
+                                sessionStorage.setItem("name","'.$name.'");
+                                sessionStorage.setItem("email","'.$email.'");
+                                location.reload(); }, 2000);');
+                    }else{
+                        $username = $do["name"];
+                        gr_prnt('$.toast("User $username created successfully.");$(".clearValues").val("");$("#selComplementPhone").val(1);$.loadingBlockHide();');
+                    }
                 }else{
                     gr_prnt('$.toast("plese try again.");$.loadingBlockHide();');
                 }

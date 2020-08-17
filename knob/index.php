@@ -564,7 +564,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     <section id="modalViewer" class="grupo-pop-modal" style="display: none;">
         <!-- <div style="position: absolute;margin-top: -64%; content: url(dist/close.png);cursor:pointer;" onclick="onClickCloseModalViewer(this)">
         </div> -->
-            <button type="button" onclick="onClickCloseModalViewer(this)" class="closeFame"></button>
+            <button type="button" onclick="onClickCloseModalViewer(this)" class="closeFrame"></button>
         <div>
              <iframe id="iframeViewer" src="" width='800' height='600'></iframe>
         </div>
