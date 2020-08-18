@@ -167,12 +167,6 @@ function saveSession($db,$uid){
     return $response;
  }
 
-
-
-
-
-
-
 function searchOrganizationBySecretKey($db,$secret_key){
     $sql = "SELECT * FROM `gr_organizations` WHERE  secret_key = '$secret_key'";
     try {

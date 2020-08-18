@@ -29,8 +29,8 @@ function gr_form($do) {
                 $do["msid"] = 0;
             }
             $reasons = gr_lang('get', 'spam').','.gr_lang('get', 'abuse').','.gr_lang('get', 'inappropriate').','.gr_lang('get', 'other');
-            $fields->reason = array(gr_lang('get', 'reason'), 'radio', $reasons, 'spam,abuse,inappropriate,other');
-            $fields->comment = array(gr_lang('get', 'comments'), 'textarea', 'text');
+            $fields->reason = array(gr_lang('get', 'reason').' *:', 'radio', $reasons, 'spam,abuse,inappropriate,other');
+            $fields->comment = array(gr_lang('get', 'comments').' *:', 'textarea', 'text');
             $fields->id = array('hidden', 'input', 'hidden', $do["id"]);
             $fields->msid = array('hidden', 'input', 'hidden', $do["msid"]);
         }

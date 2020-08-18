@@ -531,15 +531,24 @@ function gr_group() {
         }
         return $r;
     } else if ($arg[0] === 'reportmsg') {
-        $r = db('Grupo', 's', 'msgs', 'id,gid', $arg[1]["msid"], $arg[1]["id"]);
-        if (count($r) > 0 || empty($arg[1]["msid"])) {
-            $cu = gr_group('user', $arg[1]["id"], $uid);
-            if ($cu[0] && $cu['role'] != 3) {
-                if (isset($arg[1]["reason"]) && isset($arg[1]["comment"]) && !empty($arg[1]["comment"])) {
-                    db('Grupo', 'i', 'complaints', 'gid,uid,msid,type,comment,tms', $arg[1]["id"], $uid, $arg[1]["msid"], $arg[1]["reason"], $arg[1]["comment"], dt());
-                    gr_prnt('$(".grupo-pop > div > form > span.cancel").trigger("click");say("'.gr_lang('get', 'reported').'","s");');
-                } else {
-                    gr_prnt('say("'.gr_lang('get', 'invalid_value').'");');
+        if(empty($arg[1]["reason"])){
+            $invalidInput = "The field reason is required.";
+            gr_prnt('say("'.$invalidInput.'");');
+    
+        }else if(empty($arg[1]["comment"])){
+            $invalidInput = "The field comments is required.";
+            gr_prnt('say("'.$invalidInput.'");');
+        }else{
+            $r = db('Grupo', 's', 'msgs', 'id,gid', $arg[1]["msid"], $arg[1]["id"]);
+            if (count($r) > 0 || empty($arg[1]["msid"])) {
+                $cu = gr_group('user', $arg[1]["id"], $uid);
+                if ($cu[0] && $cu['role'] != 3) {
+                    if (isset($arg[1]["reason"]) && isset($arg[1]["comment"]) && !empty($arg[1]["comment"])) {
+                        db('Grupo', 'i', 'complaints', 'gid,uid,msid,type,comment,tms', $arg[1]["id"], $uid, $arg[1]["msid"], $arg[1]["reason"], $arg[1]["comment"], dt());
+                        gr_prnt('$(".grupo-pop > div > form > span.cancel").trigger("click");say("'.gr_lang('get', 'reported').'","s");');
+                    } else {
+                        gr_prnt('say("'.gr_lang('get', 'invalid_value').'");');
+                    }
                 }
             }
         }
