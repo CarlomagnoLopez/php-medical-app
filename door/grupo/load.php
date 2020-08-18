@@ -849,12 +849,13 @@ function gr_group() {
                 $list[1] = new stdClass();
                 if (gr_profile('blocked', $orgid)) {
                     $list[0]->blocked = 1;
-                    $list[1]->mb = array($lphr['unblock_user'], 'class="formpop" pn="1" title="'.$lphr['unblock_user'].'" do="profile" btn="'.$lphr['unblock'].'" act="block"');
+                    $list[1]->mb = array('Unblock User', 'class="formpop" pn="1" title="Unblock User" do="profile" btn="Unblock" act="block"');
+                }else{
+                    $list[1]->mb = array('Block User', 'class="formpop" pn="1" title="Block User" do="profile" btn="Block" act="block"');
                 }
                 if (count($deac) == 0 && $list[0]->blocked != 1) {
                     $list[1]->ma = array($lphr['view_profile'], 'class="vwp" no="'.$orgid.'"');
                 }
-                $list[1]->mb = array($lphr['block_user'], 'class="formpop" pn="1" title="'.$lphr['block_user'].'" do="profile" btn="'.$lphr['block'].'" act="block"');
                 if (gr_role('access', 'privatemsg', '3')) {
                     $list[1]->mc = array($lphr['export_chat'], 'class="formpop" pn="1" title="'.$lphr['export_chat'].'" do="group" btn="'.$lphr['export_chat'].'" act="export"');
                 }
@@ -1050,7 +1051,8 @@ function gr_group() {
                 $dt['msg'] = 'blocked_group_user';
                 gr_group('sendmsg', $dt, 1, 1, $arg[1]["usid"]);
                 gr_data('u', 'v3', 'type,v1,v2', 3, 'gruser', $arg[1]["id"], $arg[1]["usid"]);
-                gr_prnt('$(".grtab.active").trigger("click");$(".grupo-pop > div > form > span.cancel").trigger("click");');
+                gr_prnt('$(".grtab.active").trigger("click");$(".grupo-pop > div > form > span.cancel").trigger("click");$(".grupo-pop > div > form > input[type=submit]").attr("value","Block");');
+                // btn="'.$lphr['report'].'"
             }
         }
     } else if ($arg[0] === 'unblock') {
@@ -1063,7 +1065,7 @@ function gr_group() {
         if ($arg[1]["usid"] != $uid && $norc == 0) {
             if (gr_role('access', 'groups', '7') || $role == 2 || $role == 1) {
                 gr_data('u', 'v3', 'type,v1,v2', 0, 'gruser', $arg[1]["id"], $arg[1]["usid"]);
-                gr_prnt('$(".grtab.active").trigger("click");$(".grupo-pop > div > form > span.cancel").trigger("click");');
+                gr_prnt('$(".grtab.active").trigger("click");$(".grupo-pop > div > form > span.cancel").trigger("click");$(".grupo-pop > div > form > input[type=submit]").attr("value","Unblock");');
                 $dt = array();
                 $dt['id'] = $arg[1]["id"];
                 $dt['msg'] = 'unblocked_group_user';

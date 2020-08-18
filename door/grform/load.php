@@ -343,9 +343,9 @@ function gr_form($do) {
         $vusr = db('Grupo', 's,count(*)', 'users', 'id', $do["id"])[0][0];
         if ($vusr > 0) {
             if (gr_profile('blocked', $do["id"])) {
-                $fields->name = array(gr_lang('get', 'confirm_unblock'), 'input', 'disabled', '"'.gr_profile('get', $do["id"], 'name').'"');
+                $fields->name = array('Confirm Unblock', 'input', 'disabled', '"'.gr_profile('get', $do["id"], 'name').'"');
             } else {
-                $fields->name = array(gr_lang('get', 'confirm_block'), 'input', 'disabled', '"'.gr_profile('get', $do["id"], 'name').'"');
+                $fields->name = array('Confirm Block', 'input', 'disabled', '"'.gr_profile('get', $do["id"], 'name').'"');
             }
             $fields->id = array('hidden', 'input', 'hidden', $do["id"]);
         }
