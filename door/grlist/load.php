@@ -384,9 +384,11 @@ function gr_list($do) {
             exit;
         }
         $i = 0;
-        $lists = db('Grupo', 's', 'options', 'type,v1,v2|,v2', 'profile', 'status', 'online', 'idle');
+        // online
+     //   $lists = db('Grupo', 's', 'options', 'type,v1,v2|,v2', 'profile', 'status', 'online', 'idle');
+        $lists = db('Grupo', 'q', 'SELECT opt.id,opt.type,opt.v1,opt.v2,opt.v3,opt.v4,opt.v5,opt.tms,usr.id_organization FROM gr_options as opt INNER JOIN gr_users as usr on opt.v3 = usr.id WHERE opt.type="profile" AND opt.v1="status" AND opt.v2="online" and usr.id_organization="'.$id_organization.'" ');
         foreach ($lists as $f) {
-            if ($f['v3'] !== $uid) {
+         //   if ($f['v3'] !== $uid) {
                 $list[$i] = new stdClass();
                 $list[$i]->img = gr_img('users', $f['v3']);
                 $list[$i]->name = gr_profile('get', $f['v3'], 'name');
@@ -412,7 +414,7 @@ function gr_list($do) {
                 }
                 $list[$i]->icon = "'status ".$f['v2']."'";
                 $list[$i]->id = 'data-sort="'.strtotime($f['tms']).'"';
-            }
+        //    }
             $i = $i+1;
         }
     } else if ($do["type"] === "roles") {

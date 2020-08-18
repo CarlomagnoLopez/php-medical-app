@@ -321,7 +321,6 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
     doer=1;
     if (doer === 1) {
     
-
         var _self = $(this);    
 
         if(window.isLogin){
@@ -336,23 +335,21 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 $("#txtPassword").focus();
                 return false;
             }
- 
-            
+            $.loadingBlockShow({
+                imgPath: './asset/default.svg',
+                text: 'Loading...',
+                style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+            });           
 
             var getData = JSON.parse(getDataUserByUsername( $("#txtUsernameLogin").val() )); 
             if(!getData.exist){
                 $.toast("the username:"+$("#txtUsernameLogin").val()+" doesn't exist.");
                 $("#txtUsernameLogin").focus();
+                $.loadingBlockHide();
                 return false;
             }
 
-            $.loadingBlockShow({
-                imgPath: './asset/default.svg',
-                text: 'Loading...',
-                style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
-            });
- 
-          
+      
                 var phone = getData.data.phone;
                 var code  = generateCode();
                 console.log(code);
@@ -370,6 +367,7 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                             var s = 'eval(data);';
                             ajxx(_self, '', s, 0, e);
                         }else{
+                            $.loadingBlockHide();
                             $.toast("invalida code");
                         }
                     },
