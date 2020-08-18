@@ -258,16 +258,28 @@ function onClickList(filename,typefile){
 }
 function showFileViewer(filename,typefile){
     if(filename!="undefined"){
+        $(".previewPDF").hide();
+        $("#wrap").hide();
         if(typefile == 'application/pdf'){
+            $(".previewPDF").show();
             var link = "dist/ViewerJS/#../../gem/ore/"+filename;
+            $("#iframeViewer").attr('src',link);
         }else{
+            $("#wrap").show();
             var link = "gem/ore/"+filename;
+            var viewer = new ViewBigimg();
+            viewer.show(link)
+            
         }
-        $("#iframeViewer").attr('src',link);
         $("#modalViewer").fadeIn();
-       
     }
 }
+
+
+$('body').on('click', '.iv-close', function(e) {
+    console.log("iv-close!");
+    onClickCloseModalViewer();
+});
 
 
 function onClickCloseModalViewer(event){

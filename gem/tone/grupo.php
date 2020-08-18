@@ -2478,11 +2478,18 @@ input:checked + .slider:before {
 
 .closeFrame{
   position: absolute;
-  margin-top: 5%;
+  margin-top: -55%;
   border: none;
   background: url(dist/close.png) no-repeat;
   cursor: pointer;
   z-index: 10000000000000000;
   width: 66px;
   height: 66px;
+}
+
+.wrap{
+  display:none;
+}
+.previewPDF{
+  display:none;
 }

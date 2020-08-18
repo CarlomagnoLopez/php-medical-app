@@ -25,6 +25,8 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     <link rel="shortcut icon" type="image/png" href="<?php pr(mf("grupo/global/favicon.png")); ?>" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700,700i,800" rel="stylesheet">
     <link href="https://weloveiconfonts.com/api/?family=entypo" rel="stylesheet">
+    <link rel="stylesheet" href="dist/view-bigimg-master/lib/view-bigimg.css">
+
     <?php
     cdn("npm/bootstrap@4.3.1/dist/css/bootstrap.min.css");
     cdn("npm/cd-themify-icons@0.0.1/index.css");
@@ -564,9 +566,14 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     <section id="modalViewer" class="grupo-pop-modal" style="display: none;">
         <!-- <div style="position: absolute;margin-top: -64%; content: url(dist/close.png);cursor:pointer;" onclick="onClickCloseModalViewer(this)">
         </div> -->
+        <div class="previewPDF">
             <button type="button" onclick="onClickCloseModalViewer(this)" class="closeFrame"></button>
-        <div>
-             <iframe id="iframeViewer" src="" width='800' height='600'></iframe>
+            <div>
+                <iframe id="iframeViewer" src="" width='800' height='600' allowfullscreen></iframe>
+            </div>
+        </div>
+        <div id='wrap'>
+            <img src="images/demo.jpg" alt="image">   
         </div>
     </section>
 
@@ -588,6 +595,8 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <script src="./dist/jquery.loading.block.js"></script>
+<script src="./dist/view-bigimg-master/lib/view-bigimg.js"></script>
+
 <?php
 js("ajx", "caret", "grupo");
 gr_core('hf', 'footer');
