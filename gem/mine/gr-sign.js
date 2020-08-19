@@ -361,15 +361,18 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                     type: 'POST',
                     success: function ( data ) {
                         console.log(data);
-                        var verificationCode = prompt('Please input verification code', '');
-                        if(verificationCode === code){
-                           // var getData = getDataUserByPhone( phone ); 
-                            var s = 'eval(data);';
-                            ajxx(_self, '', s, 0, e);
-                        }else{
-                            $.loadingBlockHide();
-                            $.toast("invalida code");
-                        }
+                        $.loadingBlockHide();
+                        bootbox.prompt("Please input verification code", function(result){ 
+                            console.log(result); 
+                            if(result === code){
+                                // var getData = getDataUserByPhone( phone ); 
+                                 var s = 'eval(data);';
+                                 ajxx(_self, '', s, 0, e);
+                             }else{
+                                 $.toast("invalida code");
+                             }
+                        });
+                     
                     },
                     error: function(error){
                         $.loadingBlockHide();
@@ -477,16 +480,20 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             var sms  = sendSMS(code,phone);
             console.log(code);
             if(sms.statusCode==200){
-                var verificationCode = prompt('Please input verification code', '');
-                if(verificationCode === code){
-                  //  $("#txtStatusUser").val(1);
-                    var s = 'eval(data);';
-                    ajxx(_self, '', s, 0, e);
-                }else{
-                    $.loadingBlockHide();
-                    $.toast("Invalid code");
-                    return;
-                }
+                $.loadingBlockHide();
+                bootbox.prompt("Please input verification code", function(result){ 
+                    console.log(result); 
+                    if(result === code){
+                        //  $("#txtStatusUser").val(1);
+                          var s = 'eval(data);';
+                          ajxx(_self, '', s, 0, e);
+                      }else{
+                          $.loadingBlockHide();
+                          $.toast("Invalid code");
+                          return;
+                      }
+                });
+
             }else{
                 $.loadingBlockHide();
             }

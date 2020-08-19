@@ -41,7 +41,7 @@ function gr_register($do) {
                                 location.reload(); }, 2000);');
                     }else{
                         $username = $do["name"];
-                        gr_prnt('$.toast("User $username created successfully.");$(".clearValues").val("");$("#selComplementPhone").val(1);$.loadingBlockHide();');
+                        gr_prnt('$.toast("User created successfully.");$(".clearValues").val("");$("#selComplementPhone").val(1);$.loadingBlockHide();');
                     }
                 }else{
                     gr_prnt('$.toast("plese try again.");$.loadingBlockHide();');

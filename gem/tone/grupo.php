@@ -942,7 +942,7 @@ display: inline-block;
 border-radius: 10px;
 font-style: normal;
 padding: 1px 8px;
-background: linear-gradient(to right,#F44336,#9C27B0);
+background: linear-gradient(to right,#231d1c,#261229);
 cursor: pointer;
 color: #fff;
 }
@@ -1753,7 +1753,7 @@ padding: 3px 7px;
 
 .swr-grupo .opt > ul > li:hover
 {
-background: linear-gradient(to right,#E91E63,#9C27B0);
+background: linear-gradient(to right,#231d1c,#261229);
 color: white;
 border-radius: 3px;
 }

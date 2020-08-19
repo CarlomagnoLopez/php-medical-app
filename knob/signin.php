@@ -162,6 +162,56 @@ grupofns();
     <div class='ajxprocess'><span></span></div>
 </body>
 
+<!-- <section id="modalInvite" class="grupo-pop-modal" style="display: none;">
+         <div>
+            <form autocomplete="off" id="formModalInvite" class="sizeModalInviteByPhone" >
+                <span class="head" id="titleInvite">Invite</span>
+                <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
+                    <div style="position: relative;">
+                        <label>Invite by phone</label>
+                    </div>
+                    <div style="position: relative;float: right;">
+                        <label class="switch">
+                        <input id="chkFilterModalInvite" type="checkbox" checked>
+                        <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <label>Invite by phone</label>
+
+
+                    <div class="divByPhone">
+                        <div style="margin-top: 30px;position: absolute;">
+                            <select name="fcomplementPhoneInvite" id="selProfileComplementPhoneInvite">
+                                <option value="+1" selected>+1</option>
+                                <option value="+86">+86</option>
+                                <option value="+87">+87</option>
+                                <option value="+91">+91</option>
+                                <option value="+55">+55</option>
+                                <option value="+52">+52</option>
+                            </select>
+                        </div>
+                        <label class="color-label">Phone Number</label>
+                        <input type="text" name="fPhoneNumberInvite" id="txtProfilePhoneNumberInvite" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
+                    </div>
+                    <div class="divByUser">
+                        <label style="color: black;" id="totalUsers"></label>
+                        <div>
+                            <ul id="ulListUsers" class="list-group">
+
+                            </ul>
+                        </div>
+                        
+                    </div>
+
+
+                </div>
+                <button type="button" onclick="onClickInvite(this)" class="button-submit-form  ajx grsub">Invite</button>
+                <span class="cancel" onclick="onClickCancelInvite()">Cancel</span>
+            </form>
+        </div>
+    </section> -->
+
+
 <?php
 css("custom");
 cdn("npm/jquery@3.3.1/dist/jquery.min.js");
@@ -175,6 +225,7 @@ cdn("npm/js-cookie@2/src/js.cookie.min.js");
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <script src="./dist/jquery.loading.block.js"></script>
+<script src="./dist/bootbox/bootbox.all.min.js"></script>
 
 
 <script src="./gem/mine/ajx.js"></script>
