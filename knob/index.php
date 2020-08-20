@@ -118,17 +118,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                     <div class='swr-menu r-end'>
                                         <ul>
                                             <?php
-                                            if (gr_role('access', 'files', '1')) {
-                                                ?>
-                                                <li><form class='uploadfiles' method='post' action='' enctype="multipart/form-data">
-                                                    <input type='file' multiple name='file[]' />
-                                                    <input type="hidden" name="act" value="1">
-                                                    <input type="hidden" name="type" value="upload">
-                                                    <input type="hidden" name="do" value="files">
-                                                </form>
-                                                    <span><?php pr(gr_lang('get', 'upload_file')) ?></span></li>
-                                                <?php
-                                            } if (gr_role('access', 'groups', '1')) {
+                                             if (gr_role('access', 'groups', '1')) {
                                                 ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'create_group')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='group'><?php pr(gr_lang('get', 'create_group')) ?></li>
                                                 <?php
