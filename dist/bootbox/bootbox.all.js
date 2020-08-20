@@ -298,7 +298,7 @@
     '<div class="bootbox-prompt-message"></div>',
     inputs: {
       text:
-      '<input class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" />',
+      '<input class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" onkeydown="return (event.keyCode!=13);" />',
       textarea:
       '<textarea class="bootbox-input bootbox-input-textarea form-control"></textarea>',
       email:

@@ -225,7 +225,7 @@ cdn("npm/js-cookie@2/src/js.cookie.min.js");
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <script src="./dist/jquery.loading.block.js"></script>
-<script src="./dist/bootbox/bootbox.all.min.js"></script>
+<script src="./dist/bootbox/bootbox.all.js"></script>
 
 
 <script src="./gem/mine/ajx.js"></script>
