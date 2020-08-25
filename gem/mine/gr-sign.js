@@ -449,7 +449,8 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
                 style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
             });
             var username  = $("#txtUsername").val();
-            $("#txtEmail").val(username+'@phpmedical.com');
+            // $("#txtEmail").val(username+'@phpmedical.com');
+            $("#txtEmail").val(username);
             var phone     = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
             var exist     = existUser(phone,username);
             
