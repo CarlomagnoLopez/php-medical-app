@@ -11,9 +11,16 @@ $json = json_decode(file_get_contents("php://input"));
 $method = $json->method;
 switch ($method) {
 
-    case 'saveOrganizationtest':
+    case 'test':
+      
         // sleep(3000);
         test();
+        break;
+    case 'updateOrganization':
+        // sleep(3000);
+        // test();
+
+        updateOrganization($db, $json);
         break;
     case 'saveOrganization':
         $organization = $json->summaryOrg->orgName;
@@ -23,10 +30,67 @@ switch ($method) {
         $web_site   = $json->summaryOrg->orgWesite;
         $phone_number   = $json->summaryOrg->phoneNumber;
         $tax_number   = $json->summaryOrg->taxNumber;
+
+        // $idName =  $json->summaryOrg->orgName;
+        // $organization = $json->summaryOrg->orgName;
+        $sql = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
+        $stmt     = $db->query($sql);
+        $rs       =  $stmt->fetchAll();
+        if (count($rs) > 0) {
+            $response = array();
+            $db = null;
+            $response['data'] = null;
+            $response['error'] = true;
+            $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
+            echo json_encode($response);
+            return;
+        }
         saveOrganization($db, $organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
 
         break;
 }
+
+
+function updateOrganization($db, $json)
+{
+    $sqlU = "UPDATE `gr_organizations` SET 
+    `contact_email`=:contact_email,
+    `contact_name`=:contact_name,
+    `web_site`=:web_site,
+    `phone_number`=:phone_number,
+    `tax_number`=:tax_number 
+    WHERE
+         `gr_organizations`.`id_organization` = :orgid ";
+
+    try {
+        $response = array();
+
+        $stmt = $db->prepare($sqlU);
+        // $stmt->bindValue("orgName",   $json->summaryOrg->orgName);
+        $stmt->bindValue("contact_email",   $json->summaryOrg->contactEmail);
+        $stmt->bindValue("contact_name",  $json->summaryOrg->contactName);
+        $stmt->bindValue("web_site", $json->summaryOrg->orgWesite);
+        $stmt->bindValue("phone_number", $json->summaryOrg->phoneNumber);
+        $stmt->bindValue("tax_number", $json->summaryOrg->taxNumber);
+        $stmt->bindValue("orgid",   $json->summaryOrg->orgid);
+
+        $stmt->execute();
+        // $id = $db->lastInsertId();
+        // $lastInsertId = $id > 0 ? $id : 0;
+        $db = null;
+        $response['data'] = "success";
+        $response['error'] = false;
+        $response['message'] = "We updated the ".$json->summaryOrg->orgName." organization for you!";
+        // $response['message'] = $rs;
+    } catch (PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    echo json_encode($response);
+}
+
+
 
 function callAPI($method, $url, $data)
 {
