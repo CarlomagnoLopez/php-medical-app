@@ -11,24 +11,9 @@ $json = json_decode(file_get_contents("php://input"));
 $method = $json->method;
 switch ($method) {
 
-    case 'userlist':
-
-
-        // test();
-        getUserByUSer($db, $json);
-        break;
-
-
-    case 'test':
-
+    case 'saveOrganizationtest':
         // sleep(3000);
         test();
-        break;
-    case 'updateOrganization':
-        // sleep(3000);
-        // test();
-
-        updateOrganization($db, $json);
         break;
     case 'saveOrganization':
         $organization = $json->summaryOrg->orgName;
@@ -38,99 +23,10 @@ switch ($method) {
         $web_site   = $json->summaryOrg->orgWesite;
         $phone_number   = $json->summaryOrg->phoneNumber;
         $tax_number   = $json->summaryOrg->taxNumber;
-
-        // $idName =  $json->summaryOrg->orgName;
-        // $organization = $json->summaryOrg->orgName;
-        $sql = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
-        $stmt     = $db->query($sql);
-        $rs       =  $stmt->fetchAll();
-        if (count($rs) > 0) {
-            $response = array();
-            $db = null;
-            $response['data'] = null;
-            $response['error'] = true;
-            $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
-            echo json_encode($response);
-            return;
-        }
         saveOrganization($db, $organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
 
         break;
 }
-
-function getUserByUSer($db, $json)
-{
-    try {
-        $sql = "SELECT * FROM `gr_users`";
-        $stmt     = $db->query($sql);
-        $rs       =  $stmt->fetchAll();
-        if (count($rs) > 0) {
-
-        }
-        // $data_array =  array(
-        //     "sms"   => "",
-        //     "type"  => "signuplink",
-        //     "phone" => "+525567733943"
-        // );
-        // $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-        // $response  = json_decode($make_call, true);
-        // $data    = $response['body']['MessageId'];
-        // $statusCode = $response['statusCode'];
-        // $data = "message test";
-        $response = array();
-        $response['data'] = $rs[0];
-        $response['error'] = false;
-        $response['message'] = "Get users for admin.";
-    } catch (PDOException $e) {
-        $response['data'] = null;
-        $response['error'] = true;
-        $response['message'] = "An error occurred, try again.";
-    }
-    echo json_encode($response);
-}
-
-
-
-function updateOrganization($db, $json)
-{
-    $sqlU = "UPDATE `gr_organizations` SET 
-    `contact_email`=:contact_email,
-    `contact_name`=:contact_name,
-    `web_site`=:web_site,
-    `phone_number`=:phone_number,
-    `tax_number`=:tax_number 
-    WHERE
-         `gr_organizations`.`id_organization` = :orgid ";
-
-    try {
-        $response = array();
-
-        $stmt = $db->prepare($sqlU);
-        // $stmt->bindValue("orgName",   $json->summaryOrg->orgName);
-        $stmt->bindValue("contact_email",   $json->summaryOrg->contactEmail);
-        $stmt->bindValue("contact_name",  $json->summaryOrg->contactName);
-        $stmt->bindValue("web_site", $json->summaryOrg->orgWesite);
-        $stmt->bindValue("phone_number", $json->summaryOrg->phoneNumber);
-        $stmt->bindValue("tax_number", $json->summaryOrg->taxNumber);
-        $stmt->bindValue("orgid",   $json->summaryOrg->orgid);
-
-        $stmt->execute();
-        // $id = $db->lastInsertId();
-        // $lastInsertId = $id > 0 ? $id : 0;
-        $db = null;
-        $response['data'] = "success";
-        $response['error'] = false;
-        $response['message'] = "We updated the " . $json->summaryOrg->orgName . " organization for you!";
-        // $response['message'] = $rs;
-    } catch (PDOException $e) {
-        $response['data'] = null;
-        $response['error'] = true;
-        $response['message'] = "An error occurred, try again." . $e->getMessage();
-    }
-    echo json_encode($response);
-}
-
-
 
 function callAPI($method, $url, $data)
 {
