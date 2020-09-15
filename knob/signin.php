@@ -41,7 +41,7 @@ grupofns();
                             <input type="hidden" name="do" class='doz' value='login' />
                             <div class='register d-none'>
                                 <label><i class="ti-key"></i>
-                                    <input type="text" autocomplete='off' id="txtSecretKey" name="fsecretkey" class="clearValues" placeholder="Secret Key"/>
+                                    <input type="password" autocomplete='off' id="txtSecretKey" name="fsecretkey" class="clearValues" placeholder="Secret Key" maxlength="5"/>
                                 </label>
                                 <label><i class="ti-layout-cta-right"></i>
                                     <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" class="clearValues" placeholder="Organization name"/>
