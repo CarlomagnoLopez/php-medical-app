@@ -1,5 +1,5 @@
-Order Deny,Allow
-deny from all
+Order allow,deny
+Allow from all
 <Files ~ "\.(jpg|jpeg|png|gif|svg|flv|mp3|wav|mp4|ogg|pdf)$">
     allow from all
 </Files>

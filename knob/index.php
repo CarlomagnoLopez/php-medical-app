@@ -1,24 +1,28 @@
-<?php if(!defined('s7V9pz')) {die();}?><?php
-fnc('grupo');
-$usr = usr('Grupo');
-//var_dump($usr);
-if (!$usr['active']) {
-    rt('signin');
-}
-grupofns();
-gr_unverified();
-gr_profile('ustatus', 'online');
-gr_usip('add');
-$org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.$usr['id_organization']);
+<?php if (!defined('s7V9pz')) {
+    die();
+} ?><?php
+    fnc('grupo');
+    $usr = usr('Grupo');
+    //var_dump($usr);
+    if (!$usr['active']) {
+        rt('signin');
+    }
+    grupofns();
+    gr_unverified();
+    gr_profile('ustatus', 'online');
+    gr_usip('add');
+    $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization=' . $usr['id_organization']);
 
 
-?>
+    ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no">    <title><?php pr(gr_default('get', 'sitename').' - '.gr_default('get', 'siteslogan')); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no">
+    <title><?php pr(gr_default('get', 'sitename') . ' - ' . gr_default('get', 'siteslogan')); ?></title>
     <meta name="description" content="<?php pr(gr_default('get', 'sitedesc')); ?>">
     <meta name="author" content="BaeVox">
     <meta name="generator" content="Grupo - Powered by BaeVox">
@@ -40,6 +44,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
 <input type="hidden" id="global_role" value="<?php pr($usr['role']); ?>">
 <input type="hidden" id="global_id_user" value="<?php pr($usr['id']); ?>">
 <input type="hidden" id="global_id_organization" value="<?php pr($usr['id_organization']); ?>">
+
 <body>
 
     <div class='gr-preloader'>
@@ -61,47 +66,54 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                             <li class='formpop' title='<?php pr(gr_lang('get', 'change_avatar')) ?>' do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' act='avatar'><?php pr(gr_lang('get', 'change_avatar')) ?></li>
                                             <?php
                                             if (gr_role('access', 'fields', '4')) {
-                                                ?>
+                                            ?>
                                                 <li class='loadside' act='ufields' zero='0' zval='<?php pr(gr_lang('get', 'zero_fields')) ?>' side='lside'><?php pr(gr_lang('get', 'fields')) ?></li>
-                                                <?php
+                                            <?php
                                             }
                                             if (gr_role('access', 'users', '4')) {
-                                                ?>
+                                            ?>
                                                 <li class='loadside' act='users' side='lside' zero='0' zval='<?php pr(gr_lang('get', 'zero_users')) ?>'><?php pr(gr_lang('get', 'users')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'roles', '3')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'roles', '3')) {
+                                            ?>
                                                 <li class='loadside' act='roles' zero='0' zval='<?php pr(gr_lang('get', 'zero_roles')) ?>' side='lside'><?php pr(gr_lang('get', 'roles')) ?></li>
-                                                <?php
+                                            <?php
                                             }
                                             if (gr_role('access', 'users', '5')) {
-                                                ?>
+                                            ?>
                                                 <li class='loadside' act='online' zero='0' zval='<?php pr(gr_lang('get', 'zero_online')) ?>' side='lside'><?php pr(gr_lang('get', 'online')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'languages', '4')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'languages', '4')) {
+                                            ?>
                                                 <li class='loadside' act='languages' zero='0' zval='<?php pr(gr_lang('get', 'zero_languages')) ?>' side='lside'><?php pr(gr_lang('get', 'languages')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'sys', '2')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'sys', '2')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'appearance')) ?>' do='system' btn='<?php pr(gr_lang('get', 'update')) ?>' act='appearance'><?php pr(gr_lang('get', 'appearance')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'sys', '5')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'sys', '5')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'header_footer')) ?>' do='system' btn='<?php pr(gr_lang('get', 'update')) ?>' act='hf'><?php pr(gr_lang('get', 'header_footer')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'sys', '3')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'sys', '3')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'banip')) ?>' do='system' btn='<?php pr(gr_lang('get', 'update')) ?>' act='banip'><?php pr(gr_lang('get', 'banip')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'sys', '4')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'sys', '4')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'filterwords')) ?>' do='system' btn='<?php pr(gr_lang('get', 'update')) ?>' act='filterwords'><?php pr(gr_lang('get', 'filterwords')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'sys', '1')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'sys', '1')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'settings')) ?>' do='system' btn='<?php pr(gr_lang('get', 'update')) ?>' act='settings'><?php pr(gr_lang('get', 'settings')) ?></li>
-                                                <?php
+                                            <?php
                                             }
                                             ?>
                                             <li class='ajx switchmode' data-act=1 data-do='profile' data-type='mode'><?php gr_profile('mode'); ?></li>
@@ -111,33 +123,37 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                     </div>
                                 </i>
                             </span>
-                            <span class='logo'><?php pr( $org[0]['organization'] ); ?></span>
+                            <span class='logo'><?php pr($org[0]['organization']); ?></span>
                             <span class='icons'>
                                 <i class='ti-bell malert goright d-md-none' data-block='alerts'><?php gr_alerts('count', 1); ?></i>
                                 <i class="ti-plus subnav">
                                     <div class='swr-menu r-end'>
                                         <ul>
                                             <?php
-                                             if (gr_role('access', 'groups', '1')) {
-                                                ?>
+                                            if (gr_role('access', 'groups', '1')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'create_group')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='group'><?php pr(gr_lang('get', 'create_group')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'users', '1')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'users', '1')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'create_user')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='user'><?php pr(gr_lang('get', 'create_user')) ?></li>
-                                                <?php
-                                            }if (gr_role('access', 'roles', '1')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'roles', '1')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'create_role')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='role'><?php pr(gr_lang('get', 'create_role')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'languages', '1')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'languages', '1')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'add_language')) ?>' do='create' btn='<?php pr(gr_lang('get', 'add')) ?>' act='language'><?php pr(gr_lang('get', 'add_language')) ?></li>
-                                                <?php
-                                            } if (gr_role('access', 'fields', '1')) {
-                                                ?>
+                                            <?php
+                                            }
+                                            if (gr_role('access', 'fields', '1')) {
+                                            ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'add_custom_field')) ?>' do='create' btn='<?php pr(gr_lang('get', 'add')) ?>' act='customfield'><?php pr(gr_lang('get', 'add_custom_field')) ?></li>
-                                                <?php
+                                            <?php
                                             } ?>
                                         </ul>
                                     </div>
@@ -153,15 +169,15 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                 <li id="liGroups" class='active' act='groups' side='lside' zero='0' unseen='<?php pr(gr_group('unseen')) ?>' zval='<?php pr(gr_lang('get', 'zero_groups')) ?>'><?php pr(gr_lang('get', 'groups')) ?> <i></i></li>
                                 <?php
                                 if (gr_role('access', 'privatemsg', '2')) {
-                                    ?>
+                                ?>
                                     <li act='pm' side='lside' zero='0' unread='0' zval='<?php pr(gr_lang('get', 'zero_pm')) ?>'><?php pr(gr_lang('get', 'pm')) ?> <i></i></li>
-                                    <?php
+                                <?php
                                 } ?>
                                 <?php
                                 if (gr_role('access', 'files', '5')) {
-                                    ?>
+                                ?>
                                     <li act='files' side='lside' zero='0KB' zval='<?php pr(gr_lang('get', 'zero_files')) ?>'><?php pr(gr_lang('get', 'files')) ?></li>
-                                    <?php
+                                <?php
                                 } ?>
 
                                 <li id="liOptions" side='lside' class='xtra'></li>
@@ -185,9 +201,9 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                             <span class='right'>
                                 <?php
                                 if (gr_role('access', 'files', '6')) {
-                                    ?>
+                                ?>
                                     <i class='icon ti-folder goback d-md-none' data-block="files"></i>
-                                    <?php
+                                <?php
                                 } ?>
                                 <i class='ti-view-grid goright d-md-none' data-block='crew'></i>
                                 <i class="ti-more-alt subnav">
@@ -221,16 +237,17 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                     <i class='gr-response d-none'></i>
                                     <?php
                                     if (gr_role('access', 'files', '4')) {
-                                        ?>
-                                        <i class='gr-attach'><form class='atchmsg' enctype="multipart/form-data">
-                                            <input type="hidden" name="act" value="1">
-                                            <input type="hidden" name="do" value="group">
-                                            <input type="hidden" name="id" class='gid'>
-                                            <input type="hidden" name="type" value="attachmsg">
-                                            <input type='file' name='attachfile' class='attachfile' />
-                                        </form>
+                                    ?>
+                                        <i class='gr-attach'>
+                                            <form class='atchmsg' enctype="multipart/form-data">
+                                                <input type="hidden" name="act" value="1">
+                                                <input type="hidden" name="do" value="group">
+                                                <input type="hidden" name="id" class='gid'>
+                                                <input type="hidden" name="type" value="attachmsg">
+                                                <input type='file' name='attachfile' class='attachfile' />
+                                            </form>
                                         </i>
-                                        <?php
+                                    <?php
                                     } ?>
                                     <i class='gr-emoji'></i>
                                 </span>
@@ -248,7 +265,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                                 <span class="vwp" no="<?php pr($usr['id']); ?>">
                                     <img src="<?php pr(gr_img('users', $usr['id'])); ?>">
                                     <span><?php pr(gr_profile('get', $usr['id'], 'name')); ?>
-                                        <span>@<?php pr(   explode("@", usr('Grupo', 'select', $usr['id'])['email'])[0] );  ?></span>
+                                        <span>@<?php pr(explode("@", usr('Grupo', 'select', $usr['id'])['email'])[0]);  ?></span>
                                     </span>
                                 </span></span>
                             <span class='right'>
@@ -327,7 +344,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <input type="hidden" name="act" value="1">
                 <input type="hidden" name="do" class="grdo">
                 <input type="hidden" name="type" class="grtype">
-                <input type="hidden" name="global_group_selected" id="global_group_selected" >
+                <input type="hidden" name="global_group_selected" id="global_group_selected">
                 <input type="hidden" name="global_role" value="<?php pr($usr['role']); ?>">
                 <input type="hidden" name="global_id_user" value="<?php pr($usr['id']); ?>">
                 <input type="hidden" name="global_id_organization" value="<?php pr($usr['id_organization']); ?>">
@@ -346,32 +363,32 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
         </div>
     </section>
     <div class="out d-none"></div>
-    <span class='autodelmsgz d-none'><?php pr(vc(gr_default('get', 'autodeletemsg'),'num')) ?></span>
+    <span class='autodelmsgz d-none'><?php pr(vc(gr_default('get', 'autodeletemsg'), 'num')) ?></span>
     <div class="dumb d-none">
         <span class='liveupdate'><?php pr(gr_lang('get', 'refresh')) ?></span>
         <span class="loadgroup"></span>
         <audio id='gralert'>
             <source src="gem/ore/grupo/global/alert.mp3" />
         </audio>
-        <input type='hidden' class='hidid' value=1/>
-        <li  class='loadside ruserz' act='rusers' zero='0' zval='<?php pr(gr_lang('get', 'zero_users')) ?>' side='rside'><?php pr(gr_lang('get', 'users')) ?></li>
+        <input type='hidden' class='hidid' value=1 />
+        <li class='loadside ruserz' act='rusers' zero='0' zval='<?php pr(gr_lang('get', 'zero_users')) ?>' side='rside'><?php pr(gr_lang('get', 'users')) ?></li>
     </div>
 
- 
+
     <section id="modalCreateUser" class="grupo-pop-modal" style="display: none;">
         <div>
-            <form autocomplete="off" style="height: 750px !important;"> 
+            <form autocomplete="off" style="height: 750px !important;">
                 <span class="head">Create User</span>
                 <div class="fields scroller" tabindex="5">
-                     <label class="color-label">Name</label>
-                     <input type="text" name="fName" id="txtName" class="margin-input">
-                     <label class="color-label">Last Name</label>
-                     <input type="text" name="fLastName" id="txtLastName" class="margin-input">
-                     <label class="color-label">Address</label>
-                     <input type="text" name="fAddress" id="txtAddress" class="margin-input">
-                     <label class="color-label">ZipCode</label>
-                     <input type="text" name="fZipCode" id="txtZipCode" class="margin-input only-numbers zipCodeLimit">
-                     <div style="margin-top: 30px;position: absolute;">
+                    <label class="color-label">Name</label>
+                    <input type="text" name="fName" id="txtName" class="margin-input">
+                    <label class="color-label">Last Name</label>
+                    <input type="text" name="fLastName" id="txtLastName" class="margin-input">
+                    <label class="color-label">Address</label>
+                    <input type="text" name="fAddress" id="txtAddress" class="margin-input">
+                    <label class="color-label">ZipCode</label>
+                    <input type="text" name="fZipCode" id="txtZipCode" class="margin-input only-numbers zipCodeLimit">
+                    <div style="margin-top: 30px;position: absolute;">
                         <select name="fcomplementPhone" id="selComplementPhone">
                             <option value="1" selected>+1</option>
                             <option value="86">+86</option>
@@ -380,49 +397,49 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                             <option value="55">+55</option>
                             <option value="52">+52</option>
                         </select>
-                     </div>
-                     <label class="color-label">Phone Number</label>
-                     <input type="text" name="fPhoneNumber" id="txtPhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
-                     <label class="color-label">Username</label>
-                     <input type="text" name="fEmail" id="txtEmail" class="margin-input">   
-                     <label class="color-label">Password</label>
-                     <input type="password"  name="fPassword" id="txtPassword" class="margin-input">    
-                     <label class="color-label">Repeat Password</label>
-                     <input type="password"  name="fRepeatPass" id="txtRepeatPassword" class="margin-input">    
-                     <label class="color-label">Role</label>
-                     <select name="sent" class="margin-input color-label" id="selRole">
-                      <option value="0">-----</option>
-                      <option value="6">User</option>
-                      <option value="5">Approver</option>
-                      <option value="2">Org Admin</option>
-                     </select>
+                    </div>
+                    <label class="color-label">Phone Number</label>
+                    <input type="text" name="fPhoneNumber" id="txtPhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
+                    <label class="color-label">Username</label>
+                    <input type="text" name="fEmail" id="txtEmail" class="margin-input">
+                    <label class="color-label">Password</label>
+                    <input type="password" name="fPassword" id="txtPassword" class="margin-input">
+                    <label class="color-label">Repeat Password</label>
+                    <input type="password" name="fRepeatPass" id="txtRepeatPassword" class="margin-input">
+                    <label class="color-label">Role</label>
+                    <select name="sent" class="margin-input color-label" id="selRole">
+                        <option value="0">-----</option>
+                        <option value="6">User</option>
+                        <option value="5">Approver</option>
+                        <option value="2">Org Admin</option>
+                    </select>
 
-                     <input type="hidden" autocomplete='off' id="txtUsername" name="fUsername"/>
-                     <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
-                     <input type="hidden" autocomplete='off' id="txtStatusUser" name="fStatusUser" />
+                    <input type="hidden" autocomplete='off' id="txtUsername" name="fUsername" />
+                    <input type="hidden" autocomplete='off' id="txtIdOrganization" name="fIdOrganization" />
+                    <input type="hidden" autocomplete='off' id="txtStatusUser" name="fStatusUser" />
 
                 </div>
                 <input type="hidden" name="act" value="1">
                 <input type="hidden" name="do" class="grdo" value="create">
                 <input type="hidden" name="type" class="grtype" value="user">
                 <input type="button" onclick="onClickFormCreateUser(this)" class="button-submit-form ajx grsub" value="Create User">
-                <span class="cancel" onclick="onClickCancelCreateUser()" >Cancel</span>
+                <span class="cancel" onclick="onClickCancelCreateUser()">Cancel</span>
             </form>
         </div>
     </section>
 
- 
+
     <section id="modalCreateGroup" class="grupo-pop-modal" style="display: none;">
         <div>
-            <form autocomplete="off" style="height: 420px !important;"> 
+            <form autocomplete="off" style="height: 420px !important;">
                 <span class="head">Create Group</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
                     <label>Group Name</label>
-                    <input type="text" name="name" id="txtGroupName" >
+                    <input type="text" name="name" id="txtGroupName">
                     <label>Password</label>
-                    <input type="password" name="password" id="txtGroupPassword" >
+                    <input type="password" name="password" id="txtGroupPassword">
                     <label>Repeat Password</label>
-                    <input type="password" name="password" id="txtGroupRepeatPassword" >
+                    <input type="password" name="password" id="txtGroupRepeatPassword">
                     <!-- <label>Icon</label>
                     <span class="fileup"> -->
                     <!-- <input type="file" name="img" class=" "  style="display: none;">
@@ -433,7 +450,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                 <input type="hidden" name="do" class="grdo" value="create">
                 <input type="hidden" name="type" class="grtype" value="group">
                 <input type="button" onclick="onClickFormCreateGroup(this)" class="button-submit-form ajx grsub" value="Create Group">
-                <span class="cancel" onclick="onClickCancelCreateGroup()" >Cancel</span>
+                <span class="cancel" onclick="onClickCancelCreateGroup()">Cancel</span>
             </form>
 
 
@@ -443,14 +460,14 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
 
     <section id="modalTakeAction" class="grupo-pop-modal" style="display: none;">
         <div>
-           <form autocomplete="off" style="height: 250px !important;"> 
+            <form autocomplete="off" style="height: 250px !important;">
                 <span class="head">Take Action</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
                     <label>Select Option from Dropdown</label>
                     <select name="opted" class="" id="selActionUser">
-                    <option value="">-----</option>
-                    <option value="0">Disable</option>
-                    <option value="1">Enable</option>
+                        <option value="">-----</option>
+                        <option value="0">Disable</option>
+                        <option value="1">Enable</option>
                     </select>
                 </div>
                 <button type="button" onclick="onClickStatusUser(this)" class="button-submit-form  ajx grsub">Confirm Change</button>
@@ -460,19 +477,19 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
     </section>
 
     <section id="modalEditProfile" class="grupo-pop-modal" style="display: none;">
-       <div>
-            <form autocomplete="off" style="height: 750px !important;"> 
+        <div>
+            <form autocomplete="off" style="height: 750px !important;">
                 <span class="head">Edit Profile</span>
                 <div class="fields scroller" tabindex="5">
-                     <label class="color-label">Name</label>
-                     <input type="text" name="fName" id="txtProfileName" class="margin-input">
-                     <label class="color-label">Last Name</label>
-                     <input type="text" name="fLastName" id="txtProfileLastName" class="margin-input">
-                     <label class="color-label">Address</label>
-                     <input type="text" name="fAddress" id="txtProfileAddress" class="margin-input">
-                     <label class="color-label">ZipCode</label>
-                     <input type="text" name="fZipCode" id="txtProfileZipCode" class="margin-input only-numbers zipCodeLimit">
-                     <div style="margin-top: 30px;position: absolute;">
+                    <label class="color-label">Name</label>
+                    <input type="text" name="fName" id="txtProfileName" class="margin-input">
+                    <label class="color-label">Last Name</label>
+                    <input type="text" name="fLastName" id="txtProfileLastName" class="margin-input">
+                    <label class="color-label">Address</label>
+                    <input type="text" name="fAddress" id="txtProfileAddress" class="margin-input">
+                    <label class="color-label">ZipCode</label>
+                    <input type="text" name="fZipCode" id="txtProfileZipCode" class="margin-input only-numbers zipCodeLimit">
+                    <div style="margin-top: 30px;position: absolute;">
                         <select name="fcomplementPhone" id="selProfileComplementPhone">
                             <option value="+1" selected>+1</option>
                             <option value="+86">+86</option>
@@ -481,31 +498,31 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                             <option value="+55">+55</option>
                             <option value="+52">+52</option>
                         </select>
-                     </div>
-                     <label class="color-label">Phone Number</label>
-                     <input type="text" name="fPhoneNumber" id="txtProfilePhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
-                     <label class="color-label">Username</label>
-                     <input type="text" name="fEmail" id="txtProfileEmail" class="margin-input">   
-                     <label class="color-label">Password</label>
-                     <input type="password"  name="fPassword" id="txtProfilePassword" class="margin-input">    
-                     <label class="color-label">Repeat Password</label>
-                     <input type="password"  name="fRepeatPass" id="txtProfileRepeatPassword" class="margin-input">    
-   
-                     <input type="hidden" autocomplete='off' id="txtProfileIdUser"/>
+                    </div>
+                    <label class="color-label">Phone Number</label>
+                    <input type="text" name="fPhoneNumber" id="txtProfilePhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
+                    <label class="color-label">Username</label>
+                    <input type="text" name="fEmail" id="txtProfileEmail" class="margin-input">
+                    <label class="color-label">Password</label>
+                    <input type="password" name="fPassword" id="txtProfilePassword" class="margin-input">
+                    <label class="color-label">Repeat Password</label>
+                    <input type="password" name="fRepeatPass" id="txtProfileRepeatPassword" class="margin-input">
+
+                    <input type="hidden" autocomplete='off' id="txtProfileIdUser" />
                 </div>
                 <input type="hidden" name="act" value="1">
                 <input type="hidden" name="do" class="grdo" value="create">
                 <input type="hidden" name="type" class="grtype" value="user">
                 <input type="button" onclick="onClickFormUpdateUserProfile(this)" class="button-submit-form ajx grsub" value="Update Profile">
-                <span class="cancel" onclick="onClickCancelProfileUser()" >Cancel</span>
+                <span class="cancel" onclick="onClickCancelProfileUser()">Cancel</span>
             </form>
         </div>
     </section>
 
 
     <section id="modalInvite" class="grupo-pop-modal" style="display: none;">
-         <div>
-            <form autocomplete="off" id="formModalInvite" class="sizeModalInviteByPhone" >
+        <div>
+            <form autocomplete="off" id="formModalInvite" class="sizeModalInviteByPhone">
                 <span class="head" id="titleInvite">Invite</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
                     <div style="position: relative;">
@@ -513,8 +530,8 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
                     </div>
                     <div style="position: relative;float: right;">
                         <label class="switch">
-                        <input id="chkFilterModalInvite" type="checkbox" checked>
-                        <span class="slider round"></span>
+                            <input id="chkFilterModalInvite" type="checkbox" checked>
+                            <span class="slider round"></span>
                         </label>
                     </div>
                     <label>Invite by phone</label>
@@ -541,7 +558,7 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
 
                             </ul>
                         </div>
-                        
+
                     </div>
 
 
@@ -563,7 +580,9 @@ $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization='.
             </div>
         </div>
         <div id='wrap'>
-            <img src="images/demo.jpg" alt="image">   
+            <button type="button" onclick="onClickCloseModalViewer(this)" class="closeFrameD"></button>
+
+            <!-- <img src="images/demo.jpg" alt="image">    -->
         </div>
     </section>
 
@@ -586,6 +605,47 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <script src="./dist/jquery.loading.block.js"></script>
 <script src="./dist/view-bigimg-master/lib/view-bigimg.js"></script>
+<script src="./dist/viewtiff/tiff.min.js"></script>
+<script type="text/javascript">
+    var idleTime = 0;
+    $(document).ready(function() {
+        //Increment the idle time counter every minute.
+        var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+        console.log(document.cookie.split(";"))
+        console.log("init timer")
+        //Zero the idle timer on mouse movement.
+        $(this).mousemove(function(e) {
+            idleTime = 0;
+        });
+        $(this).keypress(function(e) {
+            idleTime = 0;
+        });
+    });
+
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+        // console.log("otro")
+        // console.log(idleTime)
+        if (idleTime > 5) { // 20 minutes
+            var cookies = document.cookie.split("; ");
+            for (var c = 0; c < cookies.length; c++) {
+                var d = window.location.hostname.split(".");
+                while (d.length > 0) {
+                    var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
+                    var p = location.pathname.split('/');
+                    document.cookie = cookieBase + '/';
+                    while (p.length > 0) {
+                        document.cookie = cookieBase + p.join('/');
+                        p.pop();
+                    };
+                    d.shift();
+                }
+            }
+            setTimeout(window.location.reload(), 1000)
+
+        }
+    }
+</script>
 
 <?php
 js("ajx", "caret", "grupo");
@@ -599,5 +659,6 @@ gr_reactprof();
 <script src="./gem/mine/caret.js"></script>
 
 -->
-<script src="./gem/mine/grupo.js"></script> 
+<script src="./gem/mine/grupo.js"></script>
+
 </html>

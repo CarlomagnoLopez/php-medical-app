@@ -1276,6 +1276,7 @@ function htmlDecode(input) {
     if (e.childNodes[0] == undefined) {
         return input;
     } else {
+        e.childNodes[0].nodeValue = e.childNodes[0].nodeValue.replaceAll(" ", "%20");
         return e.childNodes[0].nodeValue;
     }
 }
