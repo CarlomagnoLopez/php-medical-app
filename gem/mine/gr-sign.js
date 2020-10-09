@@ -1,6 +1,6 @@
 
 window.isLogin = true;
-$(document).ready(function(){
+$(document).ready(function () {
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("status");
     sessionStorage.removeItem("id_organization");
@@ -14,7 +14,7 @@ $(document).ready(function(){
 
 
 
-function showSigUp(){
+function showSigUp() {
     $('body').hide();
     var btn = $('.two > section > div > div form > .submit.global').text();
     $('.two > section > div > div form > .submit.global').text($('.two > section > div > div form > .submit.global').attr('btn'));
@@ -38,13 +38,13 @@ function showSigUp(){
     var btn2 = $('.two > section > div > div form > .switch > span').text();
     $('.two > section > div > div form > .switch > span').text($('.sign > section > div > div form > .switch').attr('btn'));
     $('.sign > section > div > div form > .switch').attr('btn', btn2);
-    $('body').fadeIn();    
+    $('body').fadeIn();
     window.isLogin = false;
     $("#fieldRepeatPassword").show();
 }
 
 
-$('.sign > section > div > div form > .switch').on('click', function() {
+$('.sign > section > div > div form > .switch').on('click', function () {
     $('body').hide();
     var btn = $('.two > section > div > div form > .submit.global').text();
     $('.two > section > div > div form > .submit.global').text($('.two > section > div > div form > .submit.global').attr('btn'));
@@ -82,7 +82,7 @@ $('.sign > section > div > div form > .switch').on('click', function() {
     $('body').fadeIn();
 });
 
-$('.sign > section > div > div form > .sub > span:last-child').on('click', function() {
+$('.sign > section > div > div form > .sub > span:last-child').on('click', function () {
     console.log('asafsdf');
     $('body').hide();
     $('.two > section > div > div form .doz').val('forgot');
@@ -92,10 +92,10 @@ $('.sign > section > div > div form > .sub > span:last-child').on('click', funct
     $(this).removeClass('log');
     $('body').fadeIn();
 });
-$('.sign > section > div > div .logo').on('click', function() {
+$('.sign > section > div > div .logo').on('click', function () {
     location.reload();
 });
-$('.sign > section > div > div form > .sub > span.rmbr').on('click', function() {
+$('.sign > section > div > div form > .sub > span.rmbr').on('click', function () {
     if ($(this).find('i > b').hasClass('active')) {
         $(this).find('i > b').removeClass('active');
         $(this).find('i > input').val(0);
@@ -113,9 +113,9 @@ $(".sign > section > div > div .tos > p").niceScroll({
     autohidemode: "leave",
     horizrailenabled: false
 });
-$(window).load(function() {
+$(window).load(function () {
     if (Cookies.get('grconsent') !== 'notified') {
-        setTimeout(function() {
+        setTimeout(function () {
             $('.gr-consent').show();
             $('.gr-consent').animate({
                 marginBottom: '0px'
@@ -123,20 +123,20 @@ $(window).load(function() {
         }, 1000);
     }
 });
-$('.gr-consent > span > span >i').on('click', function(e) {
+$('.gr-consent > span > span >i').on('click', function (e) {
     var data = {
         act: 1,
         do: "terms",
     };
     var s = '$(".sign > section > div > div form,.two > section > div > div .logo,.gr-consent").hide();';
-    s = s+'$(".sign > section > div > div > .box").animate({ width: "80%" }, function(e) {$(".sign > section > div > div .tos > p").getNiceScroll().onResize();});';
-    s = s+'$(".sign > section > div > div .tos > p").html(data);$(".sign > section > div > div .tos").fadeIn();';
+    s = s + '$(".sign > section > div > div > .box").animate({ width: "80%" }, function(e) {$(".sign > section > div > div .tos > p").getNiceScroll().onResize();});';
+    s = s + '$(".sign > section > div > div .tos > p").html(data);$(".sign > section > div > div .tos").fadeIn();';
     ajxx($(this), data, s, e);
 });
-$("body").on("contextmenu", "img", function(e) {
+$("body").on("contextmenu", "img", function (e) {
     return false;
 });
-$('.sign > section > div > div .tos > h4 > i').on('click', function() {
+$('.sign > section > div > div .tos > h4 > i').on('click', function () {
     $('.sign > section > div > div .tos').hide();
     $(".sign > section > div > div .tos > p").getNiceScroll().onResize();
     $(".sign > section > div > div > .box").animate({
@@ -145,7 +145,7 @@ $('.sign > section > div > div .tos > h4 > i').on('click', function() {
     $('.sign > section > div > div form,.two > section > div > div .logo,.gr-consent').fadeIn();
 });
 
-$('.gr-consent > span > i').on('click', function() {
+$('.gr-consent > span > i').on('click', function () {
     Cookies.set('grconsent', 'notified', {
         expires: 1
     });
@@ -153,23 +153,23 @@ $('.gr-consent > span > i').on('click', function() {
 });
 
 
-$("#txtSecretKey").change(function(event){
-    if ( $(this).val().length >= 5 ) {
-       var searchOrganization = searchOrganizationBySecretKey($(this).val());
-       if(searchOrganization.exist){
+$("#txtSecretKey").change(function (event) {
+    if ($(this).val().length >= 5) {
+        var searchOrganization = searchOrganizationBySecretKey($(this).val());
+        if (searchOrganization.exist) {
             $("#txtOrganizationName").val(searchOrganization.data.organization);
-       }
+        }
     }
 });
 
-function searchOrganizationBySecretKey(secret_key){
+function searchOrganizationBySecretKey(secret_key) {
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "searchOrganizationBySecretKey", "secret_key" : secret_key}),
+        data: JSON.stringify({ "method": "searchOrganizationBySecretKey", "secret_key": secret_key }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
         error: function (err) {
             console.log(err);
@@ -180,14 +180,14 @@ function searchOrganizationBySecretKey(secret_key){
 
 
 
-function existUser(phone,username){
+function existUser(phone, username) {
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "existUser", "phone" : phone,"username" : username }),
+        data: JSON.stringify({ "method": "existUserSign", "phone": phone, "username": username }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
         error: function (err) {
             console.log(err);
@@ -197,14 +197,14 @@ function existUser(phone,username){
 }
 
 
-function searchOrganization(organization, secret_key){
+function searchOrganization(organization, secret_key) {
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "searchOrganization", "organization" :  organization, "secret_key" : secret_key}),
+        data: JSON.stringify({ "method": "searchOrganization", "organization": organization, "secret_key": secret_key }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
         error: function (err) {
             console.log(err);
@@ -214,16 +214,16 @@ function searchOrganization(organization, secret_key){
 }
 
 
-function getDataUserByPhone(phone){
+function getDataUserByPhone(phone) {
     var getData = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "getDataUserByPhone", "phone" :  phone}),
+        data: JSON.stringify({ "method": "getDataUserByPhone", "phone": phone }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
-        error: function(error){
+        error: function (error) {
             console.log(error);
             $.loadingBlockHide();
         }
@@ -231,16 +231,16 @@ function getDataUserByPhone(phone){
     return getData;
 }
 
-function getDataUserByUsername(username){
+function getDataUserByUsername(username) {
     var getData = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method" : "getDataUserByUsername", "username" :  username}),
+        data: JSON.stringify({ "method": "getDataUserByUsername", "username": username }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
-        error: function(error){
+        error: function (error) {
             console.log(error);
             $.loadingBlockHide();
         }
@@ -249,34 +249,34 @@ function getDataUserByUsername(username){
 }
 
 
-function sendSMS(code,phone){
+function sendSMS(code, phone) {
     console.log(code);
     var getData = $.ajax({
         url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-        data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
+        data: JSON.stringify({ "sms": code, "type": "MFA", phone: phone }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
-        error: function(error){
+        error: function (error) {
             console.log(error);
             $.loadingBlockHide();
         }
     }).responseText;
     return JSON.parse(getData);
 }
-function createUser(payload){
+function createUser(payload) {
     console.log(code);
     var getData = $.ajax({
         url: 'door/grform/main.php',
-        data: JSON.stringify( payload ),
+        data: JSON.stringify(payload),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
-        error: function(error){
+        error: function (error) {
             console.log(error);
             $.loadingBlockHide();
         }
@@ -284,17 +284,17 @@ function createUser(payload){
     return JSON.parse(getData);
 }
 
-function updateStatusUser(phone,status){
+function updateStatusUser(phone, status) {
     console.log(code);
     var getData = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify( {phone:phone,status:status} ),
+        data: JSON.stringify({ phone: phone, status: status }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
-        success: function (data) {},
+        success: function (data) { },
         async: false,
-        error: function(error){
+        error: function (error) {
             console.log(error);
             $.loadingBlockHide();
         }
@@ -302,13 +302,13 @@ function updateStatusUser(phone,status){
     return JSON.parse(getData);
 }
 
- 
 
 
-$('.two > section > div > div form > .submit.global').on('click', function(e) {
+
+$('.two > section > div > div form > .submit.global').on('click', function (e) {
     var doer = 1;
 
-    $("form").find('input').each(function() {
+    $("form").find('input').each(function () {
         if (!$(this).val() && $(this).is(":visible")) {
             doer = 0;
             if ($(this).hasClass('gstdep') && !$('.sign > section > div > div form > .switch').hasClass('log')) {
@@ -318,19 +318,19 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             }
         }
     });
-    doer=1;
+    doer = 1;
     if (doer === 1) {
-    
-        var _self = $(this);    
 
-        if(window.isLogin){
-            if($("#txtUsernameLogin").val()=="") {
+        var _self = $(this);
+
+        if (window.isLogin) {
+            if ($("#txtUsernameLogin").val() == "") {
                 $.toast("the username is requited");
                 $("#txtUsernameLogin").focus();
                 return false;
             }
-            
-            if($("#txtPassword").val()=="") {
+
+            if ($("#txtPassword").val() == "") {
                 $.toast("the password is requited");
                 $("#txtPassword").focus();
                 return false;
@@ -338,169 +338,175 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
             $.loadingBlockShow({
                 imgPath: './asset/default.svg',
                 text: 'Loading...',
-                style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
-            });           
+                style: { position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+            });
 
-            var getData = JSON.parse(getDataUserByUsername( $("#txtUsernameLogin").val() )); 
-            if(!getData.exist){
-                $.toast("the username:"+$("#txtUsernameLogin").val()+" doesn't exist.");
+            var getData = JSON.parse(getDataUserByUsername($("#txtUsernameLogin").val()));
+            if (!getData.exist) {
+                $.toast("the username:" + $("#txtUsernameLogin").val() + " doesn't exist.");
                 $("#txtUsernameLogin").focus();
                 $.loadingBlockHide();
                 return false;
             }
 
-      
-                var phone = getData.data.phone;
-                var code  = generateCode();
-                console.log(code);
-                $.ajax({
-                    url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-                    data: JSON.stringify( { "sms" : code, "type" : "MFA" , phone : phone } ),
-                    processData: false,
-                    contentType: "application/json",
-                    type: 'POST',
-                    success: function ( data ) {
-                        console.log(data);
-                        $.loadingBlockHide();
-                        bootbox.prompt("Please input verification code", function(result){ 
-                            console.log(result); 
-                            if(result === code){
-                                // var getData = getDataUserByPhone( phone ); 
-                                 var s = 'eval(data);';
-                                 ajxx(_self, '', s, 0, e);
-                             }else{
-                                 $.toast("invalida code");
-                             }
-                        });
-                     
-                    },
-                    error: function(error){
-                        $.loadingBlockHide();
-                    }
-                });
-        }else{
 
-            if($("#txtName").val()=="") {
+            var phone = getData.data.phone;
+            var code = generateCode();
+            console.log(code);
+            $.ajax({
+                url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+                data: JSON.stringify({ "sms": code, "type": "MFA", phone: phone }),
+                processData: false,
+                contentType: "application/json",
+                type: 'POST',
+                success: function (data) {
+                    console.log(data);
+                    $.loadingBlockHide();
+                    bootbox.prompt("Please input verification code", function (result) {
+                        console.log(result);
+                        if (result === code) {
+                            // var getData = getDataUserByPhone( phone ); 
+                            var s = 'eval(data);';
+                            ajxx(_self, '', s, 0, e);
+                        } else {
+                            $.toast("invalida code");
+                        }
+                    });
+
+                },
+                error: function (error) {
+                    $.loadingBlockHide();
+                }
+            });
+        } else {
+
+            if ($("#txtName").val() == "") {
                 $.toast('the name is requited');
                 $("#txtName").focus();
                 return false;
             }
-            if($("#txtLastName").val()=="") {
+            if ($("#txtLastName").val() == "") {
                 $.toast("the last name is requited");
                 $("#txtLastName").focus();
                 return false;
             }
-            if($("#txtAddress").val()=="") {
+            if ($("#txtAddress").val() == "") {
                 $.toast("the address is requited");
                 $("#txtAddress").focus();
                 return false;
             }
-            if($("#txtZipCode").val()=="") {
+            if ($("#txtZipCode").val() == "") {
                 $.toast("the zipcode is requited");
                 $("#txtZipCode").focus();
                 return false;
             }
-            if($("#txtPhoneNumber").val()=="") {
+            if ($("#txtPhoneNumber").val() == "") {
                 $.toast("the phone is requited");
                 $("#txtPhoneNumber").focus();
                 return false;
             }
-            if($("#txtPhoneNumber").val().length != 10) {
+            if ($("#txtPhoneNumber").val().length != 10) {
                 $.toast("Invalid length of phone number");
                 $("#txtPhoneNumber").focus();
                 return false;
             }
 
-            if($("#txtUsername").val()=="") {
+            if ($("#txtUsername").val() == "") {
                 $.toast("theusername is requited");
                 $("#txtUsername").focus();
                 return false;
             }
-            if($("#txtEmail").val()=="") {
+            if ($("#txtEmail").val() == "") {
                 $.toast("the email is requited");
                 $("#txtEmail").focus();
                 return false;
             }
-            if(!validateEmail($("#txtEmail").val())){
+            if (!validateEmail($("#txtEmail").val())) {
                 $.toast("Email format incorrect.");
                 $("#txtEmail").focus();
                 return false;
             }
-            if($("#txtPassword").val()=="") {
+            if ($("#txtPassword").val() == "") {
                 $.toast("the password is requited");
                 $("#txtPassword").focus();
                 return false;
             }
-            if(!checkPassword($("#txtPassword").val())) {
+            if (!checkPassword($("#txtPassword").val())) {
                 $.toast("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
                 $("#txtPassword").focus();
                 return false;
             }
 
-            if(!validatePasswords($("#txtPassword").val(),$("#txtRepeatPassword").val())){
+            if (!validatePasswords($("#txtPassword").val(), $("#txtRepeatPassword").val())) {
                 $.toast("The given passwords do not match");
                 return false;
             }
 
-            
+
             $.loadingBlockShow({
                 imgPath: './asset/default.svg',
                 text: 'Loading...',
-                style: {  position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+                style: { position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
             });
-            var username  = $("#txtUsername").val();
+            var username = $("#txtUsername").val();
             // $("#txtEmail").val(username+'@phpmedical.com');
             // $("#txtEmail").val(username);
-            var phone     = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
-            var exist     = existUser(phone,username);
-            
-            if(exist.exist && exist.data.status==1){
+            var phone = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
+            var exist = existUser(phone, username);
+
+            if (exist.exist && exist.data.status == 1) {
                 $.loadingBlockHide();
                 $.toast(exist.message);
                 return false;
             }
-            
 
-            if( $("#txtOrganizationName").val() == "" && $("#txtSecretKey").val() == "" ){
+
+            if ($("#txtOrganizationName").val() == "" && $("#txtSecretKey").val() == "") {
                 $("#txtStatusUser").val(0);
-            }else{    
-                var searchOrg = searchOrganization( $("#txtOrganizationName").val(), $("#txtSecretKey").val());
+            } else {
+                var searchOrg = searchOrganization($("#txtOrganizationName").val(), $("#txtSecretKey").val());
                 console.log(searchOrg);
-                if(!searchOrg.exist){
+                if (!searchOrg.exist) {
                     $.loadingBlockHide();
                     $.toast("The organization name and secret key doesn't exist.");
                     return false;
-                }else{
-                    $("#txtIdOrganization").val(searchOrg.data.id_organization);
-                    $("#txtStatusUser").val(1);
+                } else {
+                    if ($("#txtSecretKey").val() == "") {
+                        $("#txtIdOrganization").val(searchOrg.data.id_organization);
+                        $("#txtStatusUser").val(0);
+                    }else{
+                        $("#txtIdOrganization").val(searchOrg.data.id_organization);
+                        $("#txtStatusUser").val(1);
+                    }
+
                 }
             }
-            
+
 
             var code = generateCode();
-            var sms  = sendSMS(code,phone);
+            var sms = sendSMS(code, phone);
             console.log(code);
-            if(sms.statusCode==200){
+            if (sms.statusCode == 200) {
                 $.loadingBlockHide();
-                bootbox.prompt("Please input verification code", function(result){ 
-                    console.log(result); 
-                    if(result === code){
+                bootbox.prompt("Please input verification code", function (result) {
+                    console.log(result);
+                    if (result === code) {
                         //  $("#txtStatusUser").val(1);
-                          var s = 'eval(data);';
-                          ajxx(_self, '', s, 0, e);
-                      }else{
-                          $.loadingBlockHide();
-                          $.toast("Invalid code");
-                          return;
-                      }
+                        var s = 'eval(data);';
+                        ajxx(_self, '', s, 0, e);
+                    } else {
+                        $.loadingBlockHide();
+                        $.toast("Invalid code");
+                        return;
+                    }
                 });
 
-            }else{
+            } else {
                 $.loadingBlockHide();
             }
 
-        
-        
+
+
         } // end else
 
     } else {
@@ -511,14 +517,14 @@ $('.two > section > div > div form > .submit.global').on('click', function(e) {
 });
 
 
-function toast(message){
+function toast(message) {
     $.toast(message);
 }
 
-function generateCode(){
+function generateCode() {
     var length = 5,
-    charsetnum = "0123456789",
-    password = "";
+        charsetnum = "0123456789",
+        password = "";
 
     for (var i = 0, n = charsetnum.length; i < length; ++i) {
         password += charsetnum.charAt(Math.floor(Math.random() * n));
@@ -526,85 +532,84 @@ function generateCode(){
     return password;
 }
 
-function validatePasswords(password, repeatPassword){
-    return password===repeatPassword;
+function validatePasswords(password, repeatPassword) {
+    return password === repeatPassword;
 }
-function validatePhoneNumber(phone_number){
-        var re = /\D*(^[0-9]{6,15}$)\D*/
-        return re.test(phone_number);
-}
-
-function validateEmail(email){
-        var re = /\S+@\S+\.\S+/;
-        return re.test(email);
-}
-function checkPassword(str){
-  // at least one number, one lowercase and one uppercase letter
-  // at least six characters
-  var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-  return re.test(str);
+function validatePhoneNumber(phone_number) {
+    var re = /\D*(^[0-9]{6,15}$)\D*/
+    return re.test(phone_number);
 }
 
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+function checkPassword(str) {
+    // at least one number, one lowercase and one uppercase letter
+    // at least six characters
+    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+    return re.test(str);
+}
 
-$('.only-numbers').keydown(function(event) {
-    if(event.shiftKey)
-    {
-         event.preventDefault();
+
+$('.only-numbers').keydown(function (event) {
+    if (event.shiftKey) {
+        event.preventDefault();
     }
- 
-    if (event.keyCode == 46 || event.keyCode == 8 ||  event.keyCode == 9)    {
+
+    if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9) {
     }
     else {
-         if (event.keyCode < 95) {
-             if (event.keyCode < 48 || event.keyCode > 57) {
-                 event.preventDefault();
-           }
-         } 
-         else {
-               if (event.keyCode < 96 || event.keyCode > 105) {
-                   event.preventDefault();
-               }
-         }
-       }
+        if (event.keyCode < 95) {
+            if (event.keyCode < 48 || event.keyCode > 57) {
+                event.preventDefault();
+            }
+        }
+        else {
+            if (event.keyCode < 96 || event.keyCode > 105) {
+                event.preventDefault();
+            }
+        }
+    }
 });
 
-$('.zipCodeLimit').on('keydown keypress',function(e){
-    if(e.key.length === 1){ 
-        if($(this).val().length < 5 && !isNaN(parseFloat(e.key))){ 
-            $(this).val($(this).val() + e.key); 
+$('.zipCodeLimit').on('keydown keypress', function (e) {
+    if (e.key.length === 1) {
+        if ($(this).val().length < 5 && !isNaN(parseFloat(e.key))) {
+            $(this).val($(this).val() + e.key);
         }
         return false;
     }
 });
 
-$('.phoneNumberLimit').on('keydown keypress',function(e){
-    if(e.key.length === 1){ 
-        if($(this).val().length < 10 && !isNaN(parseFloat(e.key))){ 
-            $(this).val($(this).val() + e.key); 
+$('.phoneNumberLimit').on('keydown keypress', function (e) {
+    if (e.key.length === 1) {
+        if ($(this).val().length < 10 && !isNaN(parseFloat(e.key))) {
+            $(this).val($(this).val() + e.key);
         }
         return false;
     }
 });
 
 
-$(document).on('keypress', function(e) {
+$(document).on('keypress', function (e) {
     if (e.which == 13) {
         $('.two > section > div > div form > .submit.global').trigger('click');
     }
 });
 
-$('.demologin').on('change', function(e) {
- var log=$(this).val();
- var pass='pass';
- if(log!='0'){
- if(log=='guest'){
- log=pass='';
-}
-$('.two > section > div > div form label > input.usrn').val(log);
-$('.two > section > div > div form label > input.pswd').val(pass);
-setTimeout(function() {
-$('.two > section > div > div form > .submit').trigger('click');
+$('.demologin').on('change', function (e) {
+    var log = $(this).val();
+    var pass = 'pass';
+    if (log != '0') {
+        if (log == 'guest') {
+            log = pass = '';
+        }
+        $('.two > section > div > div form label > input.usrn').val(log);
+        $('.two > section > div > div form label > input.pswd').val(pass);
+        setTimeout(function () {
+            $('.two > section > div > div form > .submit').trigger('click');
         }, 300);
- }
+    }
 });
 

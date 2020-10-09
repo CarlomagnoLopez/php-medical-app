@@ -34,8 +34,13 @@ switch($method){
     break;
     case 'existUser':
         $phone    = $json->phone;
+        $email = $json->email;
+        existUser($db,$phone,$email);
+    break;
+    case 'existUserSign':
+        $phone    = $json->phone;
         $username = $json->username;
-        existUser($db,$phone,$username);
+        existUserSign($db,$phone,$username);
     break;
     case 'updateStatusUser':
         $phone  = $json->phone;
@@ -117,7 +122,33 @@ function updateStatusUser($db,$phone,$status){
  }
 
 
-function existUser($db,$phone,$username){
+function existUser($db,$phone,$email){
+    $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone' OR email = '$email'";
+    try {
+        $response = array();
+        $stmt = $db->query($sql); 
+        $rs   =  $stmt->fetchAll();
+        if(count($rs)>0){
+            $response['exist'] = true; 
+            $response['data'] = $rs[0];
+            $response['message'] = "The username: '$email' or phone : '$phone' exist.";             
+        }else{
+            $response['exist'] = false; 
+            $response['data'] = [];
+            $response['message'] = "";             
+        }
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['exist'] = false; 
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+}
+
+
+function existUserSign($db,$phone,$username){
     $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone' OR username = '$username'";
     try {
         $response = array();
@@ -141,7 +172,6 @@ function existUser($db,$phone,$username){
     }
     echo json_encode($response);
 }
-
 
 function saveSession($db,$uid){
         $sql = "INSERT INTO `gr_session`(uid,device,code,tms,try) VALUES(:uid,:device,:code,NOW(),:try)";

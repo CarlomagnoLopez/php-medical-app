@@ -1,16 +1,21 @@
-<?php if(!defined('s7V9pz')) {die();}?><?php
-fnc('grupo');
-usr('Grupo', 'remember');
-if (usr('Grupo')['active']) {
-    rt('index');
-}
-grupofns();
-?><!doctype html>
+<?php if (!defined('s7V9pz')) {
+    die();
+} ?><?php
+    fnc('grupo');
+    usr('Grupo', 'remember');
+    if (usr('Grupo')['active']) {
+        rt('index');
+    }
+    grupofns();
+    ?>
+<!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no">    <title><?php pr(gr_default('get', 'sitename')); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no">
+    <title><?php pr(gr_default('get', 'sitename')); ?></title>
     <meta name="description" content="<?php pr(gr_default('get', 'sitedesc')); ?>">
     <meta name="author" content="Silwr">
     <meta name="generator" content="Grupo">
@@ -24,9 +29,10 @@ grupofns();
     ?>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
+
 <body class="sign two bgone">
     <div class="gr-lselect">
-    <?php pr(gr_lang('list', 2)) ?>
+        <?php pr(gr_lang('list', 2)) ?>
     </div>
     <section>
         <div>
@@ -41,10 +47,10 @@ grupofns();
                             <input type="hidden" name="do" class='doz' value='login' />
                             <div class='register d-none'>
                                 <label><i class="ti-key"></i>
-                                    <input type="password" autocomplete='off' id="txtSecretKey" name="fsecretkey" class="clearValues" placeholder="e.g. 14cfr" maxlength="5"/>
+                                    <input type="password" autocomplete='off' id="txtSecretKey" name="fsecretkey" class="clearValues" placeholder="e.g. 14cfr" maxlength="5" />
                                 </label>
                                 <label><i class="ti-layout-cta-right"></i>
-                                    <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" class="clearValues" placeholder="Organization name"/>
+                                    <input type="text" autocomplete='off' id="txtOrganizationName" name="forganizationname" class="clearValues" placeholder="Organization name" />
                                 </label>
                                 <label><i class="ti-user"></i>
                                     <input type="text" autocomplete='off' id="txtName" name="fname" class="clearValues" placeholder="Name" />
@@ -59,28 +65,28 @@ grupofns();
                                     <input type="text" class="only-numbers zipCodeLimit clearValues" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
                                 </label>
                                 <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
-                                        <select name="fcomplementPhone" id="selComplementPhone">
-                                            <option value="1" selected>+1</option>
-                                            <option value="86">+86</option>
-                                            <option value="87">+87</option>
-                                            <option value="91">+91</option>
-                                            <option value="55">+55</option>
-                                            <option value="52">+52</option>
-                                        </select>
+                                    <select name="fcomplementPhone" id="selComplementPhone">
+                                        <option value="1" selected>+1</option>
+                                        <option value="86">+86</option>
+                                        <option value="87">+87</option>
+                                        <option value="91">+91</option>
+                                        <option value="55">+55</option>
+                                        <option value="52">+52</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label><i class="ti-mobile"></i>
-                                        <input type="text" class="only-numbers phoneNumberLimit clearValues" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;"/>                                  
+                                        <input type="text" class="only-numbers phoneNumberLimit clearValues" autocomplete='off' id="txtPhoneNumber" name="fphonenumber" placeholder="Phone Number" style="padding-left: 101px;" />
                                     </label>
                                 </div>
                                 <label><i class="ti-user"></i>
                                     <input type="text" autocomplete='off' id="txtUsername" name="name" class="clearValues" placeholder="<?php pr(gr_lang('get', 'username')) ?>" />
                                 </label>
                                 <label><i class="ti-email"></i>
-                                     <input type="email" autocomplete='off' id="txtEmail" name="email" class="clearValues" placeholder="Email" />
+                                    <input type="email" autocomplete='off' id="txtEmail" name="email" class="clearValues" placeholder="Email" />
                                 </label>
-                                    <input type="hidden" autocomplete='off' id="txtIdOrganization" class="clearValues" name="fIdOrganization" />
-                                    <input type="hidden" autocomplete='off' id="txtStatusUser" class="clearValues" name="fStatusUser" />
+                                <input type="hidden" autocomplete='off' id="txtIdOrganization" class="clearValues" name="fIdOrganization" />
+                                <input type="hidden" autocomplete='off' id="txtStatusUser" class="clearValues" name="fStatusUser" />
                             </div>
                             <div class='login'>
                                 <label><i class="ti-user"></i>
@@ -116,15 +122,22 @@ grupofns();
                         </div>
                         <div class="regsep d-none"></div>
                         <div class="sub">
-                            <span class='rmbr' style="color: black;"><i><b></b><input type="hidden" name="rmbr" /></i> <?php pr(gr_lang('get', 'remember_me')) ?></span>
-                            <span class="doer" data-do="forgot"><?php pr(gr_lang('get', 'forgot_password')) ?></span>
+                            <!-- <span class='rmbr' style="color: black;"><i><b></b><input type="hidden" name="rmbr" /></i>  -->
+                            <?php
+                            // pr(gr_lang('get', 'remember_me')) 
+                            ?></span>
+                            <!-- <span class="doer" data-do="forgot"> -->
+                                <?php
+                                //  pr(gr_lang('get', 'forgot_password')) 
+                                ?>
+                            <!-- </span> -->
                         </div>
                         <?php if (gr_default('get', 'recaptcha') == 'enable') {
-                            ?>
+                        ?>
                             <div class='recaptcha'>
                                 <div class="g-recaptcha" data-theme='dark' data-sitekey="<?php pr(gr_default('get', 'rsitekey')) ?>"></div>
                             </div>
-                            <?php
+                        <?php
                         } ?>
                         <span class="submit global" form='.gr_sign' do='login' btn='<?php pr(gr_lang('get', 'register')); ?>' em='<?php pr(gr_lang('get', 'invalid_value')); ?>' gst=0 dlg='<?php pr(gr_lang('get', 'login')); ?>' glog='<?php pr(gr_default('get', 'guest_login')); ?>'>
                             <?php
@@ -137,12 +150,21 @@ grupofns();
                         </span>
                         <span class="submit ajx reset d-none" form='.gr_sign'><?php pr(gr_lang('get', 'reset')); ?></span>
                         <?php if (gr_default('get', 'userreg') == 'enable') {
-                            ?>
-                            <div class="switch" qn='<?php pr(gr_lang('get', 'already_have_account')); ?>' btn='<?php pr(gr_lang('get', 'login')); ?>'>
-                                <i><?php pr(gr_lang('get', 'dont_have_account')); ?></i>
+                        ?>
+                            <div class="switch" qn='
+                            <?php
+                            // pr(gr_lang('get', 'already_have_account')); 
+                            ?>' btn='<?php pr(gr_lang('get', 'login'));
+                                                                                    ?>
+                            '>
+                                <i>
+                                    <?php
+                                    // pr(gr_lang('get', 'dont_have_account'));
+                                    ?>
+                                </i>
                                 <span><?php pr(gr_lang('get', 'create')); ?></span>
                             </div>
-                            <?php
+                        <?php
                         } ?>
                     </form>
                     <div class='tos'>
@@ -230,4 +252,5 @@ cdn("npm/js-cookie@2/src/js.cookie.min.js");
 
 <script src="./gem/mine/ajx.js"></script>
 <script src="./gem/mine/gr-sign.js"></script>
+
 </html>

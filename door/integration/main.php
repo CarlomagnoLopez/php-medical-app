@@ -7,56 +7,508 @@ header('Access-Control-Allow-Origin: *');
 require "../../key/Connection.php";
 
 $db          = Connection();
-$json = json_decode(file_get_contents("php://input"));
-$method = $json->method;
-switch ($method) {
+// if ($_REQUEST) {
+    // $getVar = $_GET['smsvalidations'];
 
-    case 'userlist':
+    // $sql = "SELECT * FROM `gr_history_sms` WHERE `link` = '$getVar' and `used` = 99 and ( CURRENT_TIMESTAMP() BETWEEN `init_date` AND `finish_date` )";
+    // $stmt     = $db->query($sql);
+    // $rs       =  $stmt->fetchAll();
+    
+   
+    // if (count($rs) > 0) {
+
+    //     $response = array();
+    //     $db = null;
+    //     $response['data'] = "success";
+    //     $response['error'] = false;
+    //     $response['message'] = "Continue...";
+    //     $db2BetweenTime          = Connection();
+    //     updateLink($rs[0]["link"], $db2BetweenTime);
+    //     header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/signin");
+
+    //     echo json_encode($response);
+    //     return;
+    // }
+
+    // $sqlP2 = "SELECT * FROM `gr_history_sms` WHERE `link` = '$getVar' and `used` = 99 ";
+    // $stmtP2     = $db->query($sqlP2);
+    // $rsP2       =  $stmtP2->fetchAll();
+
+    // if (count($rsP2) > 0) {
+    //     $responseOther = array();
+    //     $db = null;
+    //     $responseOther['data'] = "success";
+    //     $responseOther['error'] = false;
+    //     $responseOther['message'] = $rsP2[0]["phone_number"];
+    //     
+    //     // $db3          = Connection();
+    //     // updateLink($rs[0]["link"], $db3);
+    //     
+    //     $db2          = Connection();
+
+    //     getSMSTestAndUpdate($rsP2[0]["phone_number"],  $db2, "signuplink",$rsP2[0]["id"]);
+    //    
+    //     // header("Location:http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
+    //     echo json_encode($responseOther);
+    //     return;
+    // } else {
+    //     $db = null;
+    //     header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
+    //     return;
+    // }
+// } else {
+
+    $json = json_decode(file_get_contents("php://input"));
+    $method = $json->method;
 
 
-        // test();
-        getUserByUSer($db, $json);
-        break;
+    switch ($method) {
+
+            // case "sendSMSTest":
+            //     sendSMSTest();
+            //     break;
+
+            // case "getSMSTest":
+            //     getSMSTest($db);
+            //     break;
+
+        case 'userlist':
 
 
-    case 'test':
+            // test();
+            getUserByUSer($db, $json);
+            break;
 
-        // sleep(3000);
-        test();
-        break;
-    case 'updateOrganization':
-        // sleep(3000);
-        // test();
 
-        updateOrganization($db, $json);
-        break;
-    case 'saveOrganization':
-        $organization = $json->summaryOrg->orgName;
-        $secret_key   = $json->summaryOrg->secretKey;
-        $contact_email   = $json->summaryOrg->contactEmail;
-        $contact_name   = $json->summaryOrg->contactName;
-        $web_site   = $json->summaryOrg->orgWesite;
-        $phone_number   = $json->summaryOrg->phoneNumber;
-        $tax_number   = $json->summaryOrg->taxNumber;
+        case 'test':
 
-        // $idName =  $json->summaryOrg->orgName;
-        // $organization = $json->summaryOrg->orgName;
-        $sql = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
-        $stmt     = $db->query($sql);
-        $rs       =  $stmt->fetchAll();
-        if (count($rs) > 0) {
-            $response = array();
-            $db = null;
+            // sleep(3000);
+            // test();
+            // 2020-10-09 01:47:22
+
+            $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 5 MINUTE as timeCur";
+
+            $stmt1     = $db->query($sqlMin);
+            $rs1       =  $stmt1->fetchAll();
+
             $response['data'] = null;
             $response['error'] = true;
-            $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
+            $response['message'] = "We can't  create: " . $rs1[0]["timeCur"] . " because the name it is already exist! Select a different one.";
             echo json_encode($response);
-            return;
-        }
-        saveOrganization($db, $organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
+            break;
+        case 'updateOrganization':
+            // sleep(3000);
+            // test();
 
-        break;
+            updateOrganization($db, $json);
+            break;
+        case 'saveOrganization':
+            $organization = $json->summaryOrg->orgName;
+            $secret_key   = $json->summaryOrg->secretKey;
+            $contact_email   = $json->summaryOrg->contactEmail;
+            $contact_name   = $json->summaryOrg->contactName;
+            $web_site   = $json->summaryOrg->orgWesite;
+            $phone_number   = $json->summaryOrg->phoneNumber;
+            $tax_number   = $json->summaryOrg->taxNumber;
+
+            // $idName =  $json->summaryOrg->orgName;
+            // $organization = $json->summaryOrg->orgName;
+            $sql = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
+            $stmt     = $db->query($sql);
+            $rs       =  $stmt->fetchAll();
+            if (count($rs) > 0) {
+                $response = array();
+                $db = null;
+                $response['data'] = null;
+                $response['error'] = true;
+                $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
+                echo json_encode($response);
+                return;
+            }
+            saveOrganization($db, $organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
+
+            break;
+        case 'saveUserByOrg':
+
+            $organization = $json->record->orgid;
+
+            // return  $organization;
+            $sql = "SELECT * FROM `gr_organizations` WHERE `id_organization` = $organization";
+            $stmt     = $db->query($sql);
+            $rs       =  $stmt->fetchAll();
+
+            $sql1 = "SELECT * FROM `gr_options` WHERE `id_organization` = $organization";
+            $stmt1     = $db->query($sql1);
+            $rs1       =  $stmt1->fetchAll();
+
+            if (count($rs) > 0) {
+
+                createOneUser($db, $json->record, $json->record->orgid, $rs1[0]["id"]);
+                // echo json_encode($response);
+                // return;
+
+                // $response = array();
+                // $db = null;
+                // // $otro = $rs1[0];
+                // $response['data'] = "success";
+                // $response['error'] = false;
+                // $response['message'] =   $json->record;
+                // echo json_encode($response);
+            } else {
+                $response = array();
+                $db = null;
+                $response['data'] = null;
+                $response['error'] = true;
+                $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
+                echo json_encode($response);
+                return;
+            }
+
+
+            break;
+    }
+// }
+function updateLinkWithId($idtoU, $dbsqlUpdateLink)
+{
+    try {
+        // UPDATE `gr_history_sms` SET `used` = '1' WHERE `gr_history_sms`.`id` = 14;
+        ?>console.log("step update")<?php
+        $responseUpdateLink = array();
+        $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `id` = :id";
+
+        $stmtdbsqlUpdateLink = $dbsqlUpdateLink->prepare($sqlUpdateLink);
+        $stmtdbsqlUpdateLink->bindValue("id", $idtoU);
+        // $stmt->bindValue("phone", $phone);
+        $stmtdbsqlUpdateLink->execute();
+        // $id = $db->lastInsertId();
+        // $lastInsertId = $id > 0 ? $id : 0;
+       
+        $dbsqlUpdateLink = null;
+        // sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
+
+
+        // $response =  $lastInsertId;
+        $responseUpdateLink['data'] = "success";
+        $responseUpdateLink['error'] = false;
+        $responseUpdateLink['message'] = "update";
+        // $response['message'] =  $stringArray;
+    } catch (PDOException $e) {
+        $responseUpdateLink['data'] = null;
+        $responseUpdateLink['error'] = true;
+        $responseUpdateLink['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    // echo json_encode($response);
+    // return json_encode($response);
 }
+
+function updateLink($link, $dbsqlUpdateLink)
+{
+    try {
+        // UPDATE `gr_history_sms` SET `used` = '1' WHERE `gr_history_sms`.`id` = 14;
+        ?>console.log("step update")<?php
+        $responseUpdateLink = array();
+        $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `link` = :link";
+
+        $stmtdbsqlUpdateLink = $dbsqlUpdateLink->prepare($sqlUpdateLink);
+        $stmtdbsqlUpdateLink->bindValue("link", $link);
+        // $stmt->bindValue("phone", $phone);
+        $stmtdbsqlUpdateLink->execute();
+        // $id = $db->lastInsertId();
+        // $lastInsertId = $id > 0 ? $id : 0;
+       
+        $dbsqlUpdateLink = null;
+        // sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
+
+
+        // $response =  $lastInsertId;
+        $responseUpdateLink['data'] = "success";
+        $responseUpdateLink['error'] = false;
+        $responseUpdateLink['message'] = "update";
+        // $response['message'] =  $stringArray;
+    } catch (PDOException $e) {
+        $responseUpdateLink['data'] = null;
+        $responseUpdateLink['error'] = true;
+        $responseUpdateLink['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    // echo json_encode($response);
+    // return json_encode($response);
+}
+
+function getSMSTest($phone, $db, $typeSMS)
+{
+    try {
+
+
+        $a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        $n = 8;
+        $responseUpdate = array();
+        $createdArray = array_values(array_intersect_key($a, array_flip(array_rand($a, $n))));
+        $stringArray = $createdArray[0] . $createdArray[1] . $createdArray[2] . $createdArray[3] . $createdArray[4] . $createdArray[5] . $createdArray[6] . $createdArray[7];
+        $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/door/integration/main.php?smsvalidations=" . $stringArray;
+        $data_array =  array(
+            "group_guid" => "Bk9h1KBTFqy",
+            "domain" => "bit.ly",
+            "long_url" => $longLink
+        );
+        $make_call = callAPIAuth('POST', 'https://api-ssl.bitly.com/v4/shorten', json_encode($data_array));
+        $responseBitLy  = json_decode($make_call, true);
+
+
+        $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 1 MINUTE as timeCur";
+
+        $stmt1Update     = $db->query($sqlMin);
+        $rs1       =  $stmt1Update->fetchAll();
+        $timeCur = $rs1[0]["timeCur"];
+        $refUse1 = "99";
+
+        ?>console.log("step 4")<?php
+        
+
+        $sqlUpdate = "INSERT INTO `gr_history_sms`
+        (
+        `id`,
+        `link`, 
+        `init_date`,
+        `finish_date`,
+        `used`,
+        `phone_number`
+        )
+        VALUES
+        (NULL, 
+        :generatelink, 
+        current_timestamp(),
+        :timeproperly,
+        :refUse1,
+        :phone
+        );";
+
+        $stmtUpdate = $db->prepare($sqlUpdate);
+        $stmtUpdate->bindValue("generatelink", $stringArray);
+        $stmtUpdate->bindValue("timeproperly", $timeCur);
+        $stmtUpdate->bindValue("refUse1", $refUse1);
+        $stmtUpdate->bindValue("phone", $phone);
+        $stmtUpdate->execute();
+        // $id = $db->lastInsertId();
+        // $lastInsertId = $id > 0 ? $id : 0;
+
+        $db = null;
+        sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
+
+
+        // $response =  $lastInsertId;
+        $responseUpdate['data'] = "success";
+        $responseUpdate['error'] = false;
+        $responseUpdate['message'] = $refUse1 . " " .$sqlUpdate;
+        // $response['message'] =  $stringArray;
+    } catch (PDOException $e) {
+        $responseUpdate['data'] = null;
+        $responseUpdate['error'] = true;
+        $responseUpdate['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    echo json_encode($responseUpdate);
+    // return json_encode($response);
+}
+
+function getSMSTestAndUpdate($phone, $db, $typeSMS,$idToUpdate)
+{
+    try {
+
+
+        $a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        $n = 8;
+        $responseUpdate = array();
+        $createdArray = array_values(array_intersect_key($a, array_flip(array_rand($a, $n))));
+        $stringArray = $createdArray[0] . $createdArray[1] . $createdArray[2] . $createdArray[3] . $createdArray[4] . $createdArray[5] . $createdArray[6] . $createdArray[7];
+        $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/door/integration/maindummy.php?smsvalidations=" . $stringArray;
+        $data_array =  array(
+            "group_guid" => "Bk9h1KBTFqy",
+            "domain" => "bit.ly",
+            "long_url" => $longLink
+        );
+        $make_call = callAPIAuth('POST', 'https://api-ssl.bitly.com/v4/shorten', json_encode($data_array));
+        $responseBitLy  = json_decode($make_call, true);
+
+
+        $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 1 MINUTE as timeCur";
+
+        $stmt1Update     = $db->query($sqlMin);
+        $rs1       =  $stmt1Update->fetchAll();
+        $timeCur = $rs1[0]["timeCur"];
+        $refUse1 = "99";
+
+        ?>console.log("step 4")<?php
+        
+
+        $sqlUpdate = "INSERT INTO `gr_history_sms`
+        (
+        `id`,
+        `link`, 
+        `init_date`,
+        `finish_date`,
+        `used`,
+        `phone_number`
+        )
+        VALUES
+        (NULL, 
+        :generatelink, 
+        current_timestamp(),
+        :timeproperly,
+        :refUse1,
+        :phone
+        );";
+
+        $stmtUpdate = $db->prepare($sqlUpdate);
+        $stmtUpdate->bindValue("generatelink", $stringArray);
+        $stmtUpdate->bindValue("timeproperly", $timeCur);
+        $stmtUpdate->bindValue("refUse1", $refUse1);
+        $stmtUpdate->bindValue("phone", $phone);
+        $stmtUpdate->execute();
+        // $id = $db->lastInsertId();
+        // $lastInsertId = $id > 0 ? $id : 0;
+
+        $db = null;
+        sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
+
+        
+
+
+        sleep(1);
+        $db3 = Connection();
+        updateLinkWithId($idToUpdate, $db3);
+
+       
+        // $response =  $lastInsertId;
+        $responseUpdate['data'] = "success";
+        $responseUpdate['error'] = false;
+        $responseUpdate['message'] = $refUse1 . " " .$sqlUpdate;
+        // $response['message'] =  $stringArray;
+    } catch (PDOException $e) {
+        $responseUpdate['data'] = null;
+        $responseUpdate['error'] = true;
+        $responseUpdate['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    // echo json_encode($responseUpdate);
+    // return json_encode($response);
+}
+
+function sendSMSTest($phone, $linkBitLy, $typeSMS)
+{
+
+    try {
+        $response = array();
+        $data_array =  array(
+            "sms"   => "",
+            "link" => $linkBitLy,
+            "type"  => $typeSMS,
+            "phone" => $phone
+        );
+        $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        $response  = json_decode($make_call, true);
+        $data    = $response['body']['MessageId'];
+        $statusCode = $response['statusCode'];
+
+        // $response =  $lastInsertId;
+        $response['data'] = "success";
+        $response['error'] = false;
+        $response['message'] = "Sent SMS with tiny url";
+    } catch (PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    // echo json_encode($response);
+    // return json_encode($response);
+}
+
+
+function createOneUser($db, $value, $org, $idGruoup)
+{
+    $sql = "INSERT INTO `gr_users`
+    (name,
+    email,
+    pass,
+    mask,
+    depict,
+    role,
+    created,
+    altered,
+    extra,
+    phone,
+    id_organization,
+    status
+    )
+    VALUES
+    (:name,
+    :email,
+    :pass,
+    :mask,
+    :depict,
+    :role,
+    NOW(),
+    NOW(),
+    :extra,
+    :phone,
+    :id_organization,
+    0)";
+    try {
+        $roleOrg = $value->role;
+        if ($value->role === "OrgAdmin") {
+            $roleOrg = "3";
+        }
+
+        if ($value->role === "OrgApproval") {
+            $roleOrg = "5";
+        }
+        if ($value->role === "User") {
+            $roleOrg = "6";
+        }
+
+        $p = en("Soporte20#");
+        $response = array();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue("name",             $value->name);
+        $stmt->bindValue("email",            $value->email);
+        $stmt->bindValue("pass",             $p['pass']);
+        $stmt->bindValue("mask",             $p['mask']);
+        $stmt->bindValue("depict",           $p['type']);
+        $stmt->bindValue("role",             $roleOrg);
+        $stmt->bindValue("extra",            0);
+        $stmt->bindValue("phone",            $value->phoneNumber);
+        $stmt->bindValue("id_organization",  $org);
+        $stmt->execute();
+        $id = $db->lastInsertId();
+        $lastInsertId = $id > 0 ? $id : 0;
+
+
+        getSMSTest($value->phoneNumber, $db, "signuplink");
+
+
+        // $data_array =  array(
+        //     "sms"   => "",
+        //     "type"  => "signuplink",
+        //     "phone" => $value->phoneNumber
+        // );
+        // $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        // $response  = json_decode($make_call, true);
+        // $data    = $response['body']['MessageId'];
+        // $statusCode = $response['statusCode'];
+
+        addUserToGroup($db, $idGruoup, $lastInsertId, $value->name);
+
+        $db = null;
+        // $response =  $lastInsertId;
+        $response['data'] = "success";
+        $response['error'] = false;
+        $response['message'] = "User '" .  $value->email . "' created successfully.";
+    } catch (PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    echo json_encode($response);
+    // return json_encode($response);
+}
+
 
 function getUserByUSer($db, $json)
 {
@@ -65,18 +517,7 @@ function getUserByUSer($db, $json)
         $stmt     = $db->query($sql);
         $rs       =  $stmt->fetchAll();
         if (count($rs) > 0) {
-
         }
-        // $data_array =  array(
-        //     "sms"   => "",
-        //     "type"  => "signuplink",
-        //     "phone" => "+525567733943"
-        // );
-        // $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-        // $response  = json_decode($make_call, true);
-        // $data    = $response['body']['MessageId'];
-        // $statusCode = $response['statusCode'];
-        // $data = "message test";
         $response = array();
         $response['data'] = $rs[0];
         $response['error'] = false;
@@ -130,6 +571,40 @@ function updateOrganization($db, $json)
     echo json_encode($response);
 }
 
+function callAPIAuth($method, $url, $data)
+{
+    $curl = curl_init();
+    switch ($method) {
+        case "POST":
+            curl_setopt($curl, CURLOPT_POST, 1);
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        case "PUT":
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        default:
+            if ($data)
+                $url = sprintf("%s?%s", $url, http_build_query($data));
+    }
+    // OPTIONS:
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Authorization: Bearer 6f5224025b67c2f3da413a6762f5d885ff698302'
+    ));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    // EXECUTE:
+    $result = curl_exec($curl);
+    if (!$result) {
+        die("Connection Failure");
+    }
+    curl_close($curl);
+    return $result;
+}
 
 
 function callAPI($method, $url, $data)
@@ -166,25 +641,15 @@ function callAPI($method, $url, $data)
     return $result;
 }
 
-function test()
+function test($json)
 {
 
     try {
 
-        // $data_array =  array(
-        //     "sms"   => "",
-        //     "type"  => "signuplink",
-        //     "phone" => "+525567733943"
-        // );
-        // $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-        // $response  = json_decode($make_call, true);
-        // $data    = $response['body']['MessageId'];
-        // $statusCode = $response['statusCode'];
-        // $data = "message test";
         $response = array();
         $response['data'] = "success";
         $response['error'] = false;
-        $response['message'] = "Organization created successfully.";
+        $response['message'] = $json;
     } catch (PDOException $e) {
         $response['data'] = null;
         $response['error'] = true;
@@ -342,7 +807,7 @@ function createGroup($db, $organization, $idOrg)
     0,
     0,
     0,
-    0,
+    :default,
     :idOrg
 
 
@@ -352,6 +817,7 @@ function createGroup($db, $organization, $idOrg)
         $stmt = $db->prepare($sql);
         $stmt->bindValue("group",             "group");
         $stmt->bindValue("organization",       $organization);
+        $stmt->bindValue("default",       "default");
         $stmt->bindValue("idOrg",       $idOrg);
         $stmt->execute();
         $id = $db->lastInsertId();
@@ -426,17 +892,17 @@ function createUser($db, $value, $org, $idGruoup)
         $stmt->execute();
         $id = $db->lastInsertId();
         $lastInsertId = $id > 0 ? $id : 0;
+        getSMSTest($value->phoneNumber, $db, "signuplink");
 
-
-        $data_array =  array(
-            "sms"   => "",
-            "type"  => "signuplink",
-            "phone" => $value->phoneNumber
-        );
-        $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-        $response  = json_decode($make_call, true);
-        $data    = $response['body']['MessageId'];
-        $statusCode = $response['statusCode'];
+        // $data_array =  array(
+        //     "sms"   => "",
+        //     "type"  => "signuplink",
+        //     "phone" => $value->phoneNumber
+        // );
+        // $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        // $response  = json_decode($make_call, true);
+        // $data    = $response['body']['MessageId'];
+        // $statusCode = $response['statusCode'];
 
         addUserToGroup($db, $idGruoup, $lastInsertId, $value->contactName);
 

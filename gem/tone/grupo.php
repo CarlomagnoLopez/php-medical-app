@@ -84,12 +84,15 @@ cursor: pointer;
 
 .swr-grupo > .window
 {
-padding: 4%;
+  filter: drop-shadow(2px 4px 6px black);
+
+<!-- padding: 4%; -->
 }
 
 .swr-grupo .aside
 {
-background: white;
+
+background: #f7f7f7;
 padding: 0px;
 z-index: 1;
 height: 100%;
@@ -598,7 +601,7 @@ margin-right: 0px;
 
 .swr-grupo .panel
 {
-background: #f7f9fb;
+background: #f7f7f7;
 padding: 0px;
 padding-top: 0px;
 height: 100%;
@@ -1634,7 +1637,7 @@ cursor: pointer;
 
 .swr-grupo .rside
 {
-background: white;
+background: #f7f7f7;
 padding: 0px;
 z-index: 3;
 height: 100%;
@@ -1645,7 +1648,7 @@ border-radius: 0px 5px 5px 0px;
 .swr-grupo .rside > .top
 {
 color: #8b8e90;
-background: white;
+background: #f7f7f7;
 padding: 9px 15px;
 display: flex;
 width: 100%;

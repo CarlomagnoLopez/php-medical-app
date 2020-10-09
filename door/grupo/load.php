@@ -825,6 +825,8 @@ function gr_group() {
             } else {
                 $r = db('Grupo', 's', 'msgs', 'cat,gid', $arg[1]["ldt"], $arg[1]["id"], 'ORDER BY id DESC LIMIT 10');
             }
+            // $p = db('Grupo', 's', 'options', 'v5', $arg[1]["ldt"], $arg[1]["id"], 'ORDER BY id DESC LIMIT 10');
+            $pdefault  =db('Grupo', 's', 'options', 'id', $arg[1]["id"])[0]["v5"];
             $r = array_reverse($r);
             $txt['reply'] = $lphr['reply'];
             $txt['delete'] = $lphr['delete'];
@@ -891,7 +893,10 @@ function gr_group() {
                 $list[1]->me = array($lphr['report_group'], 'class="formpop" pn="1" title="'.$lphr['report_group'].'" do="group" btn="'.$lphr['report'].'" act="reportmsg"');
 
                 if (isset($rchk['groups'][5]) || isset($rchk['groups'][7])) {
-                    $list[1]->mf = array($lphr['delete'], 'class="formpop" pn="1" title="'.$lphr['delete'].'" do="group" btn="'.$lphr['delete'].'" act="delete"');
+                    if($pdefault !== "default"){
+                        $list[1]->mf = array($lphr['delete'], 'class="formpop" pn="1" title="'.$lphr['delete'].'" do="group" btn="'.$lphr['delete'].'" act="delete"');
+
+                    }
                 }
             }
             $i = 2;

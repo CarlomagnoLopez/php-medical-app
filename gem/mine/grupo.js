@@ -271,7 +271,7 @@ function showFileViewer(filename, typefile) {
                     var tiff = new Tiff({ buffer: xhr.response });
                     var canvas = tiff.toCanvas();
                     canvas.id = "canvasTiff";
-                    if ($("#canvasTiff").length ) {
+                    if ($("#canvasTiff").length) {
                         $("#canvasTiff").detach()
                     }
                     $("#wrap").show();
@@ -346,25 +346,25 @@ function existGroup(group) {
 
 function onClickFormCreateUser(event) {
     if ($("#txtName").val() == "") {
-        say("the name is requited", "s");
+        say("the name is required", "s");
         $("#txtName").focus();
         return false;
     }
-    if ($("#txtLastName").val() == "") {
-        say("the last name is requited", "s");
-        $("#txtLastName").focus();
-        return false;
-    }
-    if ($("#txtAddress").val() == "") {
-        say("the address is requited", "s");
-        $("#txtAddress").focus();
-        return false;
-    }
-    if ($("#txtZipCode").val() == "") {
-        say("the zipcode is requited", "s");
-        $("#txtZipCode").focus();
-        return false;
-    }
+    // if ($("#txtLastName").val() == "") {
+    //     say("the last name is required", "s");
+    //     $("#txtLastName").focus();
+    //     return false;
+    // }
+    // if ($("#txtAddress").val() == "") {
+    //     say("the address is requited", "s");
+    //     $("#txtAddress").focus();
+    //     return false;
+    // }
+    // if ($("#txtZipCode").val() == "") {
+    //     say("the zipcode is requited", "s");
+    //     $("#txtZipCode").focus();
+    //     return false;
+    // }
     if ($("#txtPhoneNumber").val() == "") {
         say("the phone is requited", "s");
         $("#txtPhoneNumber").focus();
@@ -381,24 +381,24 @@ function onClickFormCreateUser(event) {
         $("#txtEmail").focus();
         return false;
     }
-    if ($("#txtPassword").val() == "") {
-        say("the password is requited", "s");
-        $("#txtPassword").focus();
-        return false;
-    }
-    if (!checkPassword($("#txtPassword").val())) {
-        say("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.", "s");
-        $("#txtPassword").focus();
-        return false;
-    }
+    // if ($("#txtPassword").val() == "") {
+    //     say("the password is requited", "s");
+    //     $("#txtPassword").focus();
+    //     return false;
+    // }
+    // if (!checkPassword($("#txtPassword").val())) {
+    //     say("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.", "s");
+    //     $("#txtPassword").focus();
+    //     return false;
+    // }
 
-    if (!validatePasswords($("#txtPassword").val(), $("#txtRepeatPassword").val())) {
-        say("The given passwords do not match", "s");
-        return false;
-    }
+    // if (!validatePasswords($("#txtPassword").val(), $("#txtRepeatPassword").val())) {
+    //     say("The given passwords do not match", "s");
+    //     return false;
+    // }
 
     if ($("#selRole").val() == "0") {
-        say("the rol is requited", "s");
+        say("the rol is required", "s");
         $("#selRol").focus();
         return false;
     }
@@ -408,7 +408,7 @@ function onClickFormCreateUser(event) {
         style: { position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
     });
 
-    var phone = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
+    var phone = "+" + $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
     var username = $("#txtEmail").val().split("@")[0];
 
     var exist = existUser($("#txtEmail").val(), phone);
@@ -420,24 +420,27 @@ function onClickFormCreateUser(event) {
     }
 
     var payload = {
-        method: "createUser",
-        name: $("#txtName").val(),
-        lastname: $("#txtLastName").val(),
-        phone: phone,
-        email: $("#txtEmail").val(),
-        username: username,
-        password: $("#txtPassword").val(),
-        address: $("#txtAddress").val(),
-        zipcode: $("#txtZipCode").val(),
-        role: parseInt($("#selRole").val()),
-        id_organization: parseInt($("#global_id_organization").val())
+        method: "saveUserByOrg",
+        record: {
+            name: $("#txtName").val(),
+            // lastname: $("#txtLastName").val(),
+            phoneNumber: phone,
+            email: $("#txtEmail").val(),
+            // username: username,
+            // password: $("#txtPassword").val(),
+            // address: $("#txtAddress").val(),
+            // zipcode: $("#txtZipCode").val(),
+            role: parseInt($("#selRole").val()),
+            orgid: parseInt($("#global_id_organization").val())
+        }
+
     }
 
     $.ajax({
         type: "POST",
         contentType: "application/json",
         processData: false,
-        url: 'door/grform/main.php',
+        url: 'door/integration/main.php',
         data: JSON.stringify(payload),
         success: function (data) {
             $.loadingBlockHide();

@@ -319,17 +319,21 @@ function gr_form($do) {
                 }
             }
         }
-    } else if ($do["type"] == "groupdelete") {
+    } 
+    else if ($do["type"] == "groupdelete") {
+
+
         $role = gr_group('user', $do["id"], $uid)['role'];
-        if (gr_role('access', 'groups', '3') && $role == 2 || gr_role('access', 'groups', '7')) {
+        // if (gr_role('access', 'groups', '3') && $role == 2 || gr_role('access', 'groups', '7')) {
             $cr = gr_group('valid', $do["id"]);
             if ($cr[0]) {
                 $fields->name = array(gr_lang('get', 'confirm_delete'), 'input', 'disabled', '"'.$cr['name'].'"');
                 $fields->id = array('hidden', 'input', 'hidden', $do["id"]);
             }
-        }
+        // }
 
-    } else if ($do["type"] == "groupinvite") {
+    } 
+    else if ($do["type"] == "groupinvite") {
         if (gr_role('access', 'groups', '5') || gr_role('access', 'groups', '7')) {
             $cr = gr_group('valid', $do["id"]);
             if ($cr[0]) {

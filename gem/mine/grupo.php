@@ -1276,7 +1276,10 @@ function htmlDecode(input) {
     if (e.childNodes[0] == undefined) {
         return input;
     } else {
-        e.childNodes[0].nodeValue = e.childNodes[0].nodeValue.replaceAll(" ", "%20");
+        var f = e.childNodes[0].nodeValue.substr(e.childNodes[0].nodeValue.length - 5);
+        if(f.indexOf(".") !== -1){
+            e.childNodes[0].nodeValue = e.childNodes[0].nodeValue.replaceAll(" ", "%20");
+        }
         return e.childNodes[0].nodeValue;
     }
 }

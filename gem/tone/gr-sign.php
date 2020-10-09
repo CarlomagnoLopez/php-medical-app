@@ -334,6 +334,7 @@ background: url('gem/ore/grupo/global/background-img.png') no-repeat center cent
 -moz-background-size: cover;
 -o-background-size: cover;
 background-size: cover;
+filter: brightness(0.5) !important;
 }
 
 .bgtwo

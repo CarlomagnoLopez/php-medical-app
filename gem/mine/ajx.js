@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('body').append("<div class='ajxprocess'><span></span></div>");
-    $('body').append("<div class='ajxcnf'><div><div><span></span><span><i class=nocnf>No</i><i class=yescnf>Yes</i></span></div></div></div><span class='ajxout'></span>");
+    // $('body').append("<div class='ajxcnf'><div><div><span></span><span><i class=nocnf>No</i><i class=yescnf>Yes</i></span></div></div></div><span class='ajxout'></span>");
+    $('body').append("<div class='ajxcnf'><div><div><span></span><span><i class=nocnf></i><i class=yescnf></i></span></div></div></div><span class='ajxout'></span>");
 });
 $('body').on('click', ".say", function(na) {
     na.preventDefault();

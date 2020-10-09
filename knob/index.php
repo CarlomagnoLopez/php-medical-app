@@ -377,17 +377,17 @@
 
     <section id="modalCreateUser" class="grupo-pop-modal" style="display: none;">
         <div>
-            <form autocomplete="off" style="height: 750px !important;">
+            <form autocomplete="off" style="height: 500px !important;">
                 <span class="head">Create User</span>
                 <div class="fields scroller" tabindex="5">
                     <label class="color-label">Name</label>
                     <input type="text" name="fName" id="txtName" class="margin-input">
-                    <label class="color-label">Last Name</label>
-                    <input type="text" name="fLastName" id="txtLastName" class="margin-input">
-                    <label class="color-label">Address</label>
+                    <!-- <label class="color-label">Last Name</label>
+                    <input type="text" name="fLastName" id="txtLastName" class="margin-input"> -->
+                    <!-- <label class="color-label">Address</label>
                     <input type="text" name="fAddress" id="txtAddress" class="margin-input">
                     <label class="color-label">ZipCode</label>
-                    <input type="text" name="fZipCode" id="txtZipCode" class="margin-input only-numbers zipCodeLimit">
+                    <input type="text" name="fZipCode" id="txtZipCode" class="margin-input only-numbers zipCodeLimit"> -->
                     <div style="margin-top: 30px;position: absolute;">
                         <select name="fcomplementPhone" id="selComplementPhone">
                             <option value="1" selected>+1</option>
@@ -400,12 +400,12 @@
                     </div>
                     <label class="color-label">Phone Number</label>
                     <input type="text" name="fPhoneNumber" id="txtPhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
-                    <label class="color-label">Username</label>
+                    <label class="color-label">Email</label>
                     <input type="text" name="fEmail" id="txtEmail" class="margin-input">
-                    <label class="color-label">Password</label>
+                    <!-- <label class="color-label">Password</label>
                     <input type="password" name="fPassword" id="txtPassword" class="margin-input">
                     <label class="color-label">Repeat Password</label>
-                    <input type="password" name="fRepeatPass" id="txtRepeatPassword" class="margin-input">
+                    <input type="password" name="fRepeatPass" id="txtRepeatPassword" class="margin-input"> -->
                     <label class="color-label">Role</label>
                     <select name="sent" class="margin-input color-label" id="selRole">
                         <option value="0">-----</option>
