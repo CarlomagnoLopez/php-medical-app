@@ -29,7 +29,7 @@ if ($_REQUEST) {
             break;
         case 1:
             $responseSql = $validationsLevel["resposeSql"];
-            getSMSTestAndUpdate($responseSql["phone_number"], "signuplink", $responseSql[0]["id"]);
+            getSMSTestAndUpdate($responseSql[0]["phone_number"], "signuplink", $responseSql[0]["id"]);
             header("Location:http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
             $response['data'] = "success";
             $response['error'] = false;
@@ -102,7 +102,6 @@ function updateLink($link)
         $stmtValiteS5 = $dbValiteS2->exec("UPDATE gr_history_sms SET used = '80' WHERE link = '$link'");
         $dbValiteS2 = null;
         sleep(2);
-
     } catch (PDOException $e) {
     }
 }
@@ -131,7 +130,7 @@ function getSMSTestAndUpdate($phone, $typeSMS, $idToUpdate)
 
         $dbValiteS3          = Connection();
 
-        $sqlValiteS3  = "SELECT CURRENT_TIMESTAMP() + INTERVAL 1 MINUTE as timeCur";
+        $sqlValiteS3  = "SELECT NOW() + INTERVAL 1 MINUTE as timeCur";
 
         $stmtValiteS3     = $dbValiteS3->query($sqlValiteS3);
         $rsValiteS3      =  $stmtValiteS3->fetchAll();
@@ -139,35 +138,31 @@ function getSMSTestAndUpdate($phone, $typeSMS, $idToUpdate)
 
         $timeCur = $rsValiteS3[0]["timeCur"];
         $dbValiteS3          = null;
-        $refValiteS3 = "99";
+        // $refValiteS3 = "99";
 
         $dbValiteS4          = Connection();
 
         $sqlValiteS4 = $dbValiteS4->exec("INSERT INTO gr_history_sms
         (
-        'id',
-        'link', 
-        'init_date',
-        'finish_date',
-        'used',
-        'phone_number'
+            `id`,
+        `link`, 
+        `init_date`,
+        `finish_date`,
+        `used`,
+        `phone_number`
         )
         VALUES
         (NULL, 
         '$stringArray', 
-        current_timestamp(),
+        NOW(),
         '$timeCur',
-        '$refValiteS3',
+        '99',
         '$phone'
         );");
 
 
         $dbValiteS4 = null;
         sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
-
-
-
-      
     } catch (PDOException $e) {
     }
 }
@@ -187,7 +182,6 @@ function sendSMSTest($phone, $linkBitLy, $typeSMS)
         $response  = json_decode($make_call, true);
         $data    = $response['body']['MessageId'];
         $statusCode = $response['statusCode'];
-
     } catch (PDOException $e) {
     }
 }
