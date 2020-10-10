@@ -43,10 +43,10 @@ function initValidations($getVar)
     }
 
 
-    $dbValiteS2          = Connection();
-    $sqlValiteS2 = "SELECT * FROM `gr_history_sms` WHERE `link` = '$getVar' and `used` = 99 ";
-    $stmtValiteS2     = $dbValiteS2->query($sqlValiteS2);
-    $rsValiteS2       =  $stmtValiteS2->fetchAll();
+    $dbValiteS2     = Connection();
+    $sqlValiteS2    = "SELECT * FROM `gr_history_sms` WHERE `link` = '$getVar' and `used` = 99 ";
+    $stmtValiteS2   = $dbValiteS2->query($sqlValiteS2);
+    $rsValiteS2     =  $stmtValiteS2->fetchAll();
 
     if (count($rsValiteS2) > 0) {
         $responsersValiteS2 = array();
@@ -72,13 +72,18 @@ function updateLinkWithId($idtoU)
     try {
 
         $dbValiteS5          = Connection();
-        $sqlValiteS5 = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `id` = :idUser";
 
-        $stmtValiteS5 = $dbValiteS5->prepare($sqlValiteS5);
-        $stmtValiteS5->bindValue("idUser", $idtoU);
-        $stmtValiteS5->execute();
+        
+       // $sqlValiteS5 = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `id` = :idUser";
 
-        $dbValiteS5 = null;
+
+        $stmtValiteS5 = $dbValiteS5->exec("UPDATE gr_history_sms SET used = '80' WHERE id = '$idtoU'");
+
+        // $stmtValiteS5 = $dbValiteS5->prepare($sqlValiteS5);
+        // $stmtValiteS5->bindValue("idUser", $idtoU);
+        // $stmtValiteS5->execute();
+
+    //    $dbValiteS5 = null;
     } catch (PDOException $e) {
     }
     // echo json_encode($response);
@@ -90,13 +95,14 @@ function updateLink($link)
     try {
 
         $dbValiteS2          = Connection();
-        $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `link` = :link";
+        $stmtValiteS5 = $dbValiteS2->exec("UPDATE gr_history_sms SET used = '80' WHERE link = '$link'");
+        // $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `link` = :link";
 
-        $stmtdbsqlUpdateLink = $dbValiteS2->prepare($sqlUpdateLink);
-        $stmtdbsqlUpdateLink->bindValue("link", $link);
-        $stmtdbsqlUpdateLink->execute();
+        // $stmtdbsqlUpdateLink = $dbValiteS2->prepare($sqlUpdateLink);
+        // $stmtdbsqlUpdateLink->bindValue("link", $link);
+        // $stmtdbsqlUpdateLink->execute();
 
-        $dbValiteS2 = null;
+        // $dbValiteS2 = null;
 
     } catch (PDOException $e) {
        
@@ -137,30 +143,33 @@ function getSMSTestAndUpdate($phone, $typeSMS, $idToUpdate)
         $refValiteS3 = "99";
 
         $dbValiteS4          = Connection();
-        $sqlValiteS4 = "INSERT INTO `gr_history_sms`
+
+        $sqlValiteS4 = $dbValiteS4->exec("INSERT INTO gr_history_sms
         (
-        `id`,
-        `link`, 
-        `init_date`,
-        `finish_date`,
-        `used`,
-        `phone_number`
+        'id',
+        'link', 
+        'init_date',
+        'finish_date',
+        'used',
+        'phone_number'
         )
         VALUES
         (NULL, 
-        :generatelink, 
+        '$stringArray', 
         current_timestamp(),
-        :timeproperly,
-        :refUse1,
-        :phone
-        );";
+        '$timeCur',
+        '$refValiteS3',
+        '$phone'
+        );");
 
-        $stmtValiteS4 = $dbValiteS4->prepare($sqlValiteS4);
-        $stmtValiteS4->bindValue("generatelink", $stringArray);
-        $stmtValiteS4->bindValue("timeproperly", $timeCur);
-        $stmtValiteS4->bindValue("refUse1", $refValiteS3);
-        $stmtValiteS4->bindValue("phone", $phone);
-        $stmtValiteS4->execute();
+
+    
+        // $stmtValiteS4 = $dbValiteS4->prepare($sqlValiteS4);
+        // $stmtValiteS4->bindValue("generatelink", $stringArray);
+        // $stmtValiteS4->bindValue("timeproperly", $timeCur);
+        // $stmtValiteS4->bindValue("refUse1", $refValiteS3);
+        // $stmtValiteS4->bindValue("phone", $phone);
+        // $stmtValiteS4->execute();
         // $id = $db->lastInsertId();
         // $lastInsertId = $id > 0 ? $id : 0;
 
