@@ -284,7 +284,7 @@ function getSMSTest($phone, $db, $typeSMS)
         $responseUpdate = array();
         $createdArray = array_values(array_intersect_key($a, array_flip(array_rand($a, $n))));
         $stringArray = $createdArray[0] . $createdArray[1] . $createdArray[2] . $createdArray[3] . $createdArray[4] . $createdArray[5] . $createdArray[6] . $createdArray[7];
-        $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/door/integration/main.php?smsvalidations=" . $stringArray;
+        $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/door/integration/maindummy.php?smsvalidations=" . $stringArray;
         $data_array =  array(
             "group_guid" => "Bk9h1KBTFqy",
             "domain" => "bit.ly",
