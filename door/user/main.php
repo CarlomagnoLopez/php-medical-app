@@ -47,11 +47,76 @@ switch($method){
         $status = $json->status;
         updateStatusUser($db,$phone,$status);
     break;
+    case 'deleteUserOrganization':
+        $id_user          = $json->id_user;
+        $role             = $json->role;
+        $id_organization  = $json->id_organization;
+        deleteUserOrganization($db,$id_user,$role,$id_organization);
+    break;    
     case 'fastLogin':
         fastLogin($db,$phone,$status);
     break;
 }
 
+
+function countRole($db,$role,$id_organization){
+    $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1 AND deleted=0";
+    try {
+        $response = array();
+        $stmt = $db->query($sql); 
+        $rs   =  $stmt->fetchAll();
+        if(count($rs)>0){
+            $response['count'] = (int) $rs[0]['count'];
+        }else{
+            $response['count'] = (int) $rs[0]['count'];
+        }
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['exist'] = false; 
+        $response['count'] = 0;
+
+    }
+    return $response;
+}
+
+function deleteUserOrganization($db,$id_user,$role,$id_organization){
+    // 3 org admin / 5 approver
+    $response = array();
+    $response['data'] = 0;
+ //   echo  $countRole['count'];
+    $countRole = countRole($db,$role,$id_organization);
+    
+    if($role==3 && $countRole['count'] == 2){
+        $response['error']   = true;
+        $response['message'] = "You can’t delete more org admins, The limit per org its 2";    
+        //return $response;
+        echo json_encode($response);
+        return;
+    }else if($role==5 && $countRole['count'] == 2){
+        $response['error']   = true; 
+        $response['message'] = "You can’t delete more approvers, The limit per org its 2";    
+        //return $response;
+        echo json_encode($response);
+        return;
+    }
+    $sql = "UPDATE gr_users SET deleted = 1 WHERE id=:id";
+    try {
+        $stmt = $db->prepare($sql); 
+        $stmt->bindValue("id",    $id_user);
+        $stmt->execute();
+        $rs = $stmt->rowCount() ? 1 : 0;
+        $response['data'] = $rs;
+        $response['error'] = false; 
+        $response['message'] = "Success";             
+    } catch(PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true; 
+        $response['message'] = "An error occurred, try again.".$e->getMessage();    
+    }
+    echo json_encode($response);
+    return;
+ //return $response;
+}
 
 function updateSession($db,$uid){
     $sql = "UPDATE `gr_session` SET try=:try,device=:device WHERE uid=:uid";
@@ -120,7 +185,6 @@ function updateStatusUser($db,$phone,$status){
     }
     echo json_encode($response);
  }
-
 
 function existUser($db,$phone,$email){
     $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone' OR email = '$email'";
