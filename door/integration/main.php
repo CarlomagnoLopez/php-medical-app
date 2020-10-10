@@ -475,7 +475,8 @@ function createOneUser($db, $value, $org, $idGruoup)
     extra,
     phone,
     id_organization,
-    status
+    status,
+    deleted
     )
     VALUES
     (:name,
@@ -489,6 +490,7 @@ function createOneUser($db, $value, $org, $idGruoup)
     :extra,
     :phone,
     :id_organization,
+    0,
     0)";
     try {
         $roleOrg = $value->role;
@@ -892,7 +894,8 @@ function createUser($db, $value, $org, $idGruoup)
     extra,
     phone,
     id_organization,
-    status
+    status,
+    deleted
     )
     VALUES
     (:name,
@@ -906,6 +909,7 @@ function createUser($db, $value, $org, $idGruoup)
     :extra,
     :phone,
     :id_organization,
+    0,
     0)";
     try {
         $roleOrg = "";
