@@ -10,84 +10,88 @@ require "../../key/Connection.php";
 if ($_REQUEST) {
     $getVar = $_GET['smsvalidations'];
     if ($getVar) {
-        initValidations($getVar);
+        $validationsLevel = initValidationsSteps($getVar);
+    } else {
+        return;
     }
+    $response  = array();
+    $response['data'] = null;
+    $response['error'] = true;
+    $response['message'] = "We can validate your link.";
+    switch ($validationsLevel["level"]) {
+        case 0:
+            $responseSql = $validationsLevel["resposeSql"];
+            updateLink($responseSql[0]["link"]);
+            header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/signin");
+            $response['data'] = "success";
+            $response['error'] = false;
+            $response['message'] = "level 0";
+            break;
+        case 1:
+            $responseSql = $validationsLevel["resposeSql"];
+            getSMSTestAndUpdate($responseSql["phone_number"], "signuplink", $responseSql[0]["id"]);
+            header("Location:http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
+            $response['data'] = "success";
+            $response['error'] = false;
+            $response['message'] = "level 1";
+            break;
+        case 2:
+            header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
+            $response['data'] = "success";
+            $response['error'] = false;
+            $response['message'] = "level 2";
+            break;
+    }
+
+
+
+    echo json_encode($response);
+    return;
 }
 
-function initValidations($getVar)
+
+function initValidationsSteps($getVar)
 {
     $dbValiteS1          = Connection();
     $sqlValiteS1 = "SELECT * FROM `gr_history_sms` WHERE `link` = '$getVar' and `used` = 99 and ( CURRENT_TIMESTAMP() BETWEEN `init_date` AND `finish_date` )";
     $stmtValiteS1    = $dbValiteS1->query($sqlValiteS1);
     $rsValiteS1       =  $stmtValiteS1->fetchAll();
 
-
+    $values = array();
     if (count($rsValiteS1) > 0) {
-
-        $responseValiteS1 = array();
         $dbValiteS1 = null;
+        $values["level"] = 0;
+        $values["resposeSql"] = $rsValiteS1;
 
-        // $db2BetweenTime          = Connection();
-        updateLink($rsValiteS1[0]["link"]);
-
-
-
-        header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/signin");
-        $responseValiteS1['data'] = "success";
-        $responseValiteS1['error'] = false;
-        $responseValiteS1['message'] = "Continue...";
-        echo json_encode($responseValiteS1);
-        return;
-    }else{
-        $dbValiteS1 = null;
+        return $values;
     }
-
-
-    $dbValiteS2     = Connection();
     $sqlValiteS2    = "SELECT * FROM `gr_history_sms` WHERE `link` = '$getVar' and `used` = 99 ";
-    $stmtValiteS2   = $dbValiteS2->query($sqlValiteS2);
+    $stmtValiteS2   = $dbValiteS1->query($sqlValiteS2);
     $rsValiteS2     =  $stmtValiteS2->fetchAll();
 
     if (count($rsValiteS2) > 0) {
-        $responsersValiteS2 = array();
-        $dbValiteS2 = null;
-       
+        $dbValiteS1 = null;
+        $values["level"] = 1;
+        $values["resposeSql"] = $rsValiteS2;
 
-        getSMSTestAndUpdate($rsValiteS2[0]["phone_number"], "signuplink", $rsValiteS2[0]["id"]);
-        header("Location:http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
-
-        $responsersValiteS2['data'] = "success";
-        $responsersValiteS2['error'] = false;
-        $responsersValiteS2['message'] = $rsValiteS2[0]["phone_number"];
-        echo json_encode($responsersValiteS2);
-        return;
+        return $values;
     } else {
-        // $db = null;
-        header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
-        return;
+        $dbValiteS1 = null;
+        $values["level"] = 2;
+        return $values;
     }
 }
+
+
 function updateLinkWithId($idtoU)
 {
     try {
 
         $dbValiteS5          = Connection();
-
-        
-       // $sqlValiteS5 = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `id` = :idUser";
-
-
         $stmtValiteS5 = $dbValiteS5->exec("UPDATE gr_history_sms SET used = '80' WHERE id = '$idtoU'");
-
-        // $stmtValiteS5 = $dbValiteS5->prepare($sqlValiteS5);
-        // $stmtValiteS5->bindValue("idUser", $idtoU);
-        // $stmtValiteS5->execute();
-
-    //    $dbValiteS5 = null;
+        $dbValiteS5          = null;
     } catch (PDOException $e) {
     }
-    // echo json_encode($response);
-    // return json_encode($response);
 }
 
 function updateLink($link)
@@ -96,19 +100,11 @@ function updateLink($link)
 
         $dbValiteS2          = Connection();
         $stmtValiteS5 = $dbValiteS2->exec("UPDATE gr_history_sms SET used = '80' WHERE link = '$link'");
-        // $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `link` = :link";
-
-        // $stmtdbsqlUpdateLink = $dbValiteS2->prepare($sqlUpdateLink);
-        // $stmtdbsqlUpdateLink->bindValue("link", $link);
-        // $stmtdbsqlUpdateLink->execute();
-
-        // $dbValiteS2 = null;
+        $dbValiteS2 = null;
+        sleep(2);
 
     } catch (PDOException $e) {
-       
     }
-    // echo json_encode($response);
-    // return json_encode($response);
 }
 
 
@@ -116,7 +112,8 @@ function getSMSTestAndUpdate($phone, $typeSMS, $idToUpdate)
 {
     try {
 
-
+        updateLinkWithId($idToUpdate);
+        sleep(2);
         $a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
         $n = 8;
         $createdArray = array_values(array_intersect_key($a, array_flip(array_rand($a, $n))));
@@ -128,6 +125,8 @@ function getSMSTestAndUpdate($phone, $typeSMS, $idToUpdate)
             "long_url" => $longLink
         );
         $make_call = callAPIAuth('POST', 'https://api-ssl.bitly.com/v4/shorten', json_encode($data_array));
+        sleep(2);
+
         $responseBitLy  = json_decode($make_call, true);
 
         $dbValiteS3          = Connection();
@@ -163,28 +162,14 @@ function getSMSTestAndUpdate($phone, $typeSMS, $idToUpdate)
         );");
 
 
-    
-        // $stmtValiteS4 = $dbValiteS4->prepare($sqlValiteS4);
-        // $stmtValiteS4->bindValue("generatelink", $stringArray);
-        // $stmtValiteS4->bindValue("timeproperly", $timeCur);
-        // $stmtValiteS4->bindValue("refUse1", $refValiteS3);
-        // $stmtValiteS4->bindValue("phone", $phone);
-        // $stmtValiteS4->execute();
-        // $id = $db->lastInsertId();
-        // $lastInsertId = $id > 0 ? $id : 0;
-
         $dbValiteS4 = null;
         sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
 
 
 
-        updateLinkWithId($idToUpdate);
-
-
+      
     } catch (PDOException $e) {
     }
-    // echo json_encode($responseUpdate);
-    // return json_encode($response);
 }
 
 function sendSMSTest($phone, $linkBitLy, $typeSMS)
@@ -203,17 +188,8 @@ function sendSMSTest($phone, $linkBitLy, $typeSMS)
         $data    = $response['body']['MessageId'];
         $statusCode = $response['statusCode'];
 
-        // $response =  $lastInsertId;
-        $response['data'] = "success";
-        $response['error'] = false;
-        $response['message'] = "Sent SMS with tiny url";
     } catch (PDOException $e) {
-        $response['data'] = null;
-        $response['error'] = true;
-        $response['message'] = "An error occurred, try again." . $e->getMessage();
     }
-    // echo json_encode($response);
-    // return json_encode($response);
 }
 
 
