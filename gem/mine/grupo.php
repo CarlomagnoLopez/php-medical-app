@@ -952,6 +952,15 @@ $('body').on('click', '.formpop', function(e) {
                     $("#txtProfilePhoneNumber").val( dataUser.data.phone.substring(3) );
                 }
                 $("#txtProfileEmail").val(dataUser.data.email);
+
+                $("#txtProfileEmail").attr('disabled','disabled');
+                $("#txtProfileEmail").css({'background-color':'gray'});
+                $("#txtProfilePhoneNumber").attr('disabled','disabled');
+                $("#txtProfilePhoneNumber").css({'background-color':'gray'});
+                $("#selProfileComplementPhone").attr('disabled','disabled');
+                $("#selProfileComplementPhone").css({'background-color':'gray'});
+
+
                 $("#modalEditProfile").fadeIn();
             }
             return false;
@@ -1383,6 +1392,7 @@ function placeCaretAtEnd(el) {
 }
 $('body').on('click', '.swr-grupo .aside > .content .profile > .middle > span.editprf', function(e) {
     $('.swr-grupo .aside > .content .profile > .top > span.edit > i').trigger('click');
+    
 });
 
 $('body').on('click', '.swr-grupo .vwp', function(e) {

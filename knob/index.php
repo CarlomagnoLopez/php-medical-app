@@ -290,7 +290,17 @@
                             </ul>
                             <div class="profile">
                                 <div class="top">
+                                    <?php
+                                      if ($usr['role']!=5) {
+                                    ?>
                                     <span class="edit"><i class='formpop' title='<?php pr(gr_lang('get', 'edit_profile')) ?>' data-side="profile" do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' xtid="" act='profile'><?php pr(gr_lang('get', 'edit_profile')) ?></i></span>
+                                    <?php
+                                      }else{                                      
+                                    ?>
+                                    <span class="edit"><i class='formpop' style="color: transparent !important;border: 1px solid transparent !important;" title='<?php pr(gr_lang('get', 'edit_profile')) ?>' data-side="profile" do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' xtid="" act='profile'><?php pr(gr_lang('get', 'edit_profile')) ?></i></span>
+                                    <?php
+                                      }
+                                    ?>
                                     <span class="dp"><img src="" /></span>
                                     <span class="name"></span>
                                     <span class="role"></span>
@@ -476,7 +486,7 @@
         </div>
     </section>
 
-    <section id="modalEditProfile" class="grupo-pop-modal" style="display: none;">
+    <section id="modalEditProfile" class="grupo-pop-modal" style="display: none;overflow: auto;"> 
         <div>
             <form autocomplete="off" style="height: 750px !important;">
                 <span class="head">Edit Profile</span>
@@ -520,7 +530,7 @@
     </section>
 
 
-    <section id="modalInvite" class="grupo-pop-modal" style="display: none;">
+    <section id="modalInvite" class="grupo-pop-modal" style="display: none;overflow: auto;">>
         <div>
             <form autocomplete="off" id="formModalInvite" class="sizeModalInviteByPhone">
                 <span class="head" id="titleInvite">Invite</span>
