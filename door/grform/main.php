@@ -271,14 +271,21 @@ function updateUser($db,$json){
 
 
 function createUser($db,$json){
-    
-   if($json->role==2 || $json->role==5){
-      $countRole = countRole($db,$json->role,$json->id_organization);
+   $role = $json->role;
+   if($role==3 || $role==5){
+      $countRole = countRole($db,$role,$json->id_organization);
       if($countRole['count']>=4){
         $response = array();
         $response['data']    = 0;
         $response['error']   = true; 
-        $response['message'] = ($json->role==2)?"You can’t create more than 4 org admin" : "You can’t create more than 4 approver";    
+        if($role==3){
+            $response['message'] = "You can’t create more than 4 org admin";    
+        }else if($role==5){
+            $response['message'] = "You can’t create more than 4 approver";    
+        }else{
+            $response['message']  = ''; 
+        }
+        $response['message'] = ($role==2)?"You can’t create more than 4 org admin" : "You can’t create more than 4 approver";    
         echo json_encode($response);
         exit;
       }

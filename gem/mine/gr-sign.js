@@ -343,13 +343,16 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
 
             var getData = JSON.parse(getDataUserByUsername($("#txtUsernameLogin").val()));
             if (!getData.exist) {
-                $.toast("the username:" + $("#txtUsernameLogin").val() + " doesn't exist.");
+                $.toast("the username: " + $("#txtUsernameLogin").val() + " doesn't exist.");
                 $("#txtUsernameLogin").focus();
                 $.loadingBlockHide();
                 return false;
             }
-
-
+            if(getData.data.status == '6' && getData.data.status == '0' ){
+                $.toast("Username:" + $("#txtUsernameLogin").val() + " inactive ");
+                $.loadingBlockHide();
+                return false;
+            }
             var phone = getData.data.phone;
             var code = generateCode();
             console.log(code);

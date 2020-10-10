@@ -411,7 +411,7 @@
                         <option value="0">-----</option>
                         <option value="6">User</option>
                         <option value="5">Approver</option>
-                        <option value="2">Org Admin</option>
+                        <option value="3">Org Admin</option>
                     </select>
 
                     <input type="hidden" autocomplete='off' id="txtUsername" name="fUsername" />

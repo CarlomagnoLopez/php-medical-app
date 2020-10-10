@@ -131,6 +131,25 @@ $db          = Connection();
         case 'saveUserByOrg':
 
             $organization = $json->record->orgid;
+            $role         = $json->record->role;
+
+            if($role==3 || $role==5){
+                $countRole = countRole($db,$role,$organization);
+                if($countRole['count']>=4){
+                  $response = array();
+                  $response['data']    = 0;
+                  $response['error']   = true; 
+                  if($role==3){
+                      $response['message'] = "You can’t create more than 4 org admin";    
+                  }else if($role==5){
+                      $response['message'] = "You can’t create more than 4 approver";    
+                  }else{
+                      $response['message']  = ''; 
+                  }
+                  echo json_encode($response);
+                  exit;
+                }
+             }
 
             // return  $organization;
             $sql = "SELECT * FROM `gr_organizations` WHERE `id_organization` = $organization";
@@ -168,11 +187,32 @@ $db          = Connection();
             break;
     }
 // }
+
+
+function countRole($db,$role,$id_organization){
+    $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1";
+    try {
+        $response = array();
+        $stmt = $db->query($sql); 
+        $rs   =  $stmt->fetchAll();
+        if(count($rs)>0){
+            $response['count'] = (int) $rs[0]['count'];
+        }else{
+            $response['count'] = (int) $rs[0]['count'];
+        }
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['exist'] = false; 
+        $response['count'] = 0;
+
+    }
+    return $response;
+}
 function updateLinkWithId($idtoU, $dbsqlUpdateLink)
 {
     try {
         // UPDATE `gr_history_sms` SET `used` = '1' WHERE `gr_history_sms`.`id` = 14;
-        ?>console.log("step update")<?php
+        ?><?php
         $responseUpdateLink = array();
         $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `id` = :id";
 
@@ -205,7 +245,7 @@ function updateLink($link, $dbsqlUpdateLink)
 {
     try {
         // UPDATE `gr_history_sms` SET `used` = '1' WHERE `gr_history_sms`.`id` = 14;
-        ?>console.log("step update")<?php
+        ?><?php
         $responseUpdateLink = array();
         $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `link` = :link";
 
@@ -261,7 +301,7 @@ function getSMSTest($phone, $db, $typeSMS)
         $timeCur = $rs1[0]["timeCur"];
         $refUse1 = "99";
 
-        ?>console.log("step 4")<?php
+        ?><?php
         
 
         $sqlUpdate = "INSERT INTO `gr_history_sms`
@@ -336,7 +376,7 @@ function getSMSTestAndUpdate($phone, $db, $typeSMS,$idToUpdate)
         $timeCur = $rs1[0]["timeCur"];
         $refUse1 = "99";
 
-        ?>console.log("step 4")<?php
+        ?><?php
         
 
         $sqlUpdate = "INSERT INTO `gr_history_sms`
