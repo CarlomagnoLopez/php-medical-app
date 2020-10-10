@@ -56,7 +56,7 @@ switch ($method) {
         $organization = $json->record->orgid;
         $role         = $json->record->role;
         if ($role == 3 || $role == 5) {
-            $countRole = countRole($db, $role, $organization);
+            $countRole = countRole($role, $organization);
             if ($countRole['count'] >= 4) {
                 $response = array();
                 $response['data']    = 0;
@@ -79,6 +79,7 @@ switch ($method) {
         $sql1 = "SELECT * FROM `gr_options` WHERE `id_organization` = $organization";
         $stmt1     = $db->query($sql1);
         $rs1      =  $stmt1->fetchAll();
+        $db = null;
         if (count($rs) > 0) {
             createOneUser($json->record, $json->record->orgid, $rs1[0]["id"]);
         } else {
@@ -95,22 +96,23 @@ switch ($method) {
 
 
 
-function countRole($db, $role, $id_organization)
+function countRole($role, $id_organization)
 {
-    $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1";
     try {
+        $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1";
+        $dbcountingrole  = Connection();
         $response = array();
-        $stmt = $db->query($sql);
+        $stmt = $dbcountingrole->query($sql);
         $rs   =  $stmt->fetchAll();
         if (count($rs) > 0) {
             $response['count'] = (int) $rs[0]['count'];
         } else {
             $response['count'] = (int) $rs[0]['count'];
         }
-        $response['error'] = false;
+        // $response['error'] = false;
     } catch (PDOException $e) {
-        $response['exist'] = false;
-        $response['count'] = 0;
+        // $response['exist'] = false;
+        // $response['count'] = 0;
     }
     return $response;
 }
@@ -195,15 +197,8 @@ function getSMSTest($phone, $typeSMS)
         sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
 
 
-        $responseUpdate['data'] = "success";
-        $responseUpdate['error'] = false;
-        $responseUpdate['message'] = $refUse1 . " " . $sqlUpdate;
     } catch (PDOException $e) {
-        $responseUpdate['data'] = null;
-        $responseUpdate['error'] = true;
-        $responseUpdate['message'] = "An error occurred, try again." . $e->getMessage();
     }
-    echo json_encode($responseUpdate);
 }
 
 function sendSMSTest($phone, $linkBitLy, $typeSMS)
@@ -466,7 +461,7 @@ function test($json)
 }
 
 
-function saveOrganization( $organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json)
+function saveOrganization($organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json)
 {
     $sql = "INSERT INTO `gr_organizations`
    (organization,
@@ -504,7 +499,7 @@ function saveOrganization( $organization, $secret_key, $contact_email, $contact_
         $db = null;
 
 
-        $idGruoup = createGroup( $organization, $lastInsertId);
+        $idGruoup = createGroup($organization, $lastInsertId);
         // $arrayLength = count($json->usersOrg);
         // for ($i = 0; $i < $arrayLength; $i++) {
         $log[1] = createUser($json->usersOrg[0], $lastInsertId, $idGruoup);
@@ -601,7 +596,7 @@ function addUserToGroup($idGroupCreated, $log, $nameUser)
 }
 
 
-function createGroup( $organization, $idOrg)
+function createGroup($organization, $idOrg)
 {
 
 
@@ -655,7 +650,7 @@ function createGroup( $organization, $idOrg)
 function createUser($value, $org, $idGruoup)
 {
 
-    
+
     $sql = "INSERT INTO `gr_users`
     (name,
     email,
