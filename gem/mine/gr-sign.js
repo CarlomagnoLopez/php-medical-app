@@ -348,7 +348,7 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 $.loadingBlockHide();
                 return false;
             }
-            if(getData.data.status == '6' && getData.data.status == '0' ){
+            if(getData.data.status == '0'){
                 $.toast("Username:" + $("#txtUsernameLogin").val() + " inactive ");
                 $.loadingBlockHide();
                 return false;
