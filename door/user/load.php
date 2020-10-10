@@ -84,7 +84,8 @@ function usr() {
             if (!usr($d, 'existPhoneReg', $phone)) {
                 $p = en($p);
                 if(empty($id_organization)){
-                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status,address,zipcode,lastname,username', $name, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$status_user,$address,$zipcode,$lastname,$i);
+                    $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,status,address,zipcode,lastname,username', $name, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,"0",$address,$zipcode,$lastname,$i);
+                    return;
                 }else{
                     $r[1] = db($d, 'i', 'users', 'name,email,pass,mask,depict,role,created,altered,phone,id_organization,status,address,zipcode,lastname,username', $name, $e, $p['pass'], $p['mask'], $p['type'], $rl, dt(), dt(), $phone,$id_organization,$status_user,$address,$zipcode,$lastname,$i);
                 }
