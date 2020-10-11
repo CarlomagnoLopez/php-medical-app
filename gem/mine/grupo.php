@@ -951,14 +951,15 @@ $('body').on('click', '.formpop', function(e) {
                     $("#selProfileComplementPhone").val(dataUser.data.phone.substring(0, 3));
                     $("#txtProfilePhoneNumber").val( dataUser.data.phone.substring(3) );
                 }
-                $("#txtProfileEmail").val(dataUser.data.email);
+                $("#txtProfileUsername").val(dataUser.data.username);
 
-                $("#txtProfileEmail").attr('disabled','disabled');
-                $("#txtProfileEmail").css({'background-color':'gray'});
+                $("#txtProfileUsername").attr('disabled','disabled');
+                $("#txtProfileUsername").css({'background-color':'gray'});
                 $("#txtProfilePhoneNumber").attr('disabled','disabled');
                 $("#txtProfilePhoneNumber").css({'background-color':'gray'});
                 $("#selProfileComplementPhone").attr('disabled','disabled');
                 $("#selProfileComplementPhone").css({'background-color':'gray'});
+                $("#selProfileComplementPhone").css({'color':'black'});
 
 
                 $("#modalEditProfile").fadeIn();

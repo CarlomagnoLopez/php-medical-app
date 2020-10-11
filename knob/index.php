@@ -512,7 +512,7 @@
                     <label class="color-label">Phone Number</label>
                     <input type="text" name="fPhoneNumber" id="txtProfilePhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
                     <label class="color-label">Username</label>
-                    <input type="text" name="fEmail" id="txtProfileEmail" class="margin-input">
+                    <input type="text" name="fEmail" id="txtProfileUsername" class="margin-input">
                     <label class="color-label">Password</label>
                     <input type="password" name="fPassword" id="txtProfilePassword" class="margin-input">
                     <label class="color-label">Repeat Password</label>
