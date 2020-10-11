@@ -143,7 +143,7 @@ function getSMSTest($phone, $typeSMS)
 
         $dbValiteS3          = Connection();
 
-        $sqlValiteS3  = "SELECT NOW() + INTERVAL 1 MINUTE as timeCur";
+        $sqlValiteS3  = "SELECT NOW() + INTERVAL 5 MINUTE as timeCur";
 
         $stmtValiteS3     = $dbValiteS3->query($sqlValiteS3);
         $rsValiteS3      =  $stmtValiteS3->fetchAll();
