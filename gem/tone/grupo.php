@@ -1583,6 +1583,11 @@ margin-bottom: 5px;
 font-family: 'Montserrat', sans-serif;
 }
 
+select
+{
+color: #736a6a;
+}
+
 .grupo-pop > div > form > div > select > option
 {
 outline: none;
@@ -2153,7 +2158,7 @@ margin-top: -18px;
 }
 
 .color-label{
-color:black !important;
+color: #736a6a;
 }
 
 
@@ -2279,7 +2284,6 @@ width: 0px;
 .grupo-pop-modal > div > form > div > label
 {
 display: block;
-color: black;
 text-align: left;
 font-size: 14px;
 padding: 8px 0px;
@@ -2309,11 +2313,11 @@ display: block;
 .grupo-pop-modal > div > form > div > input,.grupo-pop-modal > div > form > div > select,.grupo-pop-modal > div > form > div > textarea
 {
 display: block;
-background: #35353500;
 border: 0px;
+background: transparent;  
+color: #828282;
 border-bottom: 1px solid #00000063;
 outline: 0px;
-color: #000000e3;
 border-radius: 0px;
 padding: 0px 0px;
 padding-bottom: 5px;
@@ -2369,7 +2373,7 @@ display: block;
 display: block;
 font-size: 13px;
 margin-top: 11px;
-color: #00000096;
+color: #736a6a;
 margin-bottom: 22px;
 cursor: pointer;
 }

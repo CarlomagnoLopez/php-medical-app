@@ -118,6 +118,7 @@ position: relative;
 width: 400px;
 display: inline-block;
 padding: 37px 37px;
+margin-left: -20px;
 box-shadow: 0px 0px 6px #0c0c0c29;
 border-radius: 3px;
 }
@@ -150,14 +151,14 @@ border-radius: 14px;
 {
 position: absolute;
 margin-top: 13px;
-color: #888888;
+color: #000000;
 margin-left: 17px;
 }
 
 .sign > section > div > div form label > input
 {
 background: transparent;
-color: #888888;
+color: #000000;
 border: 0px;
 padding: 12px 5px;
 padding-left: 39px;
@@ -300,7 +301,7 @@ background: linear-gradient(to right,#00BCD4,#FFEB3B);
 
 .one > section
 {
-color: #888888;
+color: #000000;
 }
 
 .one > section > div > div form > .switch > span
@@ -385,8 +386,6 @@ border-radius: 0px;
 .two > section > div > div form label > input
 {
 padding-left: 24px;
-background: transparent;
-color: #000000d1;
 }
 
 .two > section > div > div form label > i
@@ -488,22 +487,3 @@ cursor: pointer;
 margin-left: 5px;
 }
 
-::-webkit-input-placeholder
-{
-color: inherit;
-}
-
-::-moz-placeholder
-{
-color: inherit;
-}
-
-:-ms-input-placeholder
-{
-color: inherit;
-}
-
-:-moz-placeholder
-{
-color: inherit;
-}
