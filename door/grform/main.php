@@ -101,10 +101,45 @@ function getDataUserById($db,$id){
     return $response;
 }
 
+function generateLinkBitUserEnable(){
+        $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/signin$";
+        $data_array =  array(
+            "group_guid" => "Bk9h1KBTFqy",
+            "domain" => "bit.ly",
+            "long_url" => $longLink
+        );
+        $make_call = callAPIAuth('POST', 'https://api-ssl.bitly.com/v4/shorten', json_encode($data_array));
+        $responseBitLy  = json_decode($make_call, true);
+        return $responseBitLy["link"];  
+}
+
+
+function sendSMS($phone, $linkBitLy, $typeSMS){
+
+    try {
+        $response   = array();
+        $data_array =  array(
+            "sms"   => "",
+            "link" => $linkBitLy,
+            "type"  => $typeSMS,
+            "phone" => $phone
+        );
+        $make_call  = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        $response   = json_decode($make_call, true);
+        $data       = $response['body']['MessageId'];
+        $statusCode = $response['statusCode'];
+
+    } catch (Exception $e) {
+        echo "An error occurred, try again.".$e->getMessage();    
+    }
+}
+
+
 function updateStatusUser($db,$uid,$status){
     $getData         = getDataUserById($db,$uid);
     $role            = $getData['data']['role'];
     $id_organization = $getData['data']['id_organization'];
+    $phone           = $getData['data']['phone'];
     if($role==2 || $role==5){
         $countRole = countRole($db,$role,$id_organization);
         if($status=='0'){
@@ -137,6 +172,10 @@ function updateStatusUser($db,$uid,$status){
         $rs = $stmt->rowCount() ? 1 : 0;
         $db = null;     
         $response['data']    = $rs;
+        if($status=='1'){
+            $linkBitLy = generateLinkBitUserEnable();
+            sendSMS($phone,$linkBitLy,"enableuser");
+        }
         $response['error']   = false; 
         $response['message'] = "";             
     } catch(PDOException $e) {
@@ -416,6 +455,74 @@ function saveGrSession($db,$json){
     echo json_encode($response);
  }
 
+ function callAPIAuth($method, $url, $data)
+ {
+     $curl = curl_init();
+     switch ($method) {
+         case "POST":
+             curl_setopt($curl, CURLOPT_POST, 1);
+             if ($data)
+                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+             break;
+         case "PUT":
+             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+             if ($data)
+                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+             break;
+         default:
+             if ($data)
+                 $url = sprintf("%s?%s", $url, http_build_query($data));
+     }
+     // OPTIONS:
+     curl_setopt($curl, CURLOPT_URL, $url);
+     curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+         'Content-Type: application/json',
+         'Authorization: Bearer 6f5224025b67c2f3da413a6762f5d885ff698302'
+     ));
+     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+     curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+     // EXECUTE:
+     $result = curl_exec($curl);
+     if (!$result) {
+         die("Connection Failure");
+     }
+     curl_close($curl);
+     return $result;
+ }
+
+ function callAPI($method, $url, $data)
+ {
+     $curl = curl_init();
+     switch ($method) {
+         case "POST":
+             curl_setopt($curl, CURLOPT_POST, 1);
+             if ($data)
+                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+             break;
+         case "PUT":
+             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+             if ($data)
+                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+             break;
+         default:
+             if ($data)
+                 $url = sprintf("%s?%s", $url, http_build_query($data));
+     }
+     // OPTIONS:
+     curl_setopt($curl, CURLOPT_URL, $url);
+     curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+         'Content-Type: application/json',
+     ));
+     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+     curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+     // EXECUTE:
+     $result = curl_exec($curl);
+     if (!$result) {
+         die("Connection Failure");
+     }
+     curl_close($curl);
+     return $result;
+ } 
 
 function en($v, $t = 0, $m = 0) {
     if ($t == '0') {

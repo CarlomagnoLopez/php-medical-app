@@ -40,8 +40,11 @@ function gr_register($do) {
                                 sessionStorage.setItem("email","'.$email.'");
                                 location.reload(); }, 2000);');
                     }else{
+                        if($do["fStatusUser"] == '1'){
+
+                        }
                         $username = $do["name"];
-                        gr_prnt('$.toast("User created successfully.");$(".clearValues").val("");$("#selComplementPhone").val(1);$.loadingBlockHide();');
+                        gr_prnt('$.toast("User created successfully, but the user account is disabled");$(".clearValues").val("");$("#selComplementPhone").val(1);$.loadingBlockHide();');
                     }
                 }else{
                     gr_prnt('$.toast("plese try again.");$.loadingBlockHide();');

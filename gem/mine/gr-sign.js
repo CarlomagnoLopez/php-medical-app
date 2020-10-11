@@ -9,7 +9,9 @@ $(document).ready(function () {
     sessionStorage.removeItem("name");
     sessionStorage.removeItem("email");
 
-    showSigUp();
+    if(window.location.pathname.split('/')[2]="signin$"){
+     showSigUp();
+    }
 });
 
 

@@ -78,9 +78,9 @@ function onClickStatusUser(event) {
             style: { position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
         });
 
-        var exist = updateStatusUser(window.idUserSelectedAct, $("#selActionUser").val());
-        if (exist.error) {
-            say(exist.message, "s");
+        var update = updateStatusUser(window.idUserSelectedAct, $("#selActionUser").val());
+        if (update.error) {
+            say(update.message, "s");
             $.loadingBlockHide();
         } else {
             $("#modalTakeAction").fadeOut();

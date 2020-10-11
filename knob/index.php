@@ -262,10 +262,11 @@
                         <div class='top'>
                             <span class='left'>
                                 <i class='icon ti-angle-double-left goback d-md-none'></i>
+                                <!-- diego -->
                                 <span class="vwp" no="<?php pr($usr['id']); ?>">
                                     <img src="<?php pr(gr_img('users', $usr['id'])); ?>">
-                                    <span><?php pr(gr_profile('get', $usr['id'], 'name')); ?>
-                                        <span>@<?php pr(explode("@", usr('Grupo', 'select', $usr['id'])['email'])[0]);  ?></span>
+                                    <span><?php  pr(usr('Grupo', 'select', $usr['id'])['name']) ?>
+                                        <span>@<?php pr(usr('Grupo', 'select', $usr['id'])['username']) ?></span>
                                     </span>
                                 </span></span>
                             <span class='right'>
@@ -512,7 +513,7 @@
                     <label class="color-label">Phone Number</label>
                     <input type="text" name="fPhoneNumber" id="txtProfilePhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
                     <label class="color-label">Username</label>
-                    <input type="text" name="fEmail" id="txtProfileUsername" class="margin-input">
+                    <input type="text" name="fUsername" id="txtProfileUsername" class="margin-input">
                     <label class="color-label">Password</label>
                     <input type="password" name="fPassword" id="txtProfilePassword" class="margin-input">
                     <label class="color-label">Repeat Password</label>
