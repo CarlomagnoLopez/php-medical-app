@@ -18,40 +18,41 @@ switch ($method) {
     case 'userlist':
         getUserByUSer();
         break;
-    // case 'test':
-    //     $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 5 MINUTE as timeCur";
-    //     $stmt1     = $db->query($sqlMin);
-    //     $rs1       =  $stmt1->fetchAll();
-    //     $response['data'] = null;
-    //     $response['error'] = true;
-    //     $response['message'] = "We can't  create: " . $rs1[0]["timeCur"] . " because the name it is already exist! Select a different one.";
-    //     echo json_encode($response);
-    //     break;
+        // case 'test':
+        //     $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 5 MINUTE as timeCur";
+        //     $stmt1     = $db->query($sqlMin);
+        //     $rs1       =  $stmt1->fetchAll();
+        //     $response['data'] = null;
+        //     $response['error'] = true;
+        //     $response['message'] = "We can't  create: " . $rs1[0]["timeCur"] . " because the name it is already exist! Select a different one.";
+        //     echo json_encode($response);
+        //     break;
     case 'updateOrganization':
-        updateOrganization( $json);
+        updateOrganization($json);
         break;
-    // case 'saveOrganization':
-    //     $organization = $json->summaryOrg->orgName;
-    //     $secret_key   = $json->summaryOrg->secretKey;
-    //     $contact_email   = $json->summaryOrg->contactEmail;
-    //     $contact_name   = $json->summaryOrg->contactName;
-    //     $web_site   = $json->summaryOrg->orgWesite;
-    //     $phone_number   = $json->summaryOrg->phoneNumber;
-    //     $tax_number   = $json->summaryOrg->taxNumber;
-    //     $sql = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
-    //     $stmt     = $db->query($sql);
-    //     $rs       =  $stmt->fetchAll();
-    //     $db = null;
-    //     if (count($rs) > 0) {
-    //         $response = array();
-    //         $response['data'] = null;
-    //         $response['error'] = true;
-    //         $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
-    //         echo json_encode($response);
-    //         return;
-    //     }
-    //     saveOrganization($organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
-    //     break;
+    case 'saveOrganization':
+        $organization = $json->summaryOrg->orgName;
+        $secret_key   = $json->summaryOrg->secretKey;
+        $contact_email   = $json->summaryOrg->contactEmail;
+        $contact_name   = $json->summaryOrg->contactName;
+        $web_site   = $json->summaryOrg->orgWesite;
+        $phone_number   = $json->summaryOrg->phoneNumber;
+        $tax_number   = $json->summaryOrg->taxNumber;
+        $sqlSaveOrganization = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
+        $dbSaveOrg = Connection();
+        $stmtSaveOrganization     = $dbSaveOrg->query($sqlSaveOrganization);
+        $rsSaveOrganization      =  $stmtSaveOrganization->fetchAll();
+        $dbSaveOrg = null;
+        if (count($rsSaveOrganization) > 0) {
+            $response = array();
+            $response['data'] = null;
+            $response['error'] = true;
+            $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
+            echo json_encode($response);
+            return;
+        }
+        saveOrganization($organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
+        break;
     case 'saveUserByOrg':
         $organization = $json->record->orgid;
         $role         = $json->record->role;
@@ -175,7 +176,6 @@ function getSMSTest($phone, $typeSMS)
 
         $dbValiteS4 = null;
         sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
-
     } catch (PDOException $e) {
     }
 }
@@ -315,7 +315,7 @@ function getUserByUSer()
 
 
 
-function updateOrganization( $json)
+function updateOrganization($json)
 {
     $dbUpdateOrg = Connection();
     $sqlU = "UPDATE `gr_organizations` SET 
