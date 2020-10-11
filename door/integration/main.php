@@ -16,42 +16,42 @@ $method = $json->method;
 switch ($method) {
 
     case 'userlist':
-        getUserByUSer($db, $json);
+        getUserByUSer();
         break;
-    case 'test':
-        $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 5 MINUTE as timeCur";
-        $stmt1     = $db->query($sqlMin);
-        $rs1       =  $stmt1->fetchAll();
-        $response['data'] = null;
-        $response['error'] = true;
-        $response['message'] = "We can't  create: " . $rs1[0]["timeCur"] . " because the name it is already exist! Select a different one.";
-        echo json_encode($response);
-        break;
+    // case 'test':
+    //     $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 5 MINUTE as timeCur";
+    //     $stmt1     = $db->query($sqlMin);
+    //     $rs1       =  $stmt1->fetchAll();
+    //     $response['data'] = null;
+    //     $response['error'] = true;
+    //     $response['message'] = "We can't  create: " . $rs1[0]["timeCur"] . " because the name it is already exist! Select a different one.";
+    //     echo json_encode($response);
+    //     break;
     case 'updateOrganization':
-        updateOrganization($db, $json);
+        updateOrganization( $json);
         break;
-    case 'saveOrganization':
-        $organization = $json->summaryOrg->orgName;
-        $secret_key   = $json->summaryOrg->secretKey;
-        $contact_email   = $json->summaryOrg->contactEmail;
-        $contact_name   = $json->summaryOrg->contactName;
-        $web_site   = $json->summaryOrg->orgWesite;
-        $phone_number   = $json->summaryOrg->phoneNumber;
-        $tax_number   = $json->summaryOrg->taxNumber;
-        $sql = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
-        $stmt     = $db->query($sql);
-        $rs       =  $stmt->fetchAll();
-        $db = null;
-        if (count($rs) > 0) {
-            $response = array();
-            $response['data'] = null;
-            $response['error'] = true;
-            $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
-            echo json_encode($response);
-            return;
-        }
-        saveOrganization($organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
-        break;
+    // case 'saveOrganization':
+    //     $organization = $json->summaryOrg->orgName;
+    //     $secret_key   = $json->summaryOrg->secretKey;
+    //     $contact_email   = $json->summaryOrg->contactEmail;
+    //     $contact_name   = $json->summaryOrg->contactName;
+    //     $web_site   = $json->summaryOrg->orgWesite;
+    //     $phone_number   = $json->summaryOrg->phoneNumber;
+    //     $tax_number   = $json->summaryOrg->taxNumber;
+    //     $sql = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
+    //     $stmt     = $db->query($sql);
+    //     $rs       =  $stmt->fetchAll();
+    //     $db = null;
+    //     if (count($rs) > 0) {
+    //         $response = array();
+    //         $response['data'] = null;
+    //         $response['error'] = true;
+    //         $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
+    //         echo json_encode($response);
+    //         return;
+    //     }
+    //     saveOrganization($organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
+    //     break;
     case 'saveUserByOrg':
         $organization = $json->record->orgid;
         $role         = $json->record->role;
@@ -69,22 +69,22 @@ switch ($method) {
                     $response['message']  = '';
                 }
                 echo json_encode($response);
-                exit;
+                return;
             }
         }
+        $dbQueryInit = Connection();
         $sql = "SELECT * FROM `gr_organizations` WHERE `id_organization` = $organization";
-        $stmt     = $db->query($sql);
+        $stmt     = $dbQueryInit->query($sql);
         $rs       =  $stmt->fetchAll();
 
         $sql1 = "SELECT * FROM `gr_options` WHERE `id_organization` = $organization";
-        $stmt1     = $db->query($sql1);
+        $stmt1     = $dbQueryInit->query($sql1);
         $rs1      =  $stmt1->fetchAll();
-        $db = null;
+        $dbQueryInit = null;
         if (count($rs) > 0) {
             createOneUser($json->record, $json->record->orgid, $rs1[0]["id"]);
         } else {
             $response = array();
-            $db = null;
             $response['data'] = null;
             $response['error'] = true;
             $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
@@ -124,9 +124,9 @@ function getSMSTest($phone, $typeSMS)
     try {
 
 
+        // sleep(2);
         $a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
         $n = 8;
-        $responseUpdate = array();
         $createdArray = array_values(array_intersect_key($a, array_flip(array_rand($a, $n))));
         $stringArray = $createdArray[0] . $createdArray[1] . $createdArray[2] . $createdArray[3] . $createdArray[4] . $createdArray[5] . $createdArray[6] . $createdArray[7];
         $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/door/integration/maindummy.php?smsvalidations=" . $stringArray;
@@ -136,21 +136,27 @@ function getSMSTest($phone, $typeSMS)
             "long_url" => $longLink
         );
         $make_call = callAPIAuth('POST', 'https://api-ssl.bitly.com/v4/shorten', json_encode($data_array));
+        sleep(2);
+
         $responseBitLy  = json_decode($make_call, true);
-        $dbsmstest = Connection();
 
-        $sqlMin = "SELECT CURRENT_TIMESTAMP() + INTERVAL 1 MINUTE as timeCur";
+        $dbValiteS3          = Connection();
 
-        $stmt1Update     = $dbsmstest->query($sqlMin);
-        $rs1       =  $stmt1Update->fetchAll();
-        $timeCur = $rs1[0]["timeCur"];
-        $refUse1 = "99";
+        $sqlValiteS3  = "SELECT NOW() + INTERVAL 1 MINUTE as timeCur";
 
-        $dbsmstest = null;
+        $stmtValiteS3     = $dbValiteS3->query($sqlValiteS3);
+        $rsValiteS3      =  $stmtValiteS3->fetchAll();
 
-        $sqlUpdate = "INSERT INTO `gr_history_sms`
+
+        $timeCur = $rsValiteS3[0]["timeCur"];
+        $dbValiteS3          = null;
+        // $refValiteS3 = "99";
+
+        $dbValiteS4          = Connection();
+
+        $sqlValiteS4 = $dbValiteS4->exec("INSERT INTO gr_history_sms
         (
-        `id`,
+            `id`,
         `link`, 
         `init_date`,
         `finish_date`,
@@ -159,24 +165,16 @@ function getSMSTest($phone, $typeSMS)
         )
         VALUES
         (NULL, 
-        :generatelink, 
-        current_timestamp(),
-        :timeproperly,
-        :refUse1,
-        :phone
-        );";
+        '$stringArray', 
+        NOW(),
+        '$timeCur',
+        '99',
+        '$phone'
+        );");
 
-        $dbsmstest2 = Connection();
 
-        $stmtUpdate = $dbsmstest2->prepare($sqlUpdate);
-        $stmtUpdate->bindValue("generatelink", $stringArray);
-        $stmtUpdate->bindValue("timeproperly", $timeCur);
-        $stmtUpdate->bindValue("refUse1", $refUse1);
-        $stmtUpdate->bindValue("phone", $phone);
-        $stmtUpdate->execute();
-        $dbsmstest2 = null;
+        $dbValiteS4 = null;
         sendSMSTest($phone, $responseBitLy["link"], $typeSMS);
-
 
     } catch (PDOException $e) {
     }
@@ -199,13 +197,13 @@ function sendSMSTest($phone, $linkBitLy, $typeSMS)
         $statusCode = $response['statusCode'];
 
         // $response =  $lastInsertId;
-        $response['data'] = "success";
-        $response['error'] = false;
-        $response['message'] = "Sent SMS with tiny url";
+        // $response['data'] = "success";
+        // $response['error'] = false;
+        // $response['message'] = "Sent SMS with tiny url";
     } catch (PDOException $e) {
-        $response['data'] = null;
-        $response['error'] = true;
-        $response['message'] = "An error occurred, try again." . $e->getMessage();
+        // $response['data'] = null;
+        // $response['error'] = true;
+        // $response['message'] = "An error occurred, try again." . $e->getMessage();
     }
 }
 
@@ -271,8 +269,9 @@ function createOneUser($value, $org, $idGruoup)
         $id = $dbcreateoneuser->lastInsertId();
         $lastInsertId = $id > 0 ? $id : 0;
         $dbcreateoneuser = null;
-
+        sleep(2);
         getSMSTest($value->phoneNumber, "signuplink");
+        // sleep(2);
 
 
 
@@ -291,18 +290,19 @@ function createOneUser($value, $org, $idGruoup)
 }
 
 
-function getUserByUSer($db, $json)
+function getUserByUSer()
 {
     try {
-        $sql = "SELECT * FROM `gr_users`";
-        $stmt     = $db->query($sql);
-        $rs       =  $stmt->fetchAll();
-        if (count($rs) > 0) {
+        $dbListUSer = Connection();
+        $sqlListUSer = "SELECT * FROM `gr_users`";
+        $stmtListUSer     = $dbListUSer->query($sqlListUSer);
+        $rsListUSer      =  $stmtListUSer->fetchAll();
+        if (count($rsListUSer) > 0) {
         }
 
-        $db = null;
+        $dbListUSer = null;
         $response = array();
-        $response['data'] = $rs[0];
+        $response['data'] = $rsListUSer[0];
         $response['error'] = false;
         $response['message'] = "Get users for admin.";
     } catch (PDOException $e) {
@@ -315,8 +315,9 @@ function getUserByUSer($db, $json)
 
 
 
-function updateOrganization($db, $json)
+function updateOrganization( $json)
 {
+    $dbUpdateOrg = Connection();
     $sqlU = "UPDATE `gr_organizations` SET 
     `contact_email`=:contact_email,
     `contact_name`=:contact_name,
@@ -329,7 +330,7 @@ function updateOrganization($db, $json)
     try {
         $response = array();
 
-        $stmt = $db->prepare($sqlU);
+        $stmt = $dbUpdateOrg->prepare($sqlU);
         // $stmt->bindValue("orgName",   $json->summaryOrg->orgName);
         $stmt->bindValue("contact_email",   $json->summaryOrg->contactEmail);
         $stmt->bindValue("contact_name",  $json->summaryOrg->contactName);
@@ -341,7 +342,7 @@ function updateOrganization($db, $json)
         $stmt->execute();
         // $id = $db->lastInsertId();
         // $lastInsertId = $id > 0 ? $id : 0;
-        $db = null;
+        $dbUpdateOrg = null;
         $response['data'] = "success";
         $response['error'] = false;
         $response['message'] = "We updated the " . $json->summaryOrg->orgName . " organization for you!";
