@@ -116,26 +116,7 @@ function countRole($role, $id_organization)
     }
     return $response;
 }
-function updateLinkWithId($idtoU, $dbsqlUpdateLink)
-{
-    try {
-        $responseUpdateLink = array();
-        $sqlUpdateLink = "UPDATE `gr_history_sms` SET `used` = '80' WHERE `id` = :id";
 
-        $stmtdbsqlUpdateLink = $dbsqlUpdateLink->prepare($sqlUpdateLink);
-        $stmtdbsqlUpdateLink->bindValue("id", $idtoU);
-        $stmtdbsqlUpdateLink->execute();
-
-        $dbsqlUpdateLink = null;
-        $responseUpdateLink['data'] = "success";
-        $responseUpdateLink['error'] = false;
-        $responseUpdateLink['message'] = "update";
-    } catch (PDOException $e) {
-        $responseUpdateLink['data'] = null;
-        $responseUpdateLink['error'] = true;
-        $responseUpdateLink['message'] = "An error occurred, try again." . $e->getMessage();
-    }
-}
 
 
 function getSMSTest($phone, $typeSMS)
