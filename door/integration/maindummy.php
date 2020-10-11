@@ -22,7 +22,7 @@ if ($_REQUEST) {
         case 0:
             $responseSql = $validationsLevel["resposeSql"];
             updateLink($responseSql[0]["link"]);
-            // header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/signin");
+            header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/signin");
             $response['data'] = "success";
             $response['error'] = false;
             $response['message'] = "level 0";
@@ -30,13 +30,13 @@ if ($_REQUEST) {
         case 1:
             $responseSql = $validationsLevel["resposeSql"];
             getSMSTestAndUpdate($responseSql[0]["phone_number"], "signuplink", $responseSql[0]["id"]);
-            // header("Location:http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
+            header("Location:http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
             $response['data'] = "success";
             $response['error'] = false;
             $response['message'] = "level 1";
             break;
         case 2:
-            // header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
+            header("Location: http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/expired");
             $response['data'] = "success";
             $response['error'] = false;
             $response['message'] = "level 2";
