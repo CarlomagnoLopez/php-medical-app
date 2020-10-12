@@ -122,7 +122,7 @@ function initValidationsStepsCreation($organization,  $email, $phoneNumber)
     $responseCreation['error'] = 1;
     $dbQueryInit = Connection();
 
-    $sql2 = "SELECT * FROM `gr_users` WHERE `email` = '" . $email . "'";
+    $sql2 = "SELECT * FROM `gr_users` WHERE `email` = '" . $email . "' and deleted = 0 ";
     $stmt2     = $dbQueryInit->query($sql2);
     $rs2      =  $stmt2->fetchAll();
 
@@ -137,7 +137,7 @@ function initValidationsStepsCreation($organization,  $email, $phoneNumber)
 
     // $dbQueryInit = null;
 
-    $sql3 = "SELECT * FROM `gr_users` WHERE `phone` = '" . $phoneNumber . "'";
+    $sql3 = "SELECT * FROM `gr_users` WHERE `phone` = '" . $phoneNumber . "' and deleted = 0 " ;
     $stmt3     = $dbQueryInit->query($sql3);
     $rs3      =  $stmt3->fetchAll();
     if (count($rs3) > 0) {
