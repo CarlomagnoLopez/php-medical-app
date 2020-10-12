@@ -56,10 +56,11 @@ switch ($method) {
     case 'saveUserByOrg':
         $organization = $json->record->orgid;
         $role         = $json->record->role;
+        $response     = array();
+        $response['message']  = '';
         if ($role == 3 || $role == 5) {
             $countRole = countRole($role, $organization);
             if ($countRole['count'] >= 4) {
-                $response = array();
                 $response['data']    = 0;
                 $response['error']   = true;
                 if ($role == 3) {

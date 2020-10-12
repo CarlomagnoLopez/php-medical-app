@@ -444,7 +444,7 @@ function onClickFormCreateUser(event) {
         data: JSON.stringify(payload),
         success: function (data) {
             $.loadingBlockHide();
-            if (data.data == 0) {
+            if (data.error) {
                 say(data.message, "s");
             } else {
                 $("#txtName").val("");
@@ -458,8 +458,8 @@ function onClickFormCreateUser(event) {
                 $("#selRole").val("0");
                 $("#selComplementPhone").val("1");
                 say("The user: " + username + " was creaded successfully", "s");
-                sendSMS(phone);
                 $("#modalCreateUser").fadeOut();
+                sendSMS(phone);
             }
         },
         error: function (err) {
