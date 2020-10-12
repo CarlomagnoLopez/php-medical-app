@@ -605,7 +605,7 @@ function gr_group() {
             $available     = db('Grupo', 'q', 'SELECT * FROM gr_options where v3 = "'.$id_user.'" and type="profile" and v1 = "status" and v2 = "offline" ORDER BY id DESC');
 
             if(count($available) > 0 ){
-                $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where id = "'.$id_user.'"');
+                $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$id_user.'" and status=1');
                 $phone   = $usr[0]['phone'];
                 if(!empty($phone)){
                      $data_array =  array(
