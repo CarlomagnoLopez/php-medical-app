@@ -56,6 +56,8 @@ switch ($method) {
     case 'saveUserByOrg':
         $organization = $json->record->orgid;
         $role         = $json->record->role;
+        $email         = $json->record->email;
+        $phoneNumber         = $json->record->phoneNumber;
         $response     = array();
         $response['message']  = '';
         if ($role == 3 || $role == 5) {
@@ -74,28 +76,95 @@ switch ($method) {
                 return;
             }
         }
-        $dbQueryInit = Connection();
-        $sql = "SELECT * FROM `gr_organizations` WHERE `id_organization` = $organization";
-        $stmt     = $dbQueryInit->query($sql);
-        $rs       =  $stmt->fetchAll();
 
-        $sql1 = "SELECT * FROM `gr_options` WHERE `id_organization` = $organization";
-        $stmt1     = $dbQueryInit->query($sql1);
-        $rs1      =  $stmt1->fetchAll();
-        $dbQueryInit = null;
-        if (count($rs) > 0) {
-            createOneUser($json->record, $json->record->orgid, $rs1[0]["id"]);
-        } else {
-            $response = array();
-            $response['data'] = null;
-            $response['error'] = true;
-            $response['message'] = "We can't  create: " . $organization . " because the name it is already exist! Select a different one.";
-            echo json_encode($response);
-            return;
+        $validatorQuery = initValidationsStepsCreation($organization,  $email, $phoneNumber);
+
+
+
+        switch ($validatorQuery['error']) {
+            case 1:
+                // 
+                $response['data'] = null;
+                $response['error'] = true;
+                // $response['message'] = "User '" .  $value->email . "' created successfully.";
+                $response['message'] = $validatorQuery['message'];
+                echo json_encode($response);
+                return;
+                # code...
+                break;
+            case 0:
+                createOneUser($json->record, $json->record->orgid, $validatorQuery["rs1"][0]["id"]);
+                // $response['data'] = null;
+                // $response['error'] = true;
+                // // $response['message']  = "User '" .  $email . "' created successfully.";
+                // $response['message']  = $validatorQuery["rs1"][0]["id"];
+
+                // echo json_encode($response);
+
+                return;
+                # code...
+                break;
+            default:
+                # code...
+                break;
         }
+
+
         break;
 }
 
+
+function initValidationsStepsCreation($organization,  $email, $phoneNumber)
+{
+
+
+    $responseCreation = array();
+    $responseCreation['error'] = 1;
+    $dbQueryInit = Connection();
+
+    $sql2 = "SELECT * FROM `gr_users` WHERE `email` = '" . $email . "'";
+    $stmt2     = $dbQueryInit->query($sql2);
+    $rs2      =  $stmt2->fetchAll();
+
+    if (count($rs2) > 0) {
+        $responseCreation['error'] = 1;
+        $responseCreation['message'] = "We can't create user:  " . $email . " because the email it is already exist! Select a different one.";
+        $dbQueryInit = null;
+        return  $responseCreation;
+    } else {
+        $responseCreation['error'] = 0;
+    }
+
+    // $dbQueryInit = null;
+
+    $sql3 = "SELECT * FROM `gr_users` WHERE `phone` = '" . $phoneNumber . "'";
+    $stmt3     = $dbQueryInit->query($sql3);
+    $rs3      =  $stmt3->fetchAll();
+    if (count($rs3) > 0) {
+        $responseCreation['error'] = 1;
+        $responseCreation['message'] = "We can't create user with:  " . $phoneNumber . " because the phone number it is already exist! Select a different one.";
+        $dbQueryInit = null;
+        return  $responseCreation;
+    } else {
+        $responseCreation['error'] = 0;
+    }
+
+
+
+    $sql = "SELECT * FROM `gr_organizations` WHERE `id_organization` = $organization";
+    $stmt     = $dbQueryInit->query($sql);
+    $rs       =  $stmt->fetchAll();
+
+    $sql1 = "SELECT * FROM `gr_options` WHERE `id_organization` = $organization";
+    $stmt1     = $dbQueryInit->query($sql1);
+    $rs1      =  $stmt1->fetchAll();
+
+    $responseCreation['rs1'] = $rs1;
+
+    $dbQueryInit = null;
+
+    return  $responseCreation;
+}
 
 
 function countRole($role, $id_organization)
@@ -194,8 +263,8 @@ function sendSMSTest($phone, $linkBitLy, $typeSMS)
         );
         $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
         $response  = json_decode($make_call, true);
-        $data    = $response['body']['MessageId'];
-        $statusCode = $response['statusCode'];
+        // $data    = $response['body']['MessageId'];
+        // $statusCode = $response['statusCode'];
 
         // $response =  $lastInsertId;
         // $response['data'] = "success";
@@ -211,36 +280,37 @@ function sendSMSTest($phone, $linkBitLy, $typeSMS)
 
 function createOneUser($value, $org, $idGruoup)
 {
-    $sql = "INSERT INTO `gr_users`
-    (name,
-    email,
-    pass,
-    mask,
-    depict,
-    role,
-    created,
-    altered,
-    extra,
-    phone,
-    id_organization,
-    status,
-    deleted
-    )
-    VALUES
-    (:name,
-    :email,
-    :pass,
-    :mask,
-    :depict,
-    :role,
-    NOW(),
-    NOW(),
-    :extra,
-    :phone,
-    :id_organization,
-    0,
-    0)";
+
     try {
+        $sql = "INSERT INTO `gr_users`
+        (name,
+        email,
+        pass,
+        mask,
+        depict,
+        role,
+        created,
+        altered,
+        extra,
+        phone,
+        id_organization,
+        status,
+        deleted
+        )
+        VALUES
+        (:name,
+        :email,
+        :pass,
+        :mask,
+        :depict,
+        :role,
+        NOW(),
+        NOW(),
+        :extra,
+        :phone,
+        :id_organization,
+        0,
+        0)";
         $dbcreateoneuser  = Connection();
         $roleOrg = $value->role;
         if ($value->role === "OrgAdmin") {
@@ -267,6 +337,8 @@ function createOneUser($value, $org, $idGruoup)
         $stmt->bindValue("phone",            $value->phoneNumber);
         $stmt->bindValue("id_organization",  $org);
         $stmt->execute();
+
+
         $id = $dbcreateoneuser->lastInsertId();
         $lastInsertId = $id > 0 ? $id : 0;
         $dbcreateoneuser = null;
@@ -278,7 +350,7 @@ function createOneUser($value, $org, $idGruoup)
 
         addUserToGroup($idGruoup, $lastInsertId, $value->name);
 
-        $db = null;
+        // $db = null;
         $response['data'] = "success";
         $response['error'] = false;
         $response['message'] = "User '" .  $value->email . "' created successfully.";
@@ -295,7 +367,7 @@ function getUserByUSer()
 {
     try {
         $dbListUSer = Connection();
-        $sqlListUSer = "SELECT * FROM `gr_users`";
+        $sqlListUSer = "SELECT * FROM `gr_users` where deleted = '0'";
         $stmtListUSer     = $dbListUSer->query($sqlListUSer);
         $rsListUSer      =  $stmtListUSer->fetchAll();
         if (count($rsListUSer) > 0) {

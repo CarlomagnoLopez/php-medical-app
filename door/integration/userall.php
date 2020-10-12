@@ -12,7 +12,7 @@ $json = json_decode(file_get_contents("php://input"));
 
 
 try {
-    $sql = "SELECT * FROM `gr_users`";
+    $sql = "SELECT * FROM `gr_users` where deleted = '0'" ;
     $stmt     = $db->query($sql);
     $rs       =  $stmt->fetchAll();
     if (count($rs) > 0) {
