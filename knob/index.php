@@ -292,7 +292,7 @@
                             <div class="profile">
                                 <div class="top">
                                     <?php
-                                      if ($usr['role']!=5) {
+                                      if ($usr['role']==3) {
                                     ?>
                                     <span class="edit"><i class='formpop' title='<?php pr(gr_lang('get', 'edit_profile')) ?>' data-side="profile" do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' xtid="" act='profile'><?php pr(gr_lang('get', 'edit_profile')) ?></i></span>
                                     <?php

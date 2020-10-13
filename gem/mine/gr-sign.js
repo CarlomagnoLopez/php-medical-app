@@ -8,8 +8,7 @@ $(document).ready(function () {
     sessionStorage.removeItem("phone");
     sessionStorage.removeItem("name");
     sessionStorage.removeItem("email");
-
-    if(window.location.pathname.split('/')[2]="signin$"){
+    if(window.location.pathname.split('/')[2]!="signin$"){
      showSigUp();
     }
 });
