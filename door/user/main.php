@@ -40,7 +40,8 @@ switch ($method) {
     case 'existUserSign':
         $phone    = $json->phone;
         $username = $json->username;
-        existUserSign($db, $phone, $username);
+        $email    = $json->email;
+        existUserSign($db, $phone, $username, $email);
         break;
     case 'updateStatusUser':
         $phone  = $json->phone;
@@ -268,9 +269,9 @@ function existUser($db, $phone, $email)
 }
 
 
-function existUserSign($db, $phone, $username)
+function existUserSign($db, $phone, $username, $email)
 {
-    $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone' OR username = '$username'";
+    $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone' OR username = '$username' OR email = '$email'";
     try {
         $response = array();
         $stmt = $db->query($sql);
@@ -278,7 +279,14 @@ function existUserSign($db, $phone, $username)
         if (count($rs) > 0) {
             $response['exist'] = true;
             $response['data'] = $rs[0];
-            $response['message'] = "The username: '$username' or phone : '$phone' exist.";
+            if($rs[0]['phone']==$phone){
+                $response['message'] = "Phone: '$phone' already exists";
+            }else if($rs[0]['username']==$username){
+                $response['message'] = "User: '$username' already exists";
+            }else if($rs[0]['email']==$email){
+                $response['message'] = "Email: '$email' already exists";
+            }
+
         } else {
             $response['exist'] = false;
             $response['data'] = [];

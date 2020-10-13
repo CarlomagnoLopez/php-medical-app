@@ -130,11 +130,11 @@
                                     <div class='swr-menu r-end'>
                                         <ul>
                                             <?php
-                                            if (gr_role('access', 'groups', '1')) {
+                                            // if (gr_role('access', 'groups', '1')) {
                                             ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'create_group')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='group'><?php pr(gr_lang('get', 'create_group')) ?></li>
                                             <?php
-                                            }
+                                            //}
                                             if (gr_role('access', 'users', '1')) {
                                             ?>
                                                 <li class='formpop' title='<?php pr(gr_lang('get', 'create_user')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='user'><?php pr(gr_lang('get', 'create_user')) ?></li>

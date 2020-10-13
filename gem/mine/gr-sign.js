@@ -182,10 +182,10 @@ function searchOrganizationBySecretKey(secret_key) {
 
 
 
-function existUser(phone, username) {
+function existUser(phone, username, email) {
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method": "existUserSign", "phone": phone, "username": username }),
+        data: JSON.stringify({ "method": "existUserSign", "phone": phone, "username": username, "email" : email }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -462,7 +462,7 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
             // $("#txtEmail").val(username+'@phpmedical.com');
             // $("#txtEmail").val(username);
             var phone = $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
-            var exist = existUser(phone, username);
+            var exist = existUser(phone, username, $("#txtEmail").val());
 
             if (exist.exist && exist.data.status == 1) {
                 $.loadingBlockHide();
