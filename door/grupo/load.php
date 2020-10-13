@@ -798,6 +798,9 @@ function gr_group() {
         }
 
     } else if ($arg[0] === 'msgs') {
+      
+        $master_role     = usr('Grupo')['role'];
+
         $orgid = $arg[1]["id"];
         $lphr = gr_lang('var');
         $rchk = gr_role('var');
@@ -849,11 +852,14 @@ function gr_group() {
                 }
                 $list[0]->gid = $orgid;
                 $list[1] = new stdClass();
-                if (gr_profile('blocked', $orgid)) {
-                    $list[0]->blocked = 1;
-                    $list[1]->mb = array('Unblock User', 'class="formpop" pn="1" title="Unblock User" do="profile" btn="Unblock" act="block"');
-                }else{
-                    $list[1]->mb = array('Block User', 'class="formpop" pn="1" title="Block User" do="profile" btn="Block" act="block"');
+                // here
+                if($master_role==3){
+                    if (gr_profile('blocked', $orgid)) {
+                        $list[0]->blocked = 1;
+                        $list[1]->mb = array('Unblock User', ' data-diego="'.$master_role.'" class="formpop" pn="1" title="Unblock User" do="profile" btn="Unblock" act="block"');
+                    }else{
+                        $list[1]->mb = array('Block User', ' data-diego="'.$master_role.'" class="formpop" pn="1" title="Block User" do="profile" btn="Block" act="block"');
+                    }
                 }
                 if (count($deac) == 0 && $list[0]->blocked != 1) {
                     $list[1]->ma = array($lphr['view_profile'], 'class="vwp" no="'.$orgid.'"');

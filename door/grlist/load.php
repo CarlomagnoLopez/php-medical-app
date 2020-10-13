@@ -3,6 +3,7 @@ function gr_list($do) {
     // list of users 
     $uid             = usr('Grupo')['id'];
     $id_organization = usr('Grupo')['id_organization'];
+    $master_role     = usr('Grupo')['role'];
     $list = null;
     $arg = vc(func_get_args());
     gr_profile('ustatus', 'online');
@@ -256,10 +257,12 @@ function gr_list($do) {
                     $list[$i]->obt = 'act="login"';
                 }
 
-                if (gr_role('access', 'users', '3') || gr_role('access', 'users', '8')) {
-                    $list[$i]->oc = gr_lang('get', 'act');
-                    $list[$i]->oct = 'class="formpop" uid="'.$f['id'].'" pn=2 title="'.gr_lang('get', 'take_action').'" do="profile" btn="'.gr_lang('get', 'confirm').'" act="act"';
-                }
+                //if (gr_role('access', 'users', '3') || gr_role('access', 'users', '8')) {
+                    if($master_role==3){
+                        $list[$i]->oc = gr_lang('get', 'act');
+                        $list[$i]->oct = 'class="formpop" role="'.$master_role.'"  uid="'.$f['id'].'" pn=2 title="'.gr_lang('get', 'take_action').'" do="profile" btn="'.gr_lang('get', 'confirm').'" act="act"';
+                    }
+                //}
                 $osort = 1;
                 if (gr_profile('get', $f['id'], 'status') == 'online') {
                     $osort = 3;
