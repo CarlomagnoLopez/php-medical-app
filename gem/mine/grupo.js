@@ -408,7 +408,7 @@ function onClickFormCreateUser(event) {
         style: { position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
     });
 
-    var phone = "+" + $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
+    var phone    = "+" + $("#selComplementPhone").val() + $("#txtPhoneNumber").val();
     var username = $("#txtEmail").val().split("@")[0];
 
     var exist = existUser($("#txtEmail").val(), phone);
@@ -459,7 +459,7 @@ function onClickFormCreateUser(event) {
                 $("#selComplementPhone").val("1");
                 say("The user: " + username + " was creaded successfully", "s");
                 $("#modalCreateUser").fadeOut();
-                sendSMS(phone);
+              //  sendSMS(phone);
             }
         },
         error: function (err) {

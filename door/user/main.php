@@ -252,7 +252,11 @@ function existUser($db, $phone, $email)
         if (count($rs) > 0) {
             $response['exist'] = true;
             $response['data'] = $rs[0];
-            $response['message'] = "The username: '$email' or phone : '$phone' exist.";
+            if($rs[0]['phone']==$phone){
+                $response['message'] = "Phone: '$phone' already exists";
+            }else if($rs[0]['email']==$email){
+                $response['message'] = "Email: '$email' already exists";
+            }
         } else {
             $response['exist'] = false;
             $response['data'] = [];
