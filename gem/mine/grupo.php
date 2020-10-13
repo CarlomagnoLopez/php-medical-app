@@ -789,7 +789,7 @@ function onClickFormUpdateUserProfile(event){
         }    
     }
     var phone    = $("#selProfileComplementPhone").val()+$("#txtProfilePhoneNumber").val();
-    var username = $("#txtProfileEmail").val().split("@")[0];
+    var username = $("#txtProfileUsername").val().split("@")[0];
     var payload = {
         method          : "updateUser",
         name            : $("#txtProfileName").val() ,
@@ -952,11 +952,17 @@ $('body').on('click', '.formpop', function(e) {
                     $("#txtProfilePhoneNumber").val( dataUser.data.phone.substring(3) );
                 }
                 $("#txtProfileUsername").val(dataUser.data.username);
+                $("#txtProfileEmail").val(dataUser.data.email);
 
+                $("#txtProfileEmail").attr('disabled','disabled');
+                $("#txtProfileEmail").css({'background-color':'gray'});
+                $("#txtProfileEmail").css({'color':'black'});
                 $("#txtProfileUsername").attr('disabled','disabled');
                 $("#txtProfileUsername").css({'background-color':'gray'});
+                $("#txtProfileUsername").css({'color':'black'});
                 $("#txtProfilePhoneNumber").attr('disabled','disabled');
                 $("#txtProfilePhoneNumber").css({'background-color':'gray'});
+                $("#txtProfilePhoneNumber").css({'color':'black'});
                 $("#selProfileComplementPhone").attr('disabled','disabled');
                 $("#selProfileComplementPhone").css({'background-color':'gray'});
                 $("#selProfileComplementPhone").css({'color':'black'});

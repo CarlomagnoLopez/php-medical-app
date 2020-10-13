@@ -351,7 +351,12 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 return false;
             }
             if(getData.data.status == '0'){
-                $.toast("Username:" + $("#txtUsernameLogin").val() + " inactive ");
+                $.toast("Username:" + $("#txtUsernameLogin").val() + " inactive.");
+                $.loadingBlockHide();
+                return false;
+            }
+            if(getData.data.deleted == '1'){
+                $.toast("Username:" + $("#txtUsernameLogin").val() + " deleted.");
                 $.loadingBlockHide();
                 return false;
             }

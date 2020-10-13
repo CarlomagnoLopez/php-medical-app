@@ -257,7 +257,7 @@ function existGroup($db,$group){
 
 
 function countRole($db,$role,$id_organization){
-    $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1";
+    $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1 and deleted = 0 ";
     try {
         $response = array();
         $stmt = $db->query($sql); 
@@ -283,9 +283,9 @@ function updateUser($db,$json){
             $pass = $p['pass'];
             $mask = $p['mask'];
             $type = $p['type'];
-            $sql = "UPDATE gr_users SET name= '$json->name',lastname= '$json->lastname',email= '$json->email',address= '$json->address',zipcode= '$json->zipcode',phone= '$json->phone',pass= '$pass' ,mask= '$mask',depict= '$type' WHERE id= '$json->id'";
+            $sql = "UPDATE gr_users SET name= '$json->name',lastname= '$json->lastname',address= '$json->address',zipcode= '$json->zipcode',pass= '$pass' ,mask= '$mask',depict= '$type' WHERE id= '$json->id'";
         }else{
-            $sql = "UPDATE gr_users SET name= '$json->name',lastname= '$json->lastname',email= '$json->email',address= '$json->address',zipcode= '$json->zipcode',phone= '$json->phone' WHERE id= '$json->id'";
+            $sql = "UPDATE gr_users SET name= '$json->name',lastname= '$json->lastname',address= '$json->address',zipcode= '$json->zipcode' WHERE id= '$json->id'";
         }   
         $response = array();
         $stmt = $db->prepare($sql); 

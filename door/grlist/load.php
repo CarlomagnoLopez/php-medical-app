@@ -224,7 +224,7 @@ function gr_list($do) {
             exit;
         }
         $i = 0;
-        $lists = db('Grupo', 'q', 'SELECT * FROM gr_users WHERE id_organization='.$id_organization);
+        $lists = db('Grupo', 'q', 'SELECT * FROM gr_users WHERE deleted = 0 and id_organization='.$id_organization);
        // $lists = db('Grupo', 's', 'users', 'id<>', 0, 'ORDER BY id DESC');
         foreach ($lists as $f) {
             if ($f['id'] !== $uid) {
