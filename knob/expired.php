@@ -20,12 +20,11 @@ fnc('grupo');
     <div id="notfound">
         <div class="notfound">
             <div class="notfound-404">
-                <h1>Expired</h1>
+                <h1>NEW LINK?</h1>
             </div>
-            <h2>This url is already expired </h2>
+            <h2>We are sending new link to login.</h2>
             <p>
-                
-                We will send a new link very soon.
+                You will get a new link very soon.
             </p>
             
         </div>
