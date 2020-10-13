@@ -53,12 +53,61 @@ switch ($method) {
         $id_organization  = $json->id_organization;
         deleteUserOrganization($db, $id_user, $role, $id_organization);
         break;
+    case 'deleteOrganization':
+        // $id_user          = $json->id_user;
+        // $role             = $json->role;
+        $id_organization  = $json->id_organization;
+        deleteOrganization($db, $id_organization);
+        break;
     case 'fastLogin':
         fastLogin($db, $phone, $status);
         break;
 }
 
+function deleteOrganization($db, $id_organization)
+{
+    // 3 org admin / 5 approver
+    $response = array();
+    $response['data'] = 0;
+    //   echo  $countRole['count'];
+    $countRoleOrg = countRole($db, 3, $id_organization);
+    $countRoleApp = countRole($db, 5, $id_organization);
+    $countRoleUser = countRole($db, 0, $id_organization);
 
+
+
+
+
+
+    try {
+
+        if ($countRoleOrg['count'] == "2" &&  $countRoleApp['count'] == "2" &&  $countRoleUser['count'] == "0") {
+            $sql = "UPDATE gr_organizations SET deleted = 1 WHERE 	id_organization=:id_organization";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue("id_organization",    $id_organization);
+            $stmt->execute();
+            $rs = $stmt->rowCount() ? 1 : 0;
+            $response['data'] = true;
+            $response['message'] = "Available to delete this organization. Deleting...";
+        } else {
+            $response['data'] = false;
+
+            $response['message'] = "You are not available to delete this organization";
+        }
+
+            // $response['data'] = $rs;
+        ; //. " ". $countRoleApp. " ". $countRoleUser;
+        $response['error'] = false;
+        // $response['message'] = "Success";
+    } catch (PDOException $e) {
+        $response['data'] = null;
+        $response['error'] = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    echo json_encode($response);
+    return;
+    //return $response;
+}
 function countRole($db, $role, $id_organization)
 {
     // $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1 AND deleted=0";
@@ -102,9 +151,6 @@ function deleteUserOrganization($db, $id_user, $role, $id_organization)
         return;
     }
 
-
-
-    
     $sql = "UPDATE gr_users SET deleted = 1 WHERE id=:id";
     try {
         $stmt = $db->prepare($sql);
