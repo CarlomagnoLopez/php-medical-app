@@ -2287,6 +2287,7 @@ display: block;
 text-align: left;
 font-size: 14px;
 padding: 8px 0px;
+color: #908c8c;
 }
 
 .grupo-pop-modal > div > form > .fields > span

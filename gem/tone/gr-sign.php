@@ -41,25 +41,7 @@ font-size: inherit;
 line-height: inherit;
 }
 
-input:focus::-webkit-input-placeholder
-{
-color: transparent;
-}
 
-input:focus:-moz-placeholder
-{
-color: transparent;
-}
-
-input:focus::-moz-placeholder
-{
-color: transparent;
-}
-
-input:focus:-ms-input-placeholder
-{
-color: transparent;
-}
 
 ::-webkit-scrollbar
 {
@@ -151,14 +133,14 @@ border-radius: 14px;
 {
 position: absolute;
 margin-top: 13px;
-color: #000000;
+color: #828282;
 margin-left: 17px;
 }
 
 .sign > section > div > div form label > input
 {
 background: transparent;
-color: #000000;
+color: #828282;
 border: 0px;
 padding: 12px 5px;
 padding-left: 39px;
