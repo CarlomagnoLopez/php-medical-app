@@ -67,18 +67,11 @@ switch ($method) {
 
 function deleteOrganization($db, $id_organization)
 {
-    // 3 org admin / 5 approver
     $response = array();
     $response['data'] = 0;
-    //   echo  $countRole['count'];
     $countRoleOrg = countRole($db, 3, $id_organization);
     $countRoleApp = countRole($db, 5, $id_organization);
     $countRoleUser = countRole($db, 0, $id_organization);
-
-
-
-
-
 
     try {
 
@@ -88,6 +81,8 @@ function deleteOrganization($db, $id_organization)
             $stmt->bindValue("id_organization",    $id_organization);
             $stmt->execute();
             $rs = $stmt->rowCount() ? 1 : 0;
+            $deleteRoleOrg = deleteByRole($db, 3, $id_organization);
+            $deleteRoleApp = deleteByRole($db, 5, $id_organization);
             $response['data'] = true;
             $response['message'] = "Available to delete this organization. Deleting...";
         } else {
@@ -95,12 +90,11 @@ function deleteOrganization($db, $id_organization)
 
             $response['message'] = "You are not available to delete this organization";
         }
-
-            // $response['data'] = $rs;
-        ; //. " ". $countRoleApp. " ". $countRoleUser;
+        $db = null;
         $response['error'] = false;
         // $response['message'] = "Success";
     } catch (PDOException $e) {
+        $db = null;
         $response['data'] = null;
         $response['error'] = true;
         $response['message'] = "An error occurred, try again." . $e->getMessage();
@@ -109,6 +103,39 @@ function deleteOrganization($db, $id_organization)
     return;
     //return $response;
 }
+
+function deleteByRole($db, $role, $id_organization)
+{
+    $sql = "SELECT * FROM gr_users WHERE role = $role and id_organization = $id_organization AND deleted = 0";
+    try {
+        $response = array();
+        $stmt = $db->query($sql);
+        $rs   =  $stmt->fetchAll();
+
+        $rsSelect = array();
+        for ($i = 0; $i < count($rs); $i++) {
+            $idToDelete = $rs[$i]['id'];
+            $sqlDeleteUSer = "UPDATE gr_users SET deleted = 1 WHERE id=$idToDelete";
+            $stmtDeleteUSer = $db->query($sqlDeleteUSer);
+            // $rsDeleteUSer   =  $stmtDeleteUSer->fetchAll();
+            
+            $rsDeleteUSer["id_".$i] = "deleted".$idToDelete;
+        }
+        // if (count($rs) > 0) {
+        // $response['count'] = $rs[0];
+        return $rsSelect;
+        // } else {
+        //     $response['count'] = (int) $rs[0]['count'];
+        // }
+        // $response['error'] = false;
+    } catch (PDOException $e) {
+        // $response['exist'] = false;
+        // $response['count'] = 0;
+    }
+    return $response;
+}
+
+
 function countRole($db, $role, $id_organization)
 {
     // $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1 AND deleted=0";
@@ -283,14 +310,13 @@ function existUserSign($db, $phone, $username, $email)
         if (count($rs) > 0) {
             $response['exist'] = true;
             $response['data'] = $rs[0];
-            if($rs[0]['phone']==$phone){
+            if ($rs[0]['phone'] == $phone) {
                 $response['message'] = "Phone: '$phone' already exists";
-            }else if($rs[0]['username']==$username){
+            } else if ($rs[0]['username'] == $username) {
                 $response['message'] = "User: '$username' already exists";
-            }else if($rs[0]['email']==$email){
+            } else if ($rs[0]['email'] == $email) {
                 $response['message'] = "Email: '$email' already exists";
             }
-
         } else {
             $response['exist'] = false;
             $response['data'] = [];
