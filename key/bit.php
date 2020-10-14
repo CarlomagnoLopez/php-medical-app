@@ -1,6 +1,9 @@
-<?php if(!defined('s7V9pz')) {die();}?>
+<?php if (!defined('s7V9pz')) {
+    die();
+} ?>
 <?php
-function cnf($v = "cnf") {
+function cnf($v = "cnf")
+{
     $cnf["cnf"] = array(
         "mode" => 1,
         "name" => "Grupo - Baevox Framework",
@@ -18,14 +21,14 @@ function cnf($v = "cnf") {
         "global" => "1",
         "appversion" => 1,
     );
-$cnf["Grupo"] = array(
-                'host' => 'localhost',
-                'db' => 'chat',
-                'user' => 'chat',
-                'pass' => 'chat',
-                'prefix' => 'gr_'
-                );
-if ($v == "all") {
+    $cnf["Grupo"] = array(
+        'host' => 'localhost',
+        'db' => 'chat_dev',
+        'user' => 'chat_dev',
+        'pass' => 'chat_dev',
+        'prefix' => 'gr_'
+    );
+    if ($v == "all") {
         return $cnf;
     } else if (isset($cnf[$v])) {
         return $cnf[$v];

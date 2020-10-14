@@ -3,9 +3,9 @@
 
 function Connection(){
 	$host   = "localhost";
-	$db     = "chat";
-	$user   = "chat";
-	$pass   = "chat";
+	$db     = "chat_dev";
+	$user   = "chat_dev";
+	$pass   = "chat_dev";
 
 	try {
 		$db = new PDO("mysql:host=".$host.";dbname=".$db,$user,$pass);
