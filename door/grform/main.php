@@ -102,7 +102,7 @@ function getDataUserById($db,$id){
 }
 
 function generateLinkBitUserEnable(){
-        $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app/signin$";
+        $longLink = "http://ec2-54-208-211-67.compute-1.amazonaws.com/php-medical-app-dev/signin$";
         $data_array =  array(
             "group_guid" => "Bk9h1KBTFqy",
             "domain" => "bit.ly",
