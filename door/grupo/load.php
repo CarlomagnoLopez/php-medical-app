@@ -876,10 +876,10 @@ function gr_group() {
                 if (gr_role('access', 'groups', '9') || gr_role('access', 'groups', '7')) {
                     $list[0]->viewlike = 1;
                 }
-                $list[0]->likemsgs = $lphr['denied'];
-                if (gr_role('access', 'groups', '10') || gr_role('access', 'groups', '7')) {
+                //$list[0]->likemsgs = $lphr['denied'];
+                //if (gr_role('access', 'groups', '10') || gr_role('access', 'groups', '7')) {
                     $list[0]->likemsgs = 'enabled';
-                }
+               // }
                 $list[1] = new stdClass();
                 $role = gr_group('user', $arg[1]["id"], $uid)['role'];
                 $adm = 0;

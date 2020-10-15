@@ -2,6 +2,7 @@
 function gr_list($do) {
     // list of users 
     $uid             = usr('Grupo')['id'];
+    $master_id_user  = $uid;
     $id_organization = usr('Grupo')['id_organization'];
     $master_role     = usr('Grupo')['role'];
     $list = null;
@@ -13,6 +14,9 @@ function gr_list($do) {
     if ($do["type"] === "groups") {
       //  $r = db('Grupo', 's', 'options', 'type', 'group');
         $r = db('Grupo', 'q', 'SELECT * FROM gr_options WHERE id_organization='.$id_organization);
+       // $r = db('Grupo', 'q', 'SELECT * FROM gr_options as opt INNER JOIN gr_users usr on opt.v2 = usr.id WHERE opt.type="gruser" and usr.deleted=0 and usr.id_organization = '.$id_organization);
+
+
         $i = 0;
         foreach ($r as $v) {
                 $cu = gr_group('user', $v['id'], $uid);
@@ -128,57 +132,61 @@ function gr_list($do) {
         if (!$cu[0] || $cu['role'] == 3 && !gr_role('access', 'groups', '7')) {
             exit;
         }
-        $list = db('Grupo', 's', 'options', 'type,v1', 'gruser', $do["gid"]);
+       // $list = db('Grupo', 's', 'options', 'type,v1', 'gruser', $do["gid"]);
+        $list = db('Grupo', 'q', 'SELECT * FROM gr_options as opt INNER JOIN gr_users usr on opt.v2 = usr.id WHERE opt.type="gruser" and usr.deleted=0 and opt.v2 != '.$uid.' and opt.v1 ='.$do["gid"]);
         foreach ($list as $key => $f) {
-            $dect = db('Grupo', 's', 'options', 'type,v1,v3', 'deaccount', 'yes', $f['v2']);
-            if ($dect && count($dect) > 0) {
-                unset($list[$key]);
-            }
+                $dect = db('Grupo', 's', 'options', 'type,v1,v3', 'deaccount', 'yes', $f['v2']);
+                if ($dect && count($dect) > 0) {
+                    unset($list[$key]);
+                }
         }
         foreach ($list as $f) {
-            $list[$i] = new stdClass();
-            $list[$i]->img = gr_img('users', $f['v2']);
-            $list[$i]->name = gr_profile('get', $f['v2'], 'name');
-            $list[$i]->count = 0;
-            $list[$i]->sub = gr_lang('get', 'member');
-            $sort = 1;
-            if ($f['v3'] == 2) {
-                $list[$i]->sub = gr_lang('get', 'admin');
-                $sort = 3;
-            } else if ($f['v3'] == 1) {
-                $list[$i]->sub = gr_lang('get', 'moderator');
-                $sort = 2;
-            } else if ($f['v3'] == 3) {
-                $list[$i]->sub = gr_lang('get', 'blocked');
-                $sort = 0;
-            }
-            $list[$i]->right = gr_lang('get', 'options');
-            $list[$i]->rtag = 'type="group" no="'.$f['v1'].'"';
-            $list[$i]->oa = $list[$i]->ob = $list[$i]->oc = 0;
-            if (gr_role('access', 'groups', '7') || $cu['role'] == 2) {
-                $list[$i]->oa = gr_lang('get', 'edit');
-                $list[$i]->oat = 'class="formpop" title="'.gr_lang('get', 'roles').'" data-pname="'.$list[$i]->name.'" pn=1 do="group" btn="'.gr_lang('get', 'update').'" act="role" data-usr="'.$f['v2'].'"';
-            }
-            $list[$i]->ob = gr_lang('get', 'msgs');
-            $list[$i]->obt = 'class="turnchat goback" data-block="crew" data-uid="'.$f['v2'].'" act="msgs"';
-            $norc = 0;
-            if ($f['v3'] == 2 && $cu['role'] == 1) {
-                $norc = 1;
-            }
-            if ($f['v2'] != $uid && $norc == 0) {
-                if (gr_role('access', 'groups', '7') || $cu['role'] == 2 || $cu['role'] == 1) {
-                    if ($f['v3'] == 3) {
-                        $list[$i]->oc = gr_lang('get', 'unban');
-                        $list[$i]->oct = 'act="unblock" data-usid="'.$f['v2'].'"';
-                    } else {
-                        $list[$i]->oc = gr_lang('get', 'ban');
-                        $list[$i]->oct = 'act="block" data-usid="'.$f['v2'].'"';
+                $name = explode("@", $f['email'])[0];
+                $list[$i] = new stdClass();
+                $list[$i]->img = gr_img('users', $f['v2']);
+                //$list[$i]->name = gr_profile('get', $f['v2'], 'name');
+                $list[$i]->name =  $name ;
+                $list[$i]->count = 0;
+                $list[$i]->sub = gr_lang('get', 'member');
+                $sort = 1;
+                if ($f['v3'] == 2) {
+                    $list[$i]->sub = gr_lang('get', 'admin');
+                    $sort = 3;
+                } else if ($f['v3'] == 1) {
+                    $list[$i]->sub = gr_lang('get', 'moderator');
+                    $sort = 2;
+                } else if ($f['v3'] == 3) {
+                    $list[$i]->sub = gr_lang('get', 'blocked');
+                    $sort = 0;
+                }
+                $list[$i]->right = gr_lang('get', 'options');
+                $list[$i]->rtag = 'type="group" no="'.$f['v1'].'"';
+                $list[$i]->oa = $list[$i]->ob = $list[$i]->oc = 0;
+                if (gr_role('access', 'groups', '7') || $cu['role'] == 2) {
+                    $list[$i]->oa = gr_lang('get', 'edit');
+                    $list[$i]->oat = 'class="formpop" title="'.gr_lang('get', 'roles').'" data-pname="'.$list[$i]->name.'" pn=1 do="group" btn="'.gr_lang('get', 'update').'" act="role" data-usr="'.$f['v2'].'"';
+                }
+                $list[$i]->ob = gr_lang('get', 'msgs');
+                $list[$i]->obt = 'class="turnchat goback" data-block="crew" data-uid="'.$f['v2'].'" act="msgs"';
+                $norc = 0;
+                if ($f['v3'] == 2 && $cu['role'] == 1) {
+                    $norc = 1;
+                }
+                if ($f['v2'] != $uid && $norc == 0) {
+                    if (gr_role('access', 'groups', '7') || $cu['role'] == 2 || $cu['role'] == 1) {
+                        if ($f['v3'] == 3) {
+                            $list[$i]->oc = gr_lang('get', 'unban');
+                            $list[$i]->oct = 'act="unblock" data-usid="'.$f['v2'].'"';
+                        } else {
+                            $list[$i]->oc = gr_lang('get', 'ban');
+                            $list[$i]->oct = 'act="block" data-usid="'.$f['v2'].'"';
+                        }
                     }
                 }
-            }
-            $list[$i]->icon = "'status ".gr_profile('get', $f['v2'], 'status')."'";
-            $list[$i]->id = 'data-sort="'.$sort.'" class="crew"';
-            $i = $i+1;
+                $list[$i]->icon = "'status ".gr_profile('get', $f['v2'], 'status')."'";
+                $list[$i]->id = 'data-sort="'.$sort.'" class="crew"';
+                $i = $i+1;
+
         }
 
     } else if ($do["type"] === "alerts") {

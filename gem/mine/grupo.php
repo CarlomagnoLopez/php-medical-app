@@ -455,7 +455,7 @@ if (n == undefined) {
                 }
                 msg = msg+'<i class="likes '+lksy+'" say="'+d[0]['likemsgs']+'" type="e"><b>'+m.lvn+'</b><i class="'+m.lvc+'"></i></i>';
             }
-            msg = msg+'<span title="'+m.date+'" data-toggle="tooltip">'+m.time+'</span><span class="msgopt"><ul>';
+            msg = msg+'<span title="'+m.date+'" data-toggle="tooltip">'+m.date+' '+m.time+'</span><span class="msgopt"><ul>';
 
             if (m.type != 'system' && m.tmrdel != 0) {
                 msg = msg+'<li class="autodel" timer="'+m.tmrdel+'">0m 0s</li>';
@@ -1307,7 +1307,6 @@ $(window).load(function() {
     if ($(".swr-grupo .rside").is(':visible')) {
         $('.swr-grupo .rside > .tabs > ul > li').eq(0).trigger('click');
     }
-    grliveupdates();
 
 });
 
