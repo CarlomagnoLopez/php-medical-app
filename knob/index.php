@@ -19,6 +19,7 @@
 <html lang="en">
 
 <head>
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no">
@@ -132,7 +133,7 @@
                                             <?php
                                             // if (gr_role('access', 'groups', '1')) {
                                             ?>
-                                                <li class='formpop' title='<?php pr(gr_lang('get', 'create_group')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='group'><?php pr(gr_lang('get', 'create_group')) ?></li>
+                                            <li class='formpop' title='<?php pr(gr_lang('get', 'create_group')) ?>' do='create' btn='<?php pr(gr_lang('get', 'create')) ?>' act='group'><?php pr(gr_lang('get', 'create_group')) ?></li>
                                             <?php
                                             //}
                                             if (gr_role('access', 'users', '1')) {
@@ -265,7 +266,7 @@
                                 <!-- diego -->
                                 <span class="vwp" no="<?php pr($usr['id']); ?>">
                                     <img src="<?php pr(gr_img('users', $usr['id'])); ?>">
-                                    <span><?php  pr(usr('Grupo', 'select', $usr['id'])['name']) ?>
+                                    <span><?php pr(usr('Grupo', 'select', $usr['id'])['name']) ?>
                                         <span>@<?php pr(usr('Grupo', 'select', $usr['id'])['username']) ?></span>
                                     </span>
                                 </span></span>
@@ -292,15 +293,15 @@
                             <div class="profile">
                                 <div class="top">
                                     <?php
-                                      if ($usr['role']==3) {
+                                    if ($usr['role'] == 3) {
                                     ?>
-                                    <span class="edit"><i class='formpop' title='<?php pr(gr_lang('get', 'edit_profile')) ?>' data-side="profile" do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' xtid="" act='profile'><?php pr(gr_lang('get', 'edit_profile')) ?></i></span>
+                                        <span class="edit"><i class='formpop' title='<?php pr(gr_lang('get', 'edit_profile')) ?>' data-side="profile" do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' xtid="" act='profile'><?php pr(gr_lang('get', 'edit_profile')) ?></i></span>
                                     <?php
-                                      }else{                                      
+                                    } else {
                                     ?>
-                                    <span class="edit"><i class='formpop' style="color: transparent !important;border: 1px solid transparent !important;" title='<?php pr(gr_lang('get', 'edit_profile')) ?>' data-side="profile" do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' xtid="" act='profile'><?php pr(gr_lang('get', 'edit_profile')) ?></i></span>
+                                        <span class="edit"><i class='formpop' style="color: transparent !important;border: 1px solid transparent !important;" title='<?php pr(gr_lang('get', 'edit_profile')) ?>' data-side="profile" do='edit' btn='<?php pr(gr_lang('get', 'update')) ?>' xtid="" act='profile'><?php pr(gr_lang('get', 'edit_profile')) ?></i></span>
                                     <?php
-                                      }
+                                    }
                                     ?>
                                     <span class="dp"><img src="" /></span>
                                     <span class="name"></span>
@@ -487,7 +488,7 @@
         </div>
     </section>
 
-    <section id="modalEditProfile" class="grupo-pop-modal" style="display: none;overflow: auto;"> 
+    <section id="modalEditProfile" class="grupo-pop-modal" style="display: none;overflow: auto;">
         <div>
             <form autocomplete="off" style="height: 750px !important;">
                 <span class="head">Edit Profile</span>

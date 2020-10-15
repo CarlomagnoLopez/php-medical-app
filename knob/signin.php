@@ -12,6 +12,7 @@
 <html lang="en">
 
 <head>
+<meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta charset="utf-8">
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no shrink-to-fit=no">
