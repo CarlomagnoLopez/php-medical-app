@@ -14,20 +14,25 @@ function gr_list($do) {
     if ($do["type"] === "groups") {
       //  $r = db('Grupo', 's', 'options', 'type', 'group');
         $r = db('Grupo', 'q', 'SELECT * FROM gr_options WHERE id_organization='.$id_organization);
-       // $r = db('Grupo', 'q', 'SELECT * FROM gr_options as opt INNER JOIN gr_users usr on opt.v2 = usr.id WHERE opt.type="gruser" and usr.deleted=0 and usr.id_organization = '.$id_organization);
 
-
+        
+        // $r = db('Grupo', 'q', 'SELECT * FROM gr_options as opt INNER JOIN gr_users usr on opt.v2 = usr.id WHERE opt.type="gruser" and usr.deleted=0 and usr.id_organization = '.$id_organization);
+        
+        
         $i = 0;
         foreach ($r as $v) {
+                $count = db('Grupo', 'q', 'SELECT COUNT(*) as count FROM chat.gr_options as opt INNER JOIN gr_users as usr on opt.v2 = usr.id where opt.type = "gruser" and usr.deleted != 1 and opt.v1 = '.$v['id'] )[0];
                 $cu = gr_group('user', $v['id'], $uid);
                 if ($cu[0] || !$cu[0] && gr_role('access', 'groups', '6')) {
                     $list[$i] = new stdClass();
                     $list[$i]->img = gr_img('groups', $v['id']);
                     $list[$i]->name = $v['v1'];
                     $list[$i]->countag = $list[$i]->count = 0;
-                    $list[$i]->sub = gr_data('c', 'type,v1', 'gruser', $v['id'])." ".gr_lang('get', 'members');
+                   // $list[$i]->sub = gr_data('c', 'type,v1', 'gruser', $v['id'])." ".gr_lang('get', 'members');
+                    $list[$i]->sub = $count['count']." ".gr_lang('get', 'members');
                     $lview = db('Grupo', 's', 'options', 'type,v1,v2', 'lview', $v['id'], $uid, 'ORDER BY id DESC LIMIT 1');
                     $msg = db('Grupo', 's', 'msgs', 'gid', $v['id'], 'ORDER BY id DESC');
+                    
                     if ($cu[0]) {
                         if (count($lview) != 0) {
                             $list[$i]->count = db('Grupo', 's,count(*)', 'msgs', 'gid,id>', $v['id'], $lview[0]['v3'])[0][0];

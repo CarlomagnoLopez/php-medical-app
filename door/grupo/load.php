@@ -837,6 +837,9 @@ function gr_group() {
             $txt['download'] = $lphr['download'];
             $list[0] = new stdClass();
             $list[0]->blocked = 0;
+          //  $countMembers = db('Grupo', 'q', 'SELECT COUNT(*) as count FROM gr_users WHERE deleted=0 and id_organization='.$id_organization)[0];
+             $count = db('Grupo', 'q', 'SELECT COUNT(*) as count FROM chat.gr_options as opt INNER JOIN gr_users as usr on opt.v2 = usr.id where opt.type = "gruser" and usr.deleted != 1 and opt.v1 = '.$orgid )[0];
+
             if ($arg[1]["ldt"] == 'user') {
                 $list[0]->pntitle = gr_profile('get', $orgid, 'name');
                 $list[0]->pnsub = $lphr[gr_profile('get', $orgid, 'status')];
@@ -869,7 +872,10 @@ function gr_group() {
                 }
             } else {
                 $list[0]->pntitle = gr_group('valid', $arg[1]["id"])['name'];
-                $list[0]->pnsub = gr_data('c', 'type,v1', 'gruser', $arg[1]['id'])." ".$lphr['members'];
+            
+
+              //  $list[0]->pnsub = gr_data('c', 'type,v1', 'gruser', $arg[1]['id'])." ".$lphr['members'];
+                $list[0]->pnsub = $count['count']." ".$lphr['members'];
                 $list[0]->pnimg = gr_img('groups', $arg[1]["id"]);
                 $list[0]->gid = $orgid;
                 $list[0]->likesys = 0;
