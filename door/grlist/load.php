@@ -147,18 +147,36 @@ function gr_list($do) {
                 //$list[$i]->name = gr_profile('get', $f['v2'], 'name');
                 $list[$i]->name =  $name ;
                 $list[$i]->count = 0;
-                $list[$i]->sub = gr_lang('get', 'member');
-                $sort = 1;
-                if ($f['v3'] == 2) {
-                    $list[$i]->sub = gr_lang('get', 'admin');
-                    $sort = 3;
-                } else if ($f['v3'] == 1) {
-                    $list[$i]->sub = gr_lang('get', 'moderator');
-                    $sort = 2;
-                } else if ($f['v3'] == 3) {
-                    $list[$i]->sub = gr_lang('get', 'blocked');
-                    $sort = 0;
+                switch($f['role']){
+                    case '3':
+                        $list[$i]->sub = 'Org admin';
+                        $sort = 3;
+                    break;
+                    case '5':
+                        $list[$i]->sub = 'Appover';
+                        $sort = 2;
+                    break;
+                    case '6':
+                        $list[$i]->sub = 'User';
+                        $sort = 0;
+                    break;
+                    default:
+                        $list[$i]->sub = 'Guest';
+                        $sort = 0;
+                    break;
                 }
+                // $list[$i]->sub = gr_lang('get', 'member');
+                // $sort = 1;
+                // if ($f['v3'] == 2) {
+                //     $list[$i]->sub = gr_lang('get', 'admin');
+                //     $sort = 3;
+                // } else if ($f['v3'] == 1) {
+                //     $list[$i]->sub = gr_lang('get', 'moderator');
+                //     $sort = 2;
+                // } else if ($f['v3'] == 3) {
+                //     $list[$i]->sub = gr_lang('get', 'blocked');
+                //     $sort = 0;
+                // }
                 $list[$i]->right = gr_lang('get', 'options');
                 $list[$i]->rtag = 'type="group" no="'.$f['v1'].'"';
                 $list[$i]->oa = $list[$i]->ob = $list[$i]->oc = 0;

@@ -3,7 +3,7 @@
 } ?><?php
     fnc('grupo');
     $usr = usr('Grupo');
-    //var_dump($usr);
+   // var_dump($usr);
     if (!$usr['active']) {
         rt('signin');
     }
@@ -12,6 +12,8 @@
     gr_profile('ustatus', 'online');
     gr_usip('add');
     $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization=' . $usr['id_organization']);
+    $globalDataUser = db('Grupo', 'q', 'SELECT * FROM gr_users WHERE id=' .$usr['id'])[0];
+   // var_dump($globalDataUser);
 
 
     ?>
@@ -303,9 +305,13 @@
                                     <?php
                                     }
                                     ?>
-                                    <span class="dp"><img src="" /></span>
+                                    <!-- <span class="dp"><img src="" /></span>
                                     <span class="name"></span>
                                     <span class="role"></span>
+                                    <span class="refresh vwp d-none">refresh</span> -->
+                                    <span class="dp"><img src="" /></span>
+                                    <span class="user_name"><?php pr($globalDataUser['name']);  ?></span>
+                                    <span class="user_role" style="    font-size: 14px;text-transform: lowercase;font-weight: 500;color: #ffffffad;cursor: pointer;">@<?php pr($globalDataUser['username']); ?></span>
                                     <span class="refresh vwp d-none">refresh</span>
                                 </div>
                                 <div class="middle">
@@ -392,7 +398,7 @@
             <form autocomplete="off" style="height: 500px !important;">
                 <span class="head">Create User</span>
                 <div class="fields scroller" tabindex="5">
-                    <label class="color-label">Name</label>
+                    <label class="color-label">Name *</label>
                     <input type="text" name="fName" id="txtName" class="margin-input">
                     <!-- <label class="color-label">Last Name</label>
                     <input type="text" name="fLastName" id="txtLastName" class="margin-input"> -->
@@ -410,7 +416,7 @@
                             <option value="52">+52</option>
                         </select>
                     </div>
-                    <label class="color-label">Phone Number</label>
+                    <label class="color-label">Phone Number *</label>
                     <input type="text" name="fPhoneNumber" id="txtPhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
                     <label class="color-label">Email</label>
                     <input type="text" name="fEmail" id="txtEmail" class="margin-input">
@@ -418,7 +424,7 @@
                     <input type="password" name="fPassword" id="txtPassword" class="margin-input">
                     <label class="color-label">Repeat Password</label>
                     <input type="password" name="fRepeatPass" id="txtRepeatPassword" class="margin-input"> -->
-                    <label class="color-label">Role</label>
+                    <label class="color-label">Role *</label>
                     <select name="sent" class="margin-input color-label" id="selRole">
                         <option value="0">-----</option>
                         <option value="6">User</option>
@@ -446,11 +452,11 @@
             <form autocomplete="off" style="height: 420px !important;">
                 <span class="head">Create Group</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
-                    <label>Group Name</label>
+                    <label>Group Name *</label>
                     <input type="text" name="name" id="txtGroupName">
-                    <label>Password</label>
+                    <label>Password *</label>
                     <input type="password" name="password" id="txtGroupPassword">
-                    <label>Repeat Password</label>
+                    <label>Repeat Password *</label>
                     <input type="password" name="password" id="txtGroupRepeatPassword">
                     <!-- <label>Icon</label>
                     <span class="fileup"> -->
@@ -493,11 +499,11 @@
             <form autocomplete="off" style="height: 750px !important;">
                 <span class="head">Edit Profile</span>
                 <div class="fields scroller" tabindex="5">
-                    <label class="color-label">Name</label>
+                    <label class="color-label">Name *</label>
                     <input type="text" name="fName" id="txtProfileName" class="margin-input">
-                    <label class="color-label">Last Name</label>
+                    <label class="color-label">Last Name *</label>
                     <input type="text" name="fLastName" id="txtProfileLastName" class="margin-input">
-                    <label class="color-label">Address</label>
+                    <label class="color-label">Address *</label>
                     <input type="text" name="fAddress" id="txtProfileAddress" class="margin-input">
                     <label class="color-label">ZipCode</label>
                     <input type="text" name="fZipCode" id="txtProfileZipCode" class="margin-input only-numbers zipCodeLimit">
@@ -511,15 +517,15 @@
                             <option value="+52">+52</option>
                         </select>
                     </div>
-                    <label class="color-label">Phone Number</label>
+                    <label class="color-label">Phone Number *</label>
                     <input type="text" name="fPhoneNumber" id="txtProfilePhoneNumber" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
                     <label class="color-label">Email</label>
                     <input type="text" name="fEmail" id="txtProfileEmail" class="margin-input">
-                    <label class="color-label">Username</label>
+                    <label class="color-label">Username *</label>
                     <input type="text" name="fUsername" id="txtProfileUsername" class="margin-input">
-                    <label class="color-label">Password</label>
+                    <label class="color-label">Password *</label>
                     <input type="password" name="fPassword" id="txtProfilePassword" class="margin-input">
-                    <label class="color-label">Repeat Password</label>
+                    <label class="color-label">Repeat Password *</label>
                     <input type="password" name="fRepeatPass" id="txtProfileRepeatPassword" class="margin-input">
 
                     <input type="hidden" autocomplete='off' id="txtProfileIdUser" />

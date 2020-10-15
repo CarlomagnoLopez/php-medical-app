@@ -404,11 +404,11 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 $("#txtAddress").focus();
                 return false;
             }
-            if ($("#txtZipCode").val() == "") {
-                $.toast("the zipcode is requited");
-                $("#txtZipCode").focus();
-                return false;
-            }
+            // if ($("#txtZipCode").val() == "") {
+            //     $.toast("the zipcode is requited");
+            //     $("#txtZipCode").focus();
+            //     return false;
+            // }
             if ($("#txtPhoneNumber").val() == "") {
                 $.toast("the phone is requited");
                 $("#txtPhoneNumber").focus();
