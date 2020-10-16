@@ -87,6 +87,12 @@ function gr_list($do) {
                     $list[$i] = new stdClass();
                     $list[$i]->img = gr_img('users', $chusers[0]);
                     $list[$i]->name = gr_profile('get', $chusers[0], 'name');
+                    $rSelectUSer = db('Grupo', 'q', 'SELECT * FROM gr_users WHERE id="'.$chusers[0].'"');
+                    $list[$i]->name  = $rSelectUSer[0]['username'];
+                    if( $rSelectUSer[0]['username'] === "") {
+                        $list[$i]->name  = 'Never&nbsp;logged. (' .$rSelectUSer[0]['name'] . ')';
+                    }
+                  
                     $list[$i]->count = 0;
 
                     $deac = db('Grupo', 's', 'options', 'type,v1,v3', 'deaccount', 'yes', $chusers[0]);
@@ -300,14 +306,14 @@ function gr_list($do) {
                 } else if (gr_profile('get', $f['id'], 'status') == 'idle') {
                     $osort = 2;
                 }
-                if($f['status']==1){
-                    $list[$i]->status = "enabled";
-                    $list[$i]->icon = "'status online'";
-                }else{
-                    $list[$i]->status = "disabled";
-                    $list[$i]->icon = "'status offline'";
-                }
-               // $list[$i]->icon = "'status ".gr_profile('get', $f['id'], 'status')."'";
+                // if($f['status']==1){
+                //     $list[$i]->status = "enabled";
+                //     $list[$i]->icon = "'status online'";
+                // }else{
+                //     $list[$i]->status = "disabled";
+                //     $list[$i]->icon = "'status offline'";
+                // }
+               $list[$i]->icon = "'status ".gr_profile('get', $f['id'], 'status')."'";
                 $list[$i]->id = 'class="user" data-sort="'.$osort.'"';
             }
             $i = $i+1;
