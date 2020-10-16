@@ -603,14 +603,17 @@ function gr_group() {
             $id_user = $org['v2']; // iduser
 
             $available     = db('Grupo', 'q', 'SELECT * FROM gr_options where v3 = "'.$id_user.'" and type="profile" and v1 = "status" and v2 = "offline" ORDER BY id DESC');
-
+            $available     = db('Grupo', 'q', 'SELECT * FROM gr_options where v3 = "'.$id_user.'" and type="profile" and v1 = "status" and v2 = "offline" ORDER BY id DESC');
+            // SELECT * FROM gr_options as opt INNER JOIN gr_users usr on opt.v2 = usr.id WHERE opt.type="gruser" and usr.deleted=0  and opt.v1 =1203;
             if(count($available) > 0 ){
                 $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$id_user.'" and status=1');
+                $usrTyped     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.usr('Grupo')['id'].'" and status=1');
                 $phone   = $usr[0]['phone'];
-                $nameuser   = $usr[0]['name'];
+                // $nameuser   = $usr[0]['name'];
+                $nameuserTyped   = $usrTyped[0]['name'];
                 if(!empty($phone)){
                      $data_array =  array(
-                         "sms"   => trim($nameuser),
+                         "sms"   => trim($nameuserTyped),
                          "type"  =>"chat",
                          "phone" => $phone
                      );
