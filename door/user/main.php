@@ -71,7 +71,7 @@ function deleteOrganization($db, $id_organization)
     $response['data'] = 0;
     $countRoleOrg = countRole($db, 3, $id_organization);
     $countRoleApp = countRole($db, 5, $id_organization);
-    $countRoleUser = countRole($db, 0, $id_organization);
+    $countRoleUser = countRole($db, 6, $id_organization);
 
     try {
 
