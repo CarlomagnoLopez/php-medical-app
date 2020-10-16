@@ -38,7 +38,7 @@ switch ($method) {
         $web_site   = $json->summaryOrg->orgWesite;
         $phone_number   = $json->summaryOrg->phoneNumber;
         $tax_number   = $json->summaryOrg->taxNumber;
-        $sqlSaveOrganization = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization'";
+        $sqlSaveOrganization = "SELECT * FROM `gr_organizations` WHERE `organization` = '$organization' and  deleted = 0";
         $dbSaveOrg = Connection();
         $stmtSaveOrganization     = $dbSaveOrg->query($sqlSaveOrganization);
         $rsSaveOrganization      =  $stmtSaveOrganization->fetchAll();
@@ -51,7 +51,29 @@ switch ($method) {
             echo json_encode($response);
             return;
         }
+
+        $userDuplicity = userDuplicity($json->usersOrg);
+
+        if ($userDuplicity["duplicity"] === "0") {
+            $response = array();
+            $response['data'] = null;
+            $response['error'] = true;
+            $response['message'] = "The following data is already exist on the system: " . $userDuplicity['values'] . "We did not crete organization.";
+            echo json_encode($response);
+            return;
+        }
+
         saveOrganization($organization, $secret_key, $contact_email, $contact_name, $web_site, $phone_number, $tax_number, $json);
+
+        // $response = array();
+        // $response['data'] = $userDuplicity;
+        // $response['error'] = false;
+        // $response['message'] = "Test user no errors";
+        // echo json_encode($response);
+        return;
+
+
+
         break;
     case 'saveUserByOrg':
         $organization = $json->record->orgid;
@@ -113,6 +135,45 @@ switch ($method) {
         break;
 }
 
+function userDuplicity($userValidation)
+{
+
+    $results = array();
+    for ($i = 0; $i < count($userValidation); $i++) {
+        $phoneNumber = $userValidation[$i]->phoneNumber;
+
+        $sqlDuplicity = "SELECT * FROM `gr_users` WHERE `phone` = '$phoneNumber' and deleted = 0";
+        $dbDuplicity = Connection();
+        $stmtDuplicity    = $dbDuplicity->query($sqlDuplicity);
+        $rsDuplicity      =  $stmtDuplicity->fetchAll();
+
+        if (count($rsDuplicity) > 0) {
+            // $email = $userValidation[$i]->email;
+            // $results[$i] = $phoneNumber;
+            array_push($results,  $phoneNumber);
+        }
+    }
+
+    $resultsResponse = array();
+    $results2 = "";
+
+    if (count($results) > 0) {
+        for ($j = 0; $j < count($results); $j++) {
+            // if($results[$j]){
+            $results2 .=  $results[$j] . ",  ";
+            // $results2 .=  $results[$j] . ",  ";
+
+            // }
+        }
+        $resultsResponse["duplicity"] = "0";
+        $resultsResponse["values"] = $results2;
+        return  $resultsResponse;
+    } else {
+        $resultsResponse["duplicity"] = "1";
+        return  $resultsResponse;
+    }
+}
+
 
 function initValidationsStepsCreation($organization,  $email, $phoneNumber)
 {
@@ -122,22 +183,22 @@ function initValidationsStepsCreation($organization,  $email, $phoneNumber)
     $responseCreation['error'] = 1;
     $dbQueryInit = Connection();
 
-    $sql2 = "SELECT * FROM `gr_users` WHERE `email` = '" . $email . "' and deleted = 0 ";
-    $stmt2     = $dbQueryInit->query($sql2);
-    $rs2      =  $stmt2->fetchAll();
+    // $sql2 = "SELECT * FROM `gr_users` WHERE `email` = '" . $email . "' and deleted = 0 ";
+    // $stmt2     = $dbQueryInit->query($sql2);
+    // $rs2      =  $stmt2->fetchAll();
 
-    if (count($rs2) > 0) {
-        $responseCreation['error'] = 1;
-        $responseCreation['message'] = "We can't create user:  " . $email . " because the email it is already exist! Select a different one.";
-        $dbQueryInit = null;
-        return  $responseCreation;
-    } else {
-        $responseCreation['error'] = 0;
-    }
+    // if (count($rs2) > 0) {
+    //     $responseCreation['error'] = 1;
+    //     $responseCreation['message'] = "We can't create user:  " . $email . " because the email it is already exist! Select a different one.";
+    //     $dbQueryInit = null;
+    //     return  $responseCreation;
+    // } else {
+    //     $responseCreation['error'] = 0;
+    // }
 
     // $dbQueryInit = null;
 
-    $sql3 = "SELECT * FROM `gr_users` WHERE `phone` = '" . $phoneNumber . "' and deleted = 0 " ;
+    $sql3 = "SELECT * FROM `gr_users` WHERE `phone` = '" . $phoneNumber . "' and deleted = 0 ";
     $stmt3     = $dbQueryInit->query($sql3);
     $rs3      =  $stmt3->fetchAll();
     if (count($rs3) > 0) {
@@ -170,7 +231,7 @@ function initValidationsStepsCreation($organization,  $email, $phoneNumber)
 function countRole($role, $id_organization)
 {
     try {
-        $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and status = 1";
+        $sql = "SELECT COUNT(*) as count FROM gr_users WHERE role = $role and id_organization = $id_organization and deleted = 0"  ;
         $dbcountingrole  = Connection();
         $response = array();
         $stmt = $dbcountingrole->query($sql);
@@ -367,7 +428,12 @@ function getUserByUSer()
 {
     try {
         $dbListUSer = Connection();
-        $sqlListUSer = "SELECT * FROM `gr_users` where deleted = '0'";
+        // $sqlListUSer = "SELECT * FROM `gr_users` where deleted = '0'";
+        $sqlListUSer = "SELECT t1.* , t2.id_organization, t2.organization FROM gr_users t1 INNER JOIN gr_organizations t2 ON t1.id_organization = t2.id_organization where t1.deleted = 0 ORDER by t1.name, t1.id_organization DESC
+
+        ";
+
+        
         $stmtListUSer     = $dbListUSer->query($sqlListUSer);
         $rsListUSer      =  $stmtListUSer->fetchAll();
         if (count($rsListUSer) > 0) {
