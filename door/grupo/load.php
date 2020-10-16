@@ -607,9 +607,10 @@ function gr_group() {
             if(count($available) > 0 ){
                 $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$id_user.'" and status=1');
                 $phone   = $usr[0]['phone'];
+                $nameuser   = $usr[0]['name'];
                 if(!empty($phone)){
                      $data_array =  array(
-                         "sms"   => trim($arg[1]["msg"]),
+                         "sms"   => trim($nameuser),
                          "type"  =>"chat",
                          "phone" => $phone
                      );
