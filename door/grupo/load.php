@@ -925,8 +925,14 @@ function gr_group() {
                 if (isset($rchk['groups'][8]) || isset($rchk['groups'][7])) {
                     $list[1]->mb = array($lphr['export_chat'], 'class="formpop" pn="1" title="'.$lphr['export_chat'].'" do="group" btn="'.$lphr['export_chat'].'" act="export"');
                 }
-                $list[1]->mc = array($lphr['leave_group'], 'class="formpop" pn="1" title="'.$lphr['leave_group'].'" do="group" btn="'.$lphr['leave_group'].'" act="leave"');
+
+                $nameOrg = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization="'.usr('Grupo')['id_organization'].'"')[0]['organization'];
+                if($nameOrg !== $list[0]->pntitle ){
+                    $list[1]->mc = array($lphr['leave_group'], 'class="formpop" pn="1" title="'.$lphr['leave_group'].'" do="group" btn="'.$lphr['leave_group'].'" act="leave"');
+                }
+                
                 if (isset($rchk['groups'][5]) || isset($rchk['groups'][7])) {
+                    
                     $list[1]->md = array($lphr['invite'], 'class="formpop" pn="1" title="'.$lphr['invite'].'" do="group" btn="'.$lphr['invite'].'" act="invite"');
                 }
                 $list[1]->me = array($lphr['report_group'], 'class="formpop" pn="1" title="'.$lphr['report_group'].'" do="group" btn="'.$lphr['report'].'" act="reportmsg"');
