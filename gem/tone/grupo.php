@@ -1540,7 +1540,7 @@ width: 0px;
 .grupo-pop > div > form > div > label
 {
 display: block;
-color: black;
+color: #9a8f8f;
 text-align: left;
 font-size: 14px;
 padding: 8px 0px;
@@ -1574,7 +1574,7 @@ background: #35353500;
 border: 0px;
 border-bottom: 1px solid #00000063;
 outline: 0px;
-color: #000000e3;
+color: #9a8f8f;
 border-radius: 0px;
 padding: 0px 0px;
 padding-bottom: 5px;

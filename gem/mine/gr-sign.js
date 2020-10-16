@@ -10,6 +10,9 @@ $(document).ready(function () {
     sessionStorage.removeItem("email");
     if(window.location.pathname.split('/')[2]!="signin$"){
      showSigUp();
+    }else{
+        $("#fieldRepeatPassword").hide();
+      //  $('.sign > section > div > div form > .switch').click();
     }
 });
 
@@ -42,6 +45,34 @@ function showSigUp() {
     $('body').fadeIn();
     window.isLogin = false;
     $("#fieldRepeatPassword").show();
+}
+
+
+function showSigIn() {
+    $('body').hide();
+
+    var btn = $('.two > section > div > div form > .submit.global').text();
+    $('.two > section > div > div form > .submit.global').text($('.two > section > div > div form > .submit.global').attr('btn'));
+    $('.two > section > div > div form > .submit.global').attr('btn', btn);
+    $('.sign > section > div > div form .global').removeClass('d-none');
+    $('.two > section > div > div form > .submit.reset').addClass('d-none');
+
+    $('.two > section > div > div form > .submit.global').attr('do', 'login');
+    $('.two > section > div > div form .doz').val('login');
+    $('.sign > section > div > div form .register,.sign .regsep').addClass('d-none');
+    $('.sign > section > div > div form .login').removeClass('d-none');
+    $('.sign > section > div > div form > .sub').removeClass('d-none');
+    $(this).removeClass('log');
+    var qn = $('.sign > section > div > div form > .switch > i').text();
+    $('.sign > section > div > div form > .switch > i').text($('.sign > section > div > div form > .switch').attr('qn'));
+    $('.sign > section > div > div form > .switch').attr('qn', qn);
+    
+    var btn2 = $('.two > section > div > div form > .switch > span').text();
+    $('.two > section > div > div form > .switch > span').text($('.sign > section > div > div form > .switch').attr('btn'));
+    $('.sign > section > div > div form > .switch').attr('btn', btn2);
+    $('body').fadeIn();
+    window.isLogin = true;
+    $("#fieldRepeatPassword").hide();
 }
 
 
@@ -511,6 +542,7 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 });
 
             } else {
+                
                 $.loadingBlockHide();
             }
 
