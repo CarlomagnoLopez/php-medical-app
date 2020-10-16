@@ -581,7 +581,14 @@ function gr_list($do) {
         }
         $list[$i]->name = gr_profile('get', $do['id'], 'name');
         $usrn = usr('Grupo', 'select', $do['id']);
-        $list[$i]->uname = '@'.$usrn['name'];
+        // $list[$i]->uname = '@'.$usrn['name'];
+        $list[$i]->uname = '@'.$usrn['username'];
+        if($usrn['username'] === ""){
+            $list[$i]->uname = "Never logged.";
+        }
+       
+
+        $list[$i]->nameuser = $usrn['name'];
         $shr = db('Grupo', 's,count(*)', 'msgs', 'type,uid', 'file', $do['id'])[0][0];
         $list[$i]->shares = gr_shnum($shr);
         $list[$i]->loves = gr_shnum(db('Grupo', 's,count(*)', 'options', 'type,v3', 'loves', $do['id'])[0][0]);

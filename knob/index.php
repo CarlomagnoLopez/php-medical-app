@@ -305,14 +305,11 @@
                                     <?php
                                     }
                                     ?>
-                                    <!-- <span class="dp"><img src="" /></span>
+                                    <span class="dp"><img src="" /></span>
                                     <span class="name"></span>
                                     <span class="role"></span>
-                                    <span class="refresh vwp d-none">refresh</span> -->
-                                    <span class="dp"><img src="" /></span>
-                                    <span class="user_name"><?php pr($globalDataUser['name']);  ?></span>
-                                    <span class="user_role" style="    font-size: 14px;text-transform: lowercase;font-weight: 500;color: #ffffffad;cursor: pointer;">@<?php pr($globalDataUser['username']); ?></span>
                                     <span class="refresh vwp d-none">refresh</span>
+                                   
                                 </div>
                                 <div class="middle">
                                     <span class="pm loadgroup" ldt="user" no=""><?php pr(gr_lang('get', 'message')) ?></span>

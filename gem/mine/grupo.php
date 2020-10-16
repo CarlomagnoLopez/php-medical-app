@@ -1434,7 +1434,7 @@ $('body').on('click', '.swr-grupo .vwp', function(e) {
             type: 'getuserinfo',
             id: ths.attr('no'),
         };
-        var s = '$(".swr-grupo .aside > .content .profile > .top > span.name").text(data[0].name);';
+        var s = '$(".swr-grupo .aside > .content .profile > .top > span.name").text(data[0].nameuser);';
         s = s+'$(".swr-grupo .aside > .content .profile > .top > span.dp > img").attr("src",data[0].img);';
         s = s+'$(".swr-grupo .aside > .content .profile > .top > span.role").text(data[0].uname);';
         s = s+'$(".swr-grupo .aside > .content .profile > .top > span.refresh").attr("no",data[0].id);';
