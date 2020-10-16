@@ -444,7 +444,7 @@ if (n == undefined) {
                 msg = msg+'<i class="usrname vwp" no="'+m.userid+'" mention="'+m.user+' ">'+m.name+'</i>'+emojione.shortnameToImage(asciiemoji(url2link(m.msg)));
             } else if (m.type === 'file') {
                 msg = msg+'<i class="usrname" mention="'+m.user+' ">'+m.name+'</i><span class="block" type="files" act="download" data-filename="'+m.filename+'"  data-typefile="'+m.typefile+'" no="'+m.msg+'">';
-                msg = msg+'<span>'+m.sfile+' <span><i class="ti-unlink"></i> '+m.expiry+'</span></span> <i>View</i> </span>';
+                msg = msg+'<span>'+m.sfile+' <span></span></span> <i>View</i> </span>';
             }
             msg = msg+'</i><span class="time">';
 
