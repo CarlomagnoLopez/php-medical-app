@@ -563,7 +563,7 @@ function toast(message) {
 }
 
 function generateCode() {
-    var length = 5,
+    var length = 6,
         charsetnum = "0123456789",
         password = "";
 
