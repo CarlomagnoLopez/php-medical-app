@@ -84,7 +84,7 @@ cursor: pointer;
 
 .swr-grupo > .window
 {
-  filter: drop-shadow(2px 4px 6px black);
+filter: drop-shadow(2px 4px 6px black);
 
 <!-- padding: 4%; -->
 }
@@ -114,6 +114,16 @@ color:#fff;
 z-index: 7;
 background-color:#88b2d6 !important;
 }
+
+@media(max-width: 767.98px) {
+
+.swr-grupo .aside > .head, .swr-grupo .panel > .head, .swr-grupo .rside > .top
+{
+background: linear-gradient(to right,#88b2d6 ,#4191d5 ) !important;
+border: 0px;
+}
+}
+
 
 .swr-grupo .aside > .head > .menu
 {
@@ -528,7 +538,7 @@ background-size: cover;
 border-radius: 100%;
 }
 .swr-grupo .aside > .content > .list > li.active, .swr-grupo .aside > .content > .list > li:hover{
-  background-color: #88b2d6 !important;
+background-color: #88b2d6 !important;
 
 }
 .swr-grupo .aside > .content > .list > li > div > .left > img
@@ -589,7 +599,6 @@ font-weight: 500;
 max-width: 65%;
 overflow: hidden;
 }
-
 .swr-grupo .aside > .content > .list > li > div > .right
 {
 display: inline-block;
@@ -630,7 +639,7 @@ z-index: 99;
 
 .swr-grupo .panel > .room > .groupreload > i
 {
-background: linear-gradient(to right,#E91E63,#9C27B0);
+background: linear-gradient(to right,#88b2d6,#9C27B0);
 color: white;
 border-radius: 25px;
 font-style: normal;
@@ -1651,7 +1660,7 @@ border-left: 1px solid #dfe7ef;
 border-radius: 0px 5px 5px 0px;
 }
 
-.swr-grupo .rside > .top 
+.swr-grupo .rside > .top
 {
 color: #8b8e90;
 background: #f7f7f7;
@@ -2317,7 +2326,7 @@ display: block;
 {
 display: block;
 border: 0px;
-background: transparent;  
+background: transparent;
 color: #828282;
 border-bottom: 1px solid #00000063;
 outline: 0px;

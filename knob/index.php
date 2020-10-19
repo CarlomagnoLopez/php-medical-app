@@ -646,7 +646,7 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
         idleTime = idleTime + 1;
         console.log("1 minunte more..." + idleTime);
         // console.log(idleTime)
-        if (idleTime > 1) { // 20 minutes
+        if (idleTime > 4) { // 20 minutes
             var cookies = document.cookie.split("; ");
             for (var c = 0; c < cookies.length; c++) {
                 var d = window.location.hostname.split(".");
