@@ -496,7 +496,9 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 return false;
             }
             if ($("#txtPassword").val() == "") {
-                $.toast("the password is requited");
+                toast("Password is required", 'error');
+
+                // $.toast("the password is requited");
                 $("#txtPassword").focus();
                 return false;
             }

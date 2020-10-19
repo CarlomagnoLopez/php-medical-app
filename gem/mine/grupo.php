@@ -853,7 +853,7 @@ function onClickInvite(event){
 
     }else{
         if($("#txtProfilePhoneNumberInvite").val()=="") {
-                say("the phone is requited","s");
+                say("the phone is required","s");
                 $("#txtProfilePhoneNumberInvite").focus();
                 return false;
         }
