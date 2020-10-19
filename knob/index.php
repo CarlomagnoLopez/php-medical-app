@@ -3,7 +3,7 @@
 } ?><?php
     fnc('grupo');
     $usr = usr('Grupo');
-   // var_dump($usr);
+    // var_dump($usr);
     if (!$usr['active']) {
         rt('signin');
     }
@@ -12,8 +12,8 @@
     gr_profile('ustatus', 'online');
     gr_usip('add');
     $org = db('Grupo', 'q', 'SELECT * FROM gr_organizations WHERE id_organization=' . $usr['id_organization']);
-    $globalDataUser = db('Grupo', 'q', 'SELECT * FROM gr_users WHERE id=' .$usr['id'])[0];
-   // var_dump($globalDataUser);
+    $globalDataUser = db('Grupo', 'q', 'SELECT * FROM gr_users WHERE id=' . $usr['id'])[0];
+    // var_dump($globalDataUser);
 
 
     ?>
@@ -309,7 +309,7 @@
                                     <span class="name"></span>
                                     <span class="role"></span>
                                     <span class="refresh vwp d-none">refresh</span>
-                                   
+
                                 </div>
                                 <div class="middle">
                                     <span class="pm loadgroup" ldt="user" no=""><?php pr(gr_lang('get', 'message')) ?></span>
@@ -624,11 +624,10 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 <script src="./dist/view-bigimg-master/lib/view-bigimg.js"></script>
 <script src="./dist/viewtiff/tiff.min.js"></script>
 <script type="text/javascript">
-
     var idleTime = 0;
     $(document).ready(function() {
 
-        
+
         //Increment the idle time counter every minute.
         var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
         console.log(document.cookie.split(";"))
@@ -640,8 +639,27 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
         $(this).keypress(function(e) {
             idleTime = 0;
         });
+
     });
 
+        function deleteCookies() {
+            console.log("borrando..." );
+            var cookies = document.cookie.split("; ");
+            for (var c = 0; c < cookies.length; c++) {
+                var d = window.location.hostname.split(".");
+                while (d.length > 0) {
+                    var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
+                    var p = location.pathname.split('/');
+                    document.cookie = cookieBase + '/';
+                    while (p.length > 0) {
+                        document.cookie = cookieBase + p.join('/');
+                        p.pop();
+                    };
+                    d.shift();
+                }
+            }
+            window.location.reload()
+        }
     function timerIncrement() {
         idleTime = idleTime + 1;
         console.log("1 minunte more..." + idleTime);
@@ -671,6 +689,22 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 js("ajx", "caret", "grupo");
 gr_core('hf', 'footer');
 gr_reactprof();
+
+// echo "<script>console.log('init ==  ". $_SESSION['timestamp']."');</script>";
+if ($_SESSION['timestamp'] && time() - $_SESSION['timestamp'] > 300) { //subtract new timestamp from the old one
+    
+    echo "<script>deleteCookies()</script>";
+    echo "<script>console.log('time == ".time() - $_SESSION['timestamp']. " ". $_SESSION['timestamp']."');</script>";
+    // unset( $_SESSION['timestamp']);
+
+
+    header("Location: http://localhost/php-medical-app/signin$"); //redirect to index.php
+    return;
+} else {
+    $_SESSION['timestamp'] = time(); //set new timestamp
+    echo "<script>console.log('aca == ". $_SESSION['timestamp']."');</script>";
+
+}
 ?>
 
 
