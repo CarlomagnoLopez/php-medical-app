@@ -123,7 +123,11 @@ background: linear-gradient(to right,#88b2d6 ,#4191d5 ) !important;
 border: 0px;
 }
 }
-
+.swr-grupo .aside > .head,  .swr-grupo .rside > .top
+{
+background: linear-gradient(to right,#88b2d6 ,#4191d5 ) !important;
+border: 0px;
+}
 
 .swr-grupo .aside > .head > .menu
 {
