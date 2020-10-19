@@ -5,6 +5,7 @@ fnc('grupo');
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="<?php pr(gr_lang('get', '404_page_title')) ?>">
     <meta name="author" content="Baevox">

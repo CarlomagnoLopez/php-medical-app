@@ -624,8 +624,11 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 <script src="./dist/view-bigimg-master/lib/view-bigimg.js"></script>
 <script src="./dist/viewtiff/tiff.min.js"></script>
 <script type="text/javascript">
+
     var idleTime = 0;
     $(document).ready(function() {
+
+        
         //Increment the idle time counter every minute.
         var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
         console.log(document.cookie.split(";"))
@@ -641,9 +644,9 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 
     function timerIncrement() {
         idleTime = idleTime + 1;
-        // console.log("otro")
+        console.log("1 minunte more..." + idleTime);
         // console.log(idleTime)
-        if (idleTime > 5) { // 20 minutes
+        if (idleTime > 1) { // 20 minutes
             var cookies = document.cookie.split("; ");
             for (var c = 0; c < cookies.length; c++) {
                 var d = window.location.hostname.split(".");

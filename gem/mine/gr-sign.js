@@ -8,11 +8,11 @@ $(document).ready(function () {
     sessionStorage.removeItem("phone");
     sessionStorage.removeItem("name");
     sessionStorage.removeItem("email");
-    if(window.location.pathname.split('/')[2]!="signin$"){
-     showSigUp();
-    }else{
+    if (window.location.pathname.split('/')[2] != "signin$") {
+        showSigUp();
+    } else {
         $("#fieldRepeatPassword").hide();
-      //  $('.sign > section > div > div form > .switch').click();
+        //  $('.sign > section > div > div form > .switch').click();
     }
 });
 
@@ -66,7 +66,7 @@ function showSigIn() {
     var qn = $('.sign > section > div > div form > .switch > i').text();
     $('.sign > section > div > div form > .switch > i').text($('.sign > section > div > div form > .switch').attr('qn'));
     $('.sign > section > div > div form > .switch').attr('qn', qn);
-    
+
     var btn2 = $('.two > section > div > div form > .switch > span').text();
     $('.two > section > div > div form > .switch > span').text($('.sign > section > div > div form > .switch').attr('btn'));
     $('.sign > section > div > div form > .switch').attr('btn', btn2);
@@ -215,7 +215,7 @@ function searchOrganizationBySecretKey(secret_key) {
 function existUser(phone, username, email) {
     var searchOrg = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ "method": "existUserSign", "phone": phone, "username": username, "email" : email }),
+        data: JSON.stringify({ "method": "existUserSign", "phone": phone, "username": username, "email": email }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -357,13 +357,16 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
 
         if (window.isLogin) {
             if ($("#txtUsernameLogin").val() == "") {
-                $.toast("the username is requited");
+
+                // $.toast("the username is requited");
+                toast("the username is required", 'error');
                 $("#txtUsernameLogin").focus();
                 return false;
             }
 
             if ($("#txtPassword").val() == "") {
-                $.toast("the password is requited");
+                // $.toast("the password is requited");
+                toast("the password is required", 'error');
                 $("#txtPassword").focus();
                 return false;
             }
@@ -375,18 +378,24 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
 
             var getData = JSON.parse(getDataUserByUsername($("#txtUsernameLogin").val()));
             if (!getData.exist) {
-                $.toast("the username: " + $("#txtUsernameLogin").val() + " doesn't exist.");
+                // $.toast("the username: " + $("#txtUsernameLogin").val() + " doesn't exist.");
+                toast("the username: " + $("#txtUsernameLogin").val() + " doesn't exist.", 'error');
+
                 $("#txtUsernameLogin").focus();
                 $.loadingBlockHide();
                 return false;
             }
-            if(getData.data.status == '0'){
-                $.toast("Username:" + $("#txtUsernameLogin").val() + " inactive.");
+            if (getData.data.status == '0') {
+                // $.toast("Username:" + $("#txtUsernameLogin").val() + " inactive.");
+                toast("Username:" + $("#txtUsernameLogin").val() + " inactive.", 'info');
+
                 $.loadingBlockHide();
                 return false;
             }
-            if(getData.data.deleted == '1'){
-                $.toast("Username:" + $("#txtUsernameLogin").val() + " deleted.");
+            if (getData.data.deleted == '1') {
+                // $.toast("Username:" + $("#txtUsernameLogin").val() + " deleted.");
+                toast("Username:" + $("#txtUsernameLogin").val() + " deleted.", 'info');
+
                 $.loadingBlockHide();
                 return false;
             }
@@ -402,6 +411,7 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 success: function (data) {
                     console.log(data);
                     $.loadingBlockHide();
+
                     bootbox.prompt("Please input verification code", function (result) {
                         console.log(result);
                         if (result === code) {
@@ -409,7 +419,9 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                             var s = 'eval(data);';
                             ajxx(_self, '', s, 0, e);
                         } else {
-                            $.toast("invalida code");
+                            // $.toast("invalida code");
+                            toast("invalida code", 'error');
+
                         }
                     });
 
@@ -421,17 +433,24 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
         } else {
 
             if ($("#txtName").val() == "") {
-                $.toast('the name is requited');
+
+
+                toast('The name is required', 'error')
+                // $.toast('the name is requited');
                 $("#txtName").focus();
                 return false;
             }
             if ($("#txtLastName").val() == "") {
-                $.toast("the last name is requited");
+                // $.toast("the last name is requited");
+                toast("The last name is required", 'error');
+
                 $("#txtLastName").focus();
                 return false;
             }
             if ($("#txtAddress").val() == "") {
-                $.toast("the address is requited");
+                // $.toast("the address is requited");
+                toast("The address is required", 'error');
+
                 $("#txtAddress").focus();
                 return false;
             }
@@ -441,28 +460,38 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
             //     return false;
             // }
             if ($("#txtPhoneNumber").val() == "") {
-                $.toast("the phone is requited");
+                // $.toast("the phone is requited");
+                toast("The phone is required", 'error');
+
                 $("#txtPhoneNumber").focus();
                 return false;
             }
             if ($("#txtPhoneNumber").val().length != 10) {
-                $.toast("Invalid length of phone number");
+                // $.toast("Invalid length of phone number");
+                toast("Invalid length of phone number is required", 'error');
+
                 $("#txtPhoneNumber").focus();
                 return false;
             }
 
             if ($("#txtUsername").val() == "") {
-                $.toast("theusername is requited");
+                // $.toast("theusername is requited");
+                toast("the username is required", 'error');
+
                 $("#txtUsername").focus();
                 return false;
             }
             if ($("#txtEmail").val() == "") {
-                $.toast("the email is requited");
+                // $.toast("the email is requited");
+                toast("the email is required", 'error');
+
                 $("#txtEmail").focus();
                 return false;
             }
             if (!validateEmail($("#txtEmail").val())) {
-                $.toast("Email format incorrect.");
+                // $.toast("Email format incorrect.");
+                toast("Email format is required", 'error');
+
                 $("#txtEmail").focus();
                 return false;
             }
@@ -472,13 +501,17 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 return false;
             }
             if (!checkPassword($("#txtPassword").val())) {
-                $.toast("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
+                // $.toast("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.");
+                toast("Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.", 'error');
+
                 $("#txtPassword").focus();
                 return false;
             }
 
             if (!validatePasswords($("#txtPassword").val(), $("#txtRepeatPassword").val())) {
-                $.toast("The given passwords do not match");
+                // $.toast("The given passwords do not match");
+                toast("The given passwords do not match", 'error');
+
                 return false;
             }
 
@@ -496,7 +529,9 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
 
             if (exist.exist && exist.data.status == 1) {
                 $.loadingBlockHide();
-                $.toast(exist.message);
+                // $.toast(exist.message);
+                toast(exist.message, 'error');
+
                 return false;
             }
 
@@ -508,13 +543,16 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 console.log(searchOrg);
                 if (!searchOrg.exist) {
                     $.loadingBlockHide();
-                    $.toast("The organization name and secret key doesn't exist.");
+                    // $.toast("The organization name and secret key doesn't exist.");
+                    toast("The organization name and secret key doesn't exist.", 'error');
+
+
                     return false;
                 } else {
                     if ($("#txtSecretKey").val() == "") {
                         $("#txtIdOrganization").val(searchOrg.data.id_organization);
                         $("#txtStatusUser").val(0);
-                    }else{
+                    } else {
                         $("#txtIdOrganization").val(searchOrg.data.id_organization);
                         $("#txtStatusUser").val(1);
                     }
@@ -528,6 +566,9 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
             console.log(code);
             if (sms.statusCode == 200) {
                 $.loadingBlockHide();
+
+
+
                 bootbox.prompt("Please input verification code", function (result) {
                     console.log(result);
                     if (result === code) {
@@ -536,13 +577,15 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                         ajxx(_self, '', s, 0, e);
                     } else {
                         $.loadingBlockHide();
-                        $.toast("Invalid code");
+                        // $.toast("Invalid code");
+                        toast("Invalid code", 'error');
+
                         return;
                     }
                 });
 
             } else {
-                
+
                 $.loadingBlockHide();
             }
 
@@ -558,8 +601,27 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
 });
 
 
-function toast(message) {
-    $.toast(message);
+function toast(message, type) {
+    var messageHead = "Information:";
+    switch (type) {
+        case "error":
+            messageHead = "Error message:"
+            break;
+    }
+    var _type = type;
+    if (!_type) {
+        _type = "info";
+    }
+    $.toast({
+        heading: messageHead,
+        text: message,
+        icon: _type,
+        position: 'mid-center',
+        loader: true,        // Change it to false to disable loader
+        loaderBg: '#9EC600'  // To change the background
+    });
+
+
 }
 
 function generateCode() {

@@ -109,7 +109,7 @@ function onClickFormCreateGroup(event) {
         return false;
     }
     if ($("#txtGroupName").val() == "") {
-        say("the group name is requited", "s");
+        say("the group name is required", "s");
         $("#txtGroupName").focus();
         return false;
     }
