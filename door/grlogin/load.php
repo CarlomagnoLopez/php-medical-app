@@ -57,12 +57,12 @@ function gr_register($do) {
                         // $.toast(
                            
                          // );
-                        gr_prnt('$.toast( { heading: Information,text: "User created successfully, but the user account is disabled",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });' + 
+                        gr_prnt('$.toast( { heading: "Information",text: "User created successfully, but the user account is disabled",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });' + 
                         '$(".clearValues").val("");$("#selComplementPhone").val(1);$.loadingBlockHide();');
                     }
                 }else{
                     // 
-                    gr_prnt('$.toast({ heading: Information,text: "plese try again.",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });$.loadingBlockHide();');
+                    gr_prnt('$.toast({ heading: "Information",text: "plese try again.",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });$.loadingBlockHide();');
                 }
             }
         } else {
@@ -117,7 +117,7 @@ function gr_login($do) {
                 } else {
 
                     // 
-                    gr_prnt('$.toast({ heading: Information,text: "'.gr_lang('get', 'invalid_login').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });$.loadingBlockHide();');
+                    gr_prnt('$.toast({ heading: "Information", text: "'.gr_lang('get', 'invalid_login').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });$.loadingBlockHide();');
                     //gr_prnt('$.toast("'.gr_lang('get', 'invalid_login').'");');
                 }
             }
@@ -132,17 +132,17 @@ function gr_forgot($do) {
     if (!empty($do["g-recaptcha-response"]) && gr_captcha($do["g-recaptcha-response"]) || gr_default('get', 'recaptcha') != 'enable') {
         if (empty($do["sign"])) {
             // 
-            gr_prnt('$.toast({ heading: Information,text: "'.gr_lang('get', 'invalid_value').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });');
+            gr_prnt('$.toast({ heading: "Information",text: "'.gr_lang('get', 'invalid_value').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });');
         } else {
             $usr = usr('Grupo', 'select', $do["sign"]);
             if (isset($usr['id'])) {
                 gr_mail('reset', $usr['id'], 0, rn(5));
                 // 
-                gr_prnt('$.toast({ heading: Information,text:"'.gr_lang('get', 'check_inbox').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  },"s");');
+                gr_prnt('$.toast({ heading: "Information",text:"'.gr_lang('get', 'check_inbox').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  },"s");');
                 gr_prnt('setTimeout(function() { location.reload(); }, 2000);');
             } else {
                 // 
-                gr_prnt('$.toast({ heading: Information,text:"'.gr_lang('get', 'user_does_not_exist').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });');
+                gr_prnt('$.toast({ heading: "Information",text:"'.gr_lang('get', 'user_does_not_exist').'",icon: "info", position: "mid-center",  loader: true,   loaderBg: "#9EC600"  });');
             }
         }
     } else {
