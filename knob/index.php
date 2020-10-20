@@ -43,6 +43,8 @@
     gr_cbg();
     gr_core('hf', 'header');
     ?>
+
+    
 </head>
 <input type="hidden" id="global_role" value="<?php pr($usr['role']); ?>">
 <input type="hidden" id="global_id_user" value="<?php pr($usr['id']); ?>">
@@ -698,7 +700,7 @@ if ($_SESSION['timestamp'] && time() - $_SESSION['timestamp'] > 300) { //subtrac
     // unset( $_SESSION['timestamp']);
 
 
-    header("Location: http://localhost/php-medical-app/signin$"); //redirect to index.php
+    header("Location:http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$"); //redirect to index.php
     return;
 } else {
     $_SESSION['timestamp'] = time(); //set new timestamp
