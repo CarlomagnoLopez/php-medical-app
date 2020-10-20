@@ -618,7 +618,7 @@ function gr_group() {
                     if($id_user!=$usrTyped[0]['id']){
                         if(!empty($phone)){
                      
-                             $generateLink = generateLinkBit($arg[1]['id']);
+                             $generateLink = generateLinkBit($arg[1]['id'],'group');
                              if(!$generateLink['error']){
                                $link = $generateLink['link'];
                                $sms  = trim($nameuserTyped)." from group ".$nameChatGroup;
@@ -631,22 +631,21 @@ function gr_group() {
             }
         }else{
              // PM
-           $userIdfromuser =  $arg[1]['id'];
-            $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$userIdfromuser.'" and status=1');
-            $usrTyped     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.usr('Grupo')['id'].'" and status=1');
-            $phone   = $usr[0]['phone'];
+            $userIdfromuser =  $arg[1]['id'];
+            $usr            = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$userIdfromuser.'" and status=1');
+            $usrTyped       = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.usr('Grupo')['id'].'" and status=1');
+            $phone          = $usr[0]['phone'];
             // $nameuser   = $usr[0]['name'];
             $nameuserTyped   = $usrTyped[0]['name'];
             if(!empty($phone)){
-                 $data_array =  array(
-                     "sms"   => trim($nameuserTyped),
-                     "type"  =>"chat",
-                     "phone" => $phone
-                 );
-                 $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-                 $response  = json_decode($make_call, true);
-                 $data    = $response['body']['MessageId'];
-                 $statusCode = $response['statusCode'];
+
+                $generateLink = generateLinkBit($arg[1]['id'],'user');
+                if(!$generateLink['error']){
+                  $link = $generateLink['link'];
+                  $sms  = trim($nameuserTyped)." from group ".$nameChatGroup;
+                  $sent = sendSMSUser($phone, $link, 'chat', $sms);
+                }
+
             }
         }
         
@@ -1969,10 +1968,10 @@ function callAPIAuth($method, $url, $data)
 
 
 
-function generateLinkBit($id){
+function generateLinkBit($id,$ldt){
     $response   = array();
     try {
-        $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$"."ldt=group&id=".$id;
+        $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$"."ldt=".$ldt."&id=".$id;
         $data_array =  array(
             "group_guid" => "Bk9h1KBTFqy",
             "domain" => "bit.ly",
