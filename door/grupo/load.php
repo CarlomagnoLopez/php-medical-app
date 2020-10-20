@@ -598,37 +598,36 @@ function gr_group() {
             $filename =  '';
             $typefile =  '';
         }
+        $nameChatGroup = db('Grupo', 'q', ' SELECT * FROM gr_options WHERE ID = '.$arg[1]['id'])[0]['v1'];
+
+       
         $organizations = db('Grupo', 'q', 'SELECT * FROM gr_options where v1 = "'.$arg[1]["id"].'" and type="gruser" ORDER BY id DESC');
         if(count($organizations) > 0){
             foreach ($organizations as $org) {
                 $id_user = $org['v2']; // iduser
     
-                $available     = db('Grupo', 'q', 'SELECT * FROM gr_options where v3 = "'.$id_user.'" and type="profile" and v1 = "status" and v2 = "offline" ORDER BY id DESC');
-                $available     = db('Grupo', 'q', 'SELECT * FROM gr_options where v3 = "'.$id_user.'" and type="profile" and v1 = "status" and v2 = "offline" ORDER BY id DESC');
+               // $available     = db('Grupo', 'q', 'SELECT * FROM gr_options where v3 = "'.$id_user.'" and type="profile" and v1 = "status" and v2 = "offline" ORDER BY id DESC');
                 // SELECT * FROM gr_options as opt INNER JOIN gr_users usr on opt.v2 = usr.id WHERE opt.type="gruser" and usr.deleted=0  and opt.v1 =1203;
-                if(count($available) > 0 ){
-                    $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$id_user.'" and status=1');
-                    $usrTyped     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.usr('Grupo')['id'].'" and status=1');
-                    $phone   = $usr[0]['phone'];
+               // if(count($available) > 0 ){
+                    $usr      = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$id_user.'" and deleted=0 and status=1');
+                    $usrTyped = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.usr('Grupo')['id'].'" and status=1');
+                    $phone    = $usr[0]['phone'];
                     // $nameuser   = $usr[0]['name'];
                     $nameuserTyped   = $usrTyped[0]['name'];
                     if(!empty($phone)){
-                         $data_array =  array(
-                             "sms"   => trim($nameuserTyped),
-                             "type"  =>"chat",
-                             "phone" => $phone
-                         );
-                         $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
-                         $response  = json_decode($make_call, true);
-                         $data    = $response['body']['MessageId'];
-                         $statusCode = $response['statusCode'];
+                 
+                         $generateLink = generateLinkBit($arg[1]['id']);
+                         if(!$generateLink['error']){
+                           $link = $generateLink['link'];
+                           $sms  = trim($nameuserTyped)." from group ".$nameChatGroup;
+                           $sent = sendSMSUser($phone, $link, 'chat', $sms);
+                         }
                     }
-                }
+                //}
      
             }
-        }
-        
-        else{
+        }else{
+             // PM
            $userIdfromuser =  $arg[1]['id'];
             $usr     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.$userIdfromuser.'" and status=1');
             $usrTyped     = db('Grupo', 'q', 'SELECT * FROM gr_users where  id = "'.usr('Grupo')['id'].'" and status=1');
@@ -1929,5 +1928,85 @@ function gr_data() {
 
 }
 
+   
+function callAPIAuth($method, $url, $data)
+{
+    $curl = curl_init();
+    switch ($method) {
+        case "POST":
+            curl_setopt($curl, CURLOPT_POST, 1);
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        case "PUT":
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        default:
+            if ($data)
+                $url = sprintf("%s?%s", $url, http_build_query($data));
+    }
+    // OPTIONS:
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Authorization: Bearer 6f5224025b67c2f3da413a6762f5d885ff698302'
+    ));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    // EXECUTE:
+    $result = curl_exec($curl);
+    if (!$result) {
+        die("Connection Failure");
+    }
+    curl_close($curl);
+    return $result;
+}
+
+
+
+function generateLinkBit($id){
+    $response   = array();
+    try {
+        $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$"."ldt=group&id=".$id;
+        $data_array =  array(
+            "group_guid" => "Bk9h1KBTFqy",
+            "domain" => "bit.ly",
+            "long_url" => $longLink
+        );
+        $make_call = callAPIAuth('POST', 'https://api-ssl.bitly.com/v4/shorten', json_encode($data_array));
+        $responseBitLy  = json_decode($make_call, true);
+        $response['error'] = false;
+        $response['link'] = $responseBitLy["link"];  
+    } catch (Exception $e) {
+        $response['error']   = true;
+        $response['message'] = $e->getMessage();
+    }
+    return $response;
+}
+
+
+function sendSMSUser($phone, $linkBitLy, $typeSMS, $sms){
+    $response   = array();
+    try {
+        $data_array =  array(
+            "sms"   => $sms,
+            "link"  => $linkBitLy,
+            "type"  => $typeSMS,
+            "phone" => $phone
+        );
+        $make_call  = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        $response   = json_decode($make_call, true);
+        $data       = $response['body']['MessageId'];
+        $statusCode = $response['statusCode'];
+        $response['error'] = false;
+        $response['statusCode'] = $statusCode;
+    } catch (Exception $e) {
+        $response['error']   = true;
+        $response['message'] = $e->getMessage(); 
+    }
+    return $response;
+}
 
 ?>

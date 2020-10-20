@@ -8,13 +8,17 @@ $(document).ready(function () {
     sessionStorage.removeItem("phone");
     sessionStorage.removeItem("name");
     sessionStorage.removeItem("email");
-    if(window.location.pathname.split('/')[2]!="signin$"){
-     showSigUp();
-    }else{
+    sessionStorage.removeItem("ldt");
+    sessionStorage.removeItem("idchat");
+    if(window.location.pathname!="/php-medical-app/signin"){
         $("#fieldRepeatPassword").hide();
+    }else{
+        showSigUp();
       //  $('.sign > section > div > div form > .switch').click();
     }
 });
+
+
 
 
 
@@ -407,6 +411,15 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                         if (result === code) {
                             // var getData = getDataUserByPhone( phone ); 
                             var s = 'eval(data);';
+                            if(window.location.pathname!="/php-medical-app/signin"){
+                                var params = window.location.pathname.split('/')[2].split('$')[1].split('&')
+                                if(params[0]!=""){
+                                    var ldt    = params[0].replace('ldt=','');
+                                    var id     = params[1].replace('id=','');
+                                    sessionStorage.setItem("ldt",ldt);
+                                    sessionStorage.setItem("idchat",id);
+                                }
+                            }
                             ajxx(_self, '', s, 0, e);
                         } else {
                             $.toast("invalida code");

@@ -53,7 +53,7 @@ function gr_list($do) {
                     $list[$i]->oc = 0;
                     $list[$i]->oct = '';
                     $list[$i]->icon = "";
-                    $list[$i]->id = 'class="loadgroup" ldt="group" no="'.$v['id'].'" data-sort="100'.strtotime($msg[0]['tms']).'"';
+                    $list[$i]->id = 'class="loadgroup" id="group'.$v['id'].'" ldt="group" no="'.$v['id'].'" data-sort="100'.strtotime($msg[0]['tms']).'"';
                     if ($cu && $cu['role'] == 3 && !gr_role('access', 'groups', '7')) {
                         $list[$i]->id = 'class="say" say="'.gr_lang('get', 'banned').'" type="e" no="'.$v['id'].'" ldt="group" data-sort="000'.strtotime($msg[0]['tms']).'"';
                     }

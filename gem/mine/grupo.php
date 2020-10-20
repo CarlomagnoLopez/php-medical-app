@@ -330,16 +330,18 @@ function menuclick(c, i) {
     $('.'+c+' > .swr-menu > ul > li[act="'+i+'"]').trigger('click');
     $('.'+c+' > .swr-menu').hide();
 }
-function loadgroup($id, e) {
+function loadgroup($id, e ,ldt) {
+    console.log("loadgroup:");
+    console.log(ldt);
     e.attr('type', 'json');
     e.attr('turn', 'on');
-    var ldt = e.attr('ldt');
+    var ldt = (typeof ldt == 'undefined') ? e.attr('ldt') : ldt;
     var data = {
         act: 1,
         do: "group",
         type: 'msgs',
         id: $id,
-        ldt: ldt,
+        ldt: (typeof ldt !== 'undefined') ?  ldt : 'ldt'
     };
     var s = 'loadmsg(data,1);';
     s = s+'$(".swr-grupo .groupnav > .left > span > img").attr("src", data[0].pnimg);';
@@ -1038,7 +1040,7 @@ $('body').on('click', '.formpop', function(e) {
 
 });
 
-$(document).ready(function() {
+$(document).ready(function(e) {
     if ($('.lside .ti-plus .swr-menu > ul > li').length === 0) {
         $('.lside .ti-plus').hide();
     }
@@ -1057,7 +1059,22 @@ $(document).ready(function() {
 
     $('.gr-emoji').on('click', function () {
         $('.emojionearea-button').click()
-    })
+    });
+    if(sessionStorage.getItem("ldt") != null && sessionStorage.getItem("idchat") != null){
+        console.log("execute if");
+       /* sessionStorage.removeItem("ldt");*/
+       /* sessionStorage.removeItem("idchat");*/
+
+       if(sessionStorage.getItem("ldt")=='group'){
+       /* $("#group"+sessionStorage.getItem("idchat")).click()*/
+       }
+       loadgroup(sessionStorage.getItem("idchat"), $(this), sessionStorage.getItem("ldt"));
+    }
+
+   /* loadgroup(1203, $(this));         */
+
+   /* loadgroup(367, $(this), 'user');  */
+   /* loadgroup(367, $(this), 'group'); */ 
 });
 
 $("body").on("click", ".dumb .liveupdate", function(e) {
