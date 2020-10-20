@@ -933,8 +933,10 @@ function gr_group() {
                 }
                 
                 if (isset($rchk['groups'][5]) || isset($rchk['groups'][7])) {
-                    
+                    if($nameOrg !== $list[0]->pntitle ){
                     $list[1]->md = array($lphr['invite'], 'class="formpop" pn="1" title="'.$lphr['invite'].'" do="group" btn="'.$lphr['invite'].'" act="invite"');
+
+                    }
                 }
                 $list[1]->me = array($lphr['report_group'], 'class="formpop" pn="1" title="'.$lphr['report_group'].'" do="group" btn="'.$lphr['report'].'" act="reportmsg"');
 
