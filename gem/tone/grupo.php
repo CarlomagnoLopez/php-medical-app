@@ -2530,3 +2530,16 @@ display:none;
 .previewPDF{
 display:none;
 }
+
+
+@media screen and (min-width: 100px) and (max-width: 1025px) and (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
