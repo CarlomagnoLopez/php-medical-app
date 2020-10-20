@@ -893,7 +893,7 @@ function gr_group() {
                     }
                 }
                 if (count($deac) == 0 && $list[0]->blocked != 1) {
-                    // $list[1]->ma = array($lphr['view_profile'], 'class="vwp" no="'.$orgid.'"');
+                    $list[1]->ma = array($lphr['view_profile'], 'class="vwp" no="'.$orgid.'"');
                 }
                 if (gr_role('access', 'privatemsg', '3')) {
                     // $list[1]->mc = array($lphr['export_chat'], 'class="formpop" pn="1" title="'.$lphr['export_chat'].'" do="group" btn="'.$lphr['export_chat'].'" act="export"');
