@@ -109,12 +109,12 @@ function onClickFormCreateGroup(event) {
         return false;
     }
     if ($("#txtGroupName").val() == "") {
-        say("the group name is requited", "s");
+        say("the group name is required", "s");
         $("#txtGroupName").focus();
         return false;
     }
     if ($("#txtGroupPassword").val() == "") {
-        say("the password group is requited", "s");
+        say("the password group is required", "s");
         $("#txtGroupPassword").focus();
         return false;
     }
@@ -366,13 +366,13 @@ function onClickFormCreateUser(event) {
     //     return false;
     // }
     if ($("#txtPhoneNumber").val() == "") {
-        say("the phone is requited", "s");
+        say("the phone is required", "s");
         $("#txtPhoneNumber").focus();
         return false;
     }
 
     if ($("#txtEmail").val() == "") {
-        say("the email is requited", "s");
+        say("the email is required", "s");
         $("#txtEmail").focus();
         return false;
     }

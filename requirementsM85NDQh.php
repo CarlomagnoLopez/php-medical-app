@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <title>Grupo - Server Requirements</title>
     <style>
         body {

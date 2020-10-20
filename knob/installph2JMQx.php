@@ -5,6 +5,7 @@ grupofns();
 <!doctype html>
 <html lang="en">
 <head>
+<meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Grupo Installation</title>
