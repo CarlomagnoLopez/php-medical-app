@@ -43,7 +43,8 @@ function grupofns() {
             } else if ($do["do"] == "logout") {
                 gr_profile('ustatus', 'offline');
                 usr('Grupo', 'logout');
-                gr_prnt('location.reload();');
+                gr_prnt('window.location.href = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$";');
+                // gr_prnt('$');
             } else if ($do["do"] == "files") {
                 fnc('grfiles');
                 gr_files($do);
