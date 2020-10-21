@@ -119,7 +119,7 @@
                             <label id="fieldRepeatPassword"><i class="ti-lock"></i>
                                 <input type="password" class='gstdep clearValues' autocomplete='off' id="txtRepeatPassword" name="repeat_pass" placeholder="Repeat Password *" />
                             </label>
-                            <a id="forgotPsw" style="color: #007bff;padding-left: 150px;cursor:pointer" onclick="onClickOpenModalForgPsw()">Forgot your password?</a>
+                            <a id="forgotPsw" style="color: #fff;cursor:pointer" onclick="onClickOpenModalForgPsw()">Forgot your password?</a>
 
                         </div>
                         <div class="regsep d-none"></div>

@@ -119,13 +119,13 @@ background-color:#88b2d6 !important;
 
 .swr-grupo .aside > .head, .swr-grupo .panel > .head, .swr-grupo .rside > .top
 {
-background: linear-gradient(to right,#88b2d6 ,#4191d5 ) !important;
+background: linear-gradient(to right,#88b2d6 50% ,#7e2a8c) !important;
 border: 0px;
 }
 }
 .swr-grupo .aside > .head,  .swr-grupo .rside > .top
 {
-background: linear-gradient(to right,#88b2d6 ,#4191d5 ) !important;
+background:linear-gradient(to right,#88b2d6 50% ,#7e2a8c) !important;
 border: 0px;
 }
 

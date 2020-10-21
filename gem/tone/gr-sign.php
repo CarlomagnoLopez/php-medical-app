@@ -97,10 +97,9 @@ position: relative;
 {
 background: #f4f5fa;
 position: relative;
-width: 400px;
+width: 380px;
 display: inline-block;
 padding: 37px 37px;
-margin-left: -20px;
 box-shadow: 0px 0px 6px #0c0c0c29;
 border-radius: 3px;
 }
@@ -139,8 +138,8 @@ margin-left: 17px;
 
 .sign > section > div > div form label > input
 {
-background: transparent;
-color: #828282;
+    background: #78797a;
+    color: #fff;
 border: 0px;
 padding: 12px 5px;
 padding-left: 39px;
@@ -352,7 +351,7 @@ color: white;
 
 .two > section > div > div > .box
 {
-background: linear-gradient(to right,#ffffff,#ffffff);
+background: linear-gradient(to right,#484f55 50%,#484f55 ) !important;
 text-align: center;
 box-shadow: 0px 0px 6px #0c0c0c4f;
 }
@@ -372,8 +371,8 @@ padding-left: 24px;
 
 .two > section > div > div form label > i
 {
-margin-left: 0px;
-color: #000000d1;
+    margin-left: 6px;
+    color: #fff;
 }
 
 .two > section > div > div .logo > img
