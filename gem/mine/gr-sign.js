@@ -90,6 +90,9 @@ function onClickOpenModalForgPsw(){
                 <div class="alert alert-success stepThreeSuccess text-center" role="alert"  style="display:none">
                      Password changed successfully. <hr class="my-4"> <button class="btn btn-primary" onclick="goLogin()"> Go Login</button>
                 </div>
+                <div class="alert alert-warning stepThreeWarning" role="alert" style="display:none"  style="display:none">
+                     Password must be between 8 and 16 characters, at least one number, one lowercase and one uppercase letter.
+                </div>
                 <div class="alert alert-danger stepThreeDanger" role="alert" style="display:none"  style="display:none">
                     The given passwords do not match
                 </div>
@@ -185,7 +188,9 @@ function onClickCancelPswForg(){
     $(".stepThreeDanger").hide();
     $(".stepThreeButtons").show();
     $(".stepThreeDangerServerError").hide();
-    $(".stepThreeButtons").show();       
+    $(".stepThreeWarning").hide();
+    $(".stepThreeButtons").show(); 
+          
 
 }
 function onClickContinueCodeForg(){
@@ -211,25 +216,37 @@ function onClickContinuePswForg(){
     if($("#forgotPassword").val()==""){
         $(".stepThreeDanger").show();   
         $(".stepThreeDangerServerError").hide();     
+        $(".stepThreeWarning").hide();
         return;
     }
+
+    if (!checkPassword($("#forgotPassword").val())) {
+        $(".stepThreeWarning").show();
+        $(".stepThreeDangerServerError").hide();     
+        $(".stepThreeDanger").hide();   
+        return;
+    }
+
     if($("#forgotPassword").val() == $("#forgotRepeatPassword").val() ){
         var phone = '+'+ $("#forgotCodeCountry").val() + $("#forgotPhone").val().trim();
 
         
         var upUser = updatePasswordUser( phone, $("#forgotPassword").val() );
         if (!upUser.error) {
+            $(".stepThreeSuccess").show(); 
             $(".stepThreeDangerServerError").hide();     
             $(".stepThreeDanger").hide();
-            $(".stepThreeSuccess").show(); 
-            $(".stepThreeButtons").hide();       
+            $(".stepThreeButtons").hide();
+            $(".stepThreeWarning").hide();
         }else{
             $(".stepThreeDangerServerError").show();     
             $(".stepThreeSuccess").hide();        
             $(".stepThreeDanger").hide();
+            $(".stepThreeWarning").hide();
         }
     }else{
         $(".stepThreeSuccess").hide();
+        $(".stepThreeWarning").hide();
         $(".stepThreeDanger").show();
     }
 
