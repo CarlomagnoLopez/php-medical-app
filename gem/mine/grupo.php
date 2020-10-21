@@ -1374,6 +1374,7 @@ function htmlDecode(input) {
     if (e.childNodes[0] == undefined) {
         return input;
     } else {
+        var f = e.childNodes[0].nodeValue;
         if(f.indexOf("grupo/files/") !== -1){
             e.childNodes[0].nodeValue = e.childNodes[0].nodeValue.replaceAll(" ", "%20");
         }
