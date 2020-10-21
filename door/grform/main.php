@@ -70,7 +70,7 @@ switch($method){
 
 
 function getUsers($db){
-    $sql = "SELECT * FROM gr_users WHERE status = 1;";
+    $sql = "SELECT * FROM gr_users WHERE status = 1 and deleted=0 and username is not null and username != ''";
     try {
         $response = array();
         $stmt     = $db->query($sql); 

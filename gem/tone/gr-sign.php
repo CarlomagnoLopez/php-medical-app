@@ -469,3 +469,6 @@ cursor: pointer;
 margin-left: 5px;
 }
 
+.phone-input{
+	margin-bottom:8px;
+}

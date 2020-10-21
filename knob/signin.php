@@ -59,12 +59,12 @@
                                 <label><i class="ti-user"></i>
                                     <input type="text" autocomplete='off' id="txtLastName" name="flastname" class="clearValues" placeholder="Last Name *" />
                                 </label>
-                                <label><i class="ti-home"></i>
-                                    <input type="text" autocomplete='off' id="txtAddress" name="faddress" class="clearValues" placeholder="Address *" />
-                                </label>
-                                <label><i class="ti-location-pin"></i>
-                                    <input type="text" class="only-numbers zipCodeLimit clearValues" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
-                                </label>
+                                <!-- <label><i class="ti-home"></i> -->
+                                    <input type="hidden" autocomplete='off' id="txtAddress" name="faddress" class="clearValues" placeholder="Address *" />
+                                <!-- </label> -->
+                                <!-- <label><i class="ti-location-pin"></i> -->
+                                    <input type="hidden" class="only-numbers zipCodeLimit clearValues" autocomplete='off' id="txtZipCode" name="fzipcode" placeholder="ZipCode" />
+                                <!-- </label> -->
                                 <div style="position: absolute;margin-left: 31px;margin-top: 10px;color: black;">
                                     <select name="fcomplementPhone" id="selComplementPhone">
                                         <option value="1" selected>+1</option>
@@ -119,6 +119,7 @@
                             <label id="fieldRepeatPassword"><i class="ti-lock"></i>
                                 <input type="password" class='gstdep clearValues' autocomplete='off' id="txtRepeatPassword" name="repeat_pass" placeholder="Repeat Password *" />
                             </label>
+                            <a id="forgotPsw" style="color: #007bff;padding-left: 150px;cursor:pointer" onclick="onClickOpenModalForgPsw()">Forgot your password?</a>
 
                         </div>
                         <div class="regsep d-none"></div>
@@ -140,6 +141,7 @@
                             </div>
                         <?php
                         } ?>
+              
                         <span class="submit global" form='.gr_sign' do='login' btn='<?php pr(gr_lang('get', 'register')); ?>' em='<?php pr(gr_lang('get', 'invalid_value')); ?>' gst=0 dlg='<?php pr(gr_lang('get', 'login')); ?>' glog='<?php pr(gr_default('get', 'guest_login')); ?>'>
                             <?php
                             if (gr_default('get', 'guest_login') == 'enable') {

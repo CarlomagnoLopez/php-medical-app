@@ -43,11 +43,20 @@ switch ($method) {
         $email    = $json->email;
         existUserSign($db, $phone, $username, $email);
         break;
+    case 'existUserForgotPassword':
+        $phone    = $json->phone;
+        existUserForgotPassword($db, $phone);
+        break;        
     case 'updateStatusUser':
         $phone  = $json->phone;
         $status = $json->status;
         updateStatusUser($db, $phone, $status);
         break;
+    case 'updatePasswordUser':
+        $phone    = $json->phone;
+        $password = $json->password;
+        updatePasswordUser($db, $password, $phone);
+        break;   
     case 'deleteUserOrganization':
         $id_user          = $json->id_user;
         $role             = $json->role;
@@ -269,6 +278,30 @@ function updateStatusUser($db, $phone, $status)
     echo json_encode($response);
 }
 
+
+function updatePasswordUser($db, $password ,$phone){
+    $p = en($password);
+    $pass = $p['pass'];
+    $mask = $p['mask'];
+    $type = $p['type'];
+    $sql = "UPDATE gr_users SET pass = '$pass', mask='$mask', depict='$type' WHERE phone = '$phone'";
+    try {
+        $response = array();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $rs = $stmt->rowCount() ? 1 : 0;
+        $db = null;
+        $response['data']    = $rs;
+        $response['error']   = false;
+        $response['message'] = "";
+    } catch (PDOException $e) {
+        $response['data']    = null;
+        $response['error']   = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    echo json_encode($response);
+}
+
 function existUser($db, $phone, $email)
 {
     $sql = "SELECT * FROM `gr_users` WHERE  phone = '$phone' OR email = '$email'";
@@ -331,6 +364,34 @@ function existUserSign($db, $phone, $username, $email)
     }
     echo json_encode($response);
 }
+
+function existUserForgotPassword($db, $phone)
+{
+    $sql = "SELECT * FROM `gr_users` WHERE phone = '$phone'";
+    try {
+        $response = array();
+        $stmt = $db->query($sql);
+        $rs   =  $stmt->fetchAll();
+        if (count($rs) > 0) {
+            $response['exist'] = true;
+            $response['data'] = $rs[0];
+        } else {
+            $response['exist'] = false;
+            $response['data'] = [];
+            $response['message'] = "";
+        }
+        $response['error'] = false;
+    } catch (PDOException $e) {
+        $response['exist'] = false;
+        $response['data'] = null;
+        $response['error'] = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    echo json_encode($response);
+}
+
+
+
 
 function saveSession($db, $uid)
 {

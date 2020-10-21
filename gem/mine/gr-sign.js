@@ -1,6 +1,9 @@
 
 window.isLogin = true;
+window.codeForgotPsw = '';
+var dialogForgotPsw;
 $(document).ready(function () {
+    $("#forgotPsw").hide();
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("status");
     sessionStorage.removeItem("id_organization");
@@ -12,15 +15,230 @@ $(document).ready(function () {
     sessionStorage.removeItem("idchat");
     if(window.location.pathname!="/php-medical-app/signin"){
         $("#fieldRepeatPassword").hide();
+        $("#forgotPsw").show();
     }else{
         showSigUp();
+        $("#forgotPsw").hide();
+
       //  $('.sign > section > div > div form > .switch').click();
     }
+
+
 });
 
 
+function onClickOpenModalForgPsw(){
+    var html = `
+    <div class="container">
+    <div class="row">
+		<div class="col-sm-12">
+            <div class="stepOne">
+                <label>Phone Number</label>
+                <div class="form-group"> 
+                <div class="phone-list">
+                        <div class="input-group phone-input">
+                            <span class="input-group-btn">
+                                <select class="form-control" id="forgotCodeCountry">
+                                <option value="1" selected>+1</option>
+                                <option value="86">+86</option>
+                                <option value="87">+87</option>
+                                <option value="91">+91</option>
+                                <option value="55">+55</option>
+                                <option value="52">+52</option>
+                                </select>
+                            </span>
+                            <input type="text" id="forgotPhone" class="form-control formForgotPassword" placeholder="(999) 999 9999" />
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger stepOneError" role="alert" style="display:none"  style="display:none">
+                    The phone number doesn't exist.
+                </div>                
+                <div class="alert alert-danger stepOneDanger" role="alert" style="display:none">
+                    Please, complete the information.
+                </div>
+                <div class="form-group"> 
+                <button class="btn btn-default" onclick="onClickCancelForg()">Cancel</button>
+                <button class="btn btn-primary" onclick="onClickContinueForg()">Continue</button>
+                </div>
+            </div>
+            <div class="stepTwo col-md-12" style="display:none">
+                    <div class="alert alert-success stepTwoSuccess" role="alert">
+                        You will recive a CODE in you phone.
+                    </div>
+                    <div class="alert alert-danger stepTwoDanger" role="alert" style="display:none">
+                        The code is incorrect, please try again.
+                    </div>
+                    <label>Code</label>
+                    <div class="form-group "> 
+                        <input type="text" id="forgotCode" class="form-control formForgotPassword"> 
+                    </div> 
+                    <div class="form-group"> 
+                    <button class="btn btn-default" onclick="onClickCancelCodeForg()">Cancel</button>
+                    <button class="btn btn-primary" onclick="onClickContinueCodeForg()">Continue</button>
+                    </div>
+            </div> 
+            <div class="stepThree" style="display:none">
+                <label>New Password</label>
+                <div class="form-group"> 
+                    <input type="password" id="forgotPassword" class="form-control formForgotPassword" /> 
+                </div> 
+                <label>Confirm Password</label>
+                <div class="form-group"> 
+                    <input type="password" id="forgotRepeatPassword" class="form-control formForgotPassword" /> 
+                </div> 
+                <div class="alert alert-success stepThreeSuccess text-center" role="alert"  style="display:none">
+                     Password changed successfully. <hr class="my-4"> <button class="btn btn-primary" onclick="goLogin()"> Go Login</button>
+                </div>
+                <div class="alert alert-danger stepThreeDanger" role="alert" style="display:none"  style="display:none">
+                    The given passwords do not match
+                </div>
+                <div class="alert alert-danger stepThreeDangerServerError" role="alert" style="display:none"  style="display:none">
+                  Error, please try again.
+                </div>                
+                <div class="form-group stepThreeButtons"> 
+                <button class="btn btn-default" onclick="onClickCancelPswForg()">Cancel</button>
+                <button class="btn btn-primary" onclick="onClickContinuePswForg()">Changed Password</button>
+                </div>
+            </div
+            </div>  
+        </div>
+    </div>
+    `;
+    dialogForgotPsw = bootbox.dialog({
+        message: html,
+        closeButton: false
+    });
+}
+
+function onClickContinueForg(){
+    // step 1
+    console.log("step 1");
+ 
+    // $(".stepOne").hide();
+    // $(".stepTwo").fadeIn();
+    // window.codeForgotPsw = generateCode();
+    // console.log("code:"+window.codeForgotPsw);
+    if($("#forgotPhone").val()==''){
+        $(".stepOneError").hide();
+        $(".stepOneDanger").show();
+        return;
+    }
+
+    $.loadingBlockShow({
+        imgPath: './asset/default.svg',
+        text: 'Loading...',
+        style: { position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+    });
+    var phone = '+'+ $("#forgotCodeCountry").val() + $("#forgotPhone").val().trim();
+    var exist = existUserForgotPassword(phone);
+    if (exist.exist && exist.data.status == 1) {
+        $(".stepOneDanger").hide();
+        $.loadingBlockHide();
+        code = generateCode();
+        console.log("code:"+code);
+       var sms   = sendSMS(code, phone);
+        if (sms.statusCode == 200) {
+            window.codeForgotPsw = code;
+            $(".stepOneError").hide();
+            $(".stepOne").hide();
+            $(".stepTwo").fadeIn();
+        }
+    }else{
+        $.loadingBlockHide();
+        $(".stepOneDanger").hide();
+        $(".stepOneError").show();
+
+    }
+
+}
+
+function onClickCancelForg(){
+    // step 1
+
+    $(".formForgotPassword").val('');
+    $("#forgotCodeCountry").val('1');
+    $("#divPassword").fadeOut();
+    $(".stepTwoDanger").hide();
+    $(".stepOneError").hide();
+
+}
+
+function onClickCancelCodeForg(){
+    // step 2
+
+    $(".stepTwo").hide();
+    $(".stepOne").fadeIn();
+    $(".formForgotPassword").val('');
+    $("#forgotCodeCountry").val('1');
+    $(".stepTwoDanger").hide();
+}
+function onClickCancelPswForg(){
+    // step 3
+
+    $(".formForgotPassword").val('');
+    $("#forgotCodeCountry").val('1');
+    $(".stepThree").hide();
+    $(".stepOne").fadeIn();
+    $(".stepTwoDanger").hide();
+    $(".stepThreeSuccess").hide();
+    $(".stepThreeDanger").hide();
+    $(".stepThreeButtons").show();
+    $(".stepThreeDangerServerError").hide();
+    $(".stepThreeButtons").show();       
+
+}
+function onClickContinueCodeForg(){
+    // step 2
+    console.log("step 2")
+
+    if($("#forgotCode").val() == window.codeForgotPsw ){
+        $(".stepTwoDanger").hide();
+        $(".stepTwoSuccess").show();
+        $(".stepTwo").hide();
+        $(".stepThree").fadeIn();
+    }else{
+        $(".stepTwoSuccess").hide();
+        $(".stepTwoDanger").show();
+    }
+}
 
 
+
+function onClickContinuePswForg(){
+    // step 3
+    console.log("step 3")
+    if($("#forgotPassword").val()==""){
+        $(".stepThreeDanger").show();   
+        $(".stepThreeDangerServerError").hide();     
+        return;
+    }
+    if($("#forgotPassword").val() == $("#forgotRepeatPassword").val() ){
+        var phone = '+'+ $("#forgotCodeCountry").val() + $("#forgotPhone").val().trim();
+
+        
+        var upUser = updatePasswordUser( phone, $("#forgotPassword").val() );
+        if (!upUser.error) {
+            $(".stepThreeDangerServerError").hide();     
+            $(".stepThreeDanger").hide();
+            $(".stepThreeSuccess").show(); 
+            $(".stepThreeButtons").hide();       
+        }else{
+            $(".stepThreeDangerServerError").show();     
+            $(".stepThreeSuccess").hide();        
+            $(".stepThreeDanger").hide();
+        }
+    }else{
+        $(".stepThreeSuccess").hide();
+        $(".stepThreeDanger").show();
+    }
+
+    // 
+}
+
+function goLogin(){
+    dialogForgotPsw.modal('hide');
+}
 
 function showSigUp() {
     $('body').hide();
@@ -96,6 +314,7 @@ $('.sign > section > div > div form > .switch').on('click', function () {
         $(this).removeClass('log');
         window.isLogin = true;
         $("#fieldRepeatPassword").hide();
+        $("#forgotPsw").show();
 
     } else {
         $('.two > section > div > div form > .submit.global').attr('do', 'register');
@@ -106,6 +325,7 @@ $('.sign > section > div > div form > .switch').on('click', function () {
         $(this).addClass('log');
         window.isLogin = false;
         $("#fieldRepeatPassword").show();
+        $("#forgotPsw").hide();
 
     }
     var qn = $('.sign > section > div > div form > .switch > i').text();
@@ -232,6 +452,23 @@ function existUser(phone, username, email) {
     return JSON.parse(searchOrg);
 }
 
+function existUserForgotPassword(phone) {
+    var searchOrg = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ "method": "existUserForgotPassword", "phone": phone }),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) { },
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
+}
+
+
 
 function searchOrganization(organization, secret_key) {
     var searchOrg = $.ajax({
@@ -324,7 +561,26 @@ function updateStatusUser(phone, status) {
     console.log(code);
     var getData = $.ajax({
         url: 'door/user/main.php',
-        data: JSON.stringify({ phone: phone, status: status }),
+        data: JSON.stringify({  phone: phone, status: status }),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) { },
+        async: false,
+        error: function (error) {
+            console.log(error);
+            $.loadingBlockHide();
+        }
+    }).responseText;
+    return JSON.parse(getData);
+}
+
+
+function updatePasswordUser(phone, password) {
+    console.log(code);
+    var getData = $.ajax({
+        url: 'door/user/main.php',
+        data: JSON.stringify({ method: "updatePasswordUser", phone: phone, password: password }),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -460,13 +716,13 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                 $("#txtLastName").focus();
                 return false;
             }
-            if ($("#txtAddress").val() == "") {
-                // $.toast("the address is requited");
-                toast("The address is required", 'error');
+            // if ($("#txtAddress").val() == "") {
+            //     // $.toast("the address is requited");
+            //     toast("The address is required", 'error');
 
-                $("#txtAddress").focus();
-                return false;
-            }
+            //     $("#txtAddress").focus();
+            //     return false;
+            // }
             // if ($("#txtZipCode").val() == "") {
             //     $.toast("the zipcode is requited");
             //     $("#txtZipCode").focus();
