@@ -457,7 +457,7 @@ function onClickFormCreateUser(event) {
                 $("#txtPhoneNumber").val("");
                 $("#selRole").val("0");
                 $("#selComplementPhone").val("1");
-                say("The user: " + username + " was creaded successfully", "s");
+                say("The user: " + username + " was created successfully", "s");
                 $("#modalCreateUser").fadeOut();
               //  sendSMS(phone);
             }
