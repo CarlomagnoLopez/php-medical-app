@@ -365,8 +365,17 @@ function loadgroup($id, e ,ldt) {
         $('.grtab').removeClass('d-none');
     }
     
+    setTimeout(function() {
+            if(sessionStorage.getItem("ldt") != null && sessionStorage.getItem("idchat") != null){
+                if(sessionStorage.getItem("ldt")=='user'){
+                    if ($(window).width() > 767.98) {
+                            
+                            $('#liPM').trigger("click");
+                    }
+                }
 
-
+            }
+    }, 3000);
 
 }
 
@@ -1070,8 +1079,8 @@ $(document).ready(function(e) {
     if(sessionStorage.getItem("ldt") != null && sessionStorage.getItem("idchat") != null){
        
 
-       /* sessionStorage.removeItem("ldt");*/
-       /* sessionStorage.removeItem("idchat");*/
+        sessionStorage.removeItem("ldt");
+        sessionStorage.removeItem("idchat");
 
 
 
@@ -1123,14 +1132,14 @@ $(document).ready(function(e) {
               $('.swr-grupo .panel').animate({
                   marginLeft: '0px'
               }, 500);
+
+
           }, 200);
+      }else{
+
       }
       $('.emojionearea > .emojionearea-editor').focus();
 
-
-    
-
-       
     
     
     }

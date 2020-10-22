@@ -175,7 +175,7 @@
                                 <?php
                                 if (gr_role('access', 'privatemsg', '2')) {
                                 ?>
-                                    <li act='pm' side='lside' zero='0' unread='0' zval='<?php pr(gr_lang('get', 'zero_pm')) ?>'><?php pr(gr_lang('get', 'pm')) ?> <i></i></li>
+                                    <li id="liPM"  act='pm' side='lside' zero='0' unread='0' zval='<?php pr(gr_lang('get', 'zero_pm')) ?>'><?php pr(gr_lang('get', 'pm')) ?> <i></i></li>
                                 <?php
                                 } ?>
                                 <?php

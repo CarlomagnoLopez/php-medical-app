@@ -643,7 +643,7 @@ function gr_group() {
                 $generateLink = generateLinkBit($arg[1]['id'],'user');
                 if(!$generateLink['error']){
                   $link = $generateLink['link'];
-                  $sms  = trim($nameuserTyped)." from group ".$nameChatGroup;
+                  $sms  = trim($nameuserTyped)." from a PM";
                   $sent = sendSMSUser($phone, $link, 'chat', $sms);
                 }
 
