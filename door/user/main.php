@@ -18,6 +18,10 @@ switch ($method) {
         $username = $json->username;
         getDataUserByUsername($db, $username);
         break;
+    case 'searchOTP':
+        $otp = $json->otp;
+        searchOTP($db, $otp);
+        break;
     case 'searchOrganization':
         $organization = $json->organization;
         $secret_key   = $json->secret_key;
@@ -70,7 +74,13 @@ switch ($method) {
         deleteOrganization($db, $id_organization);
         break;
     case 'fastLogin':
-        fastLogin($db, $phone, $status);
+        $id_username    = $json->id_username;
+        $psw_encrypt    = $json->psw_encrypt;
+        $phone          = $json->phone;
+        $status_user    = $json->status_user;
+        $id_chat        = $json->id_chat;
+        $codeInvitation = $json->codeInvitation;
+        fast_login($db, $id_username,$psw_encrypt, $phone, $status_user, $id_chat, $codeInvitation);
         break;
 }
 
@@ -494,6 +504,30 @@ function getDataUserByPhone($db, $phone)
     }
     echo json_encode($response);
 }
+
+function getDataUserById($db, $id){
+    $sql = "SELECT * FROM gr_users WHERE id = '$id'";
+    try {
+        $response = array();
+        $stmt = $db->query($sql);
+        $rs   =  $stmt->fetchAll();
+        if (count($rs) > 0) {
+            $response['exist'] = true;
+            $response['data'] = $rs[0];
+        } else {
+            $response['exist'] = false;
+            $response['data'] = [];
+        }
+        $response['error'] = false;
+        $response['message'] = "";
+    } catch (PDOException $e) {
+        $response['exist'] = false;
+        $response['data'] = null;
+        $response['error'] = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    return $response;
+}
 function getDataUserByUsername($db, $username)
 {
     $sql = "SELECT * FROM gr_users WHERE username = '$username'";
@@ -518,6 +552,38 @@ function getDataUserByUsername($db, $username)
     }
     echo json_encode($response);
 }
+
+
+function searchOTP($db, $otp)
+{
+    $sql = "SELECT * FROM gr_options WHERE type='invite' and  v2 = '$otp'";
+    try {
+        $response = array();
+        $stmt = $db->query($sql);
+        $rs   =  $stmt->fetchAll();
+        if (count($rs) > 0) {
+            $dataUser = getDataUserById($db,$rs[0]['v3']);
+            $response['exist'] = true;
+            $response['data']  = $rs[0];
+            $response['user']  = $dataUser['data'];
+
+        } else {
+            $response['exist'] = false;
+            $response['data'] = [];
+            $response['user'] = [];
+        }
+        $response['error'] = false;
+        $response['message'] = "";
+    } catch (PDOException $e) {
+        $response['exist'] = false;
+        $response['data'] = null;
+        $response['user'] = null;
+        $response['error'] = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    echo json_encode($response);
+}
+
 
 function saveOrganization($db, $organization, $secret_key)
 {
@@ -570,6 +636,54 @@ function ip($t = 0)
     }
 }
 
+function fast_login($db, $id_username, $psw_encrypt, $phone, $status_user, $id_chat, $codeInvitation){
+    $response = array();
+    $u = $phone;
+    $f = 'phone';
+    $r[0] = false;
+    $r[1] = 'invalid';
+    $d = 'Grupo';
+
+     $uid    = $id_username;
+     $device = 'bs.'.ip().ip('dev');
+     $sql = "DELETE FROM gr_session WHERE uid = $uid AND device = '$device'";
+     $stmt = $db->prepare($sql);
+     $stmt->execute();
+
+    if($status_user==1){
+            ses($db, $d, $id_username);
+            setcookie($d.'usrdev', $_SESSION[$d.'usrdev'], time() + (86400 * 30), "/");
+            setcookie($d.'usrcode', $_SESSION[$d.'usrcode'], time() + (86400 * 30), "/");
+            setcookie($d.'usrses', $_SESSION[$d.'usrses'], time() + (86400 * 30), "/");
+    }
+    $r[0] = true;
+    $r[2] = getDataUserById($db,$id_username);
+
+    $sql = "INSERT INTO `gr_options`(type,v1,v2,v3,v4,v5) VALUES('gruser',:id_chat,:idUser,:idrole,0,0)";
+    try {
+        $response = array();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue("idUser",  $r[2]['data']['id']);
+        $stmt->bindValue("idrole",  $r[2]['data']['role']);
+        $stmt->bindValue("id_chat", $id_chat);
+        if($stmt->execute()){
+            $sql   = "UPDATE gr_options SET v4 = 1 WHERE v2 = '$codeInvitation'";
+            $query = $db->prepare($sql);
+            $query->execute();
+            $response['data']    = null;
+            $response['error']   = false;
+            $response['message'] = "Invitation created succesfully";
+        }
+        
+    } catch (PDOException $e) {
+        $response['data']    = null;
+        $response['error']   = true;
+        $response['message'] = "An error occurred, try again." . $e->getMessage();
+    }
+    $r[3] = $response;
+
+    echo json_encode($r);
+}
 
 function en($v, $t = 0, $m = 0)
 {
@@ -644,3 +758,30 @@ function rn($number)
     }
     return $str;
 }
+
+function ses($db,$d,$v) {
+    $_SESSION[$d.'usrdev'] = ip().ip('dev');
+    $_SESSION[$d.'usrcode'] = rn("5").rn("9");
+  //  $_SESSION[$d.'usrses'] = db($d, 'i', 'session', 'uid,device,code,tms', $v,$_SESSION[$d.'usrdev'], $_SESSION[$d.'usrcode'], dt());
+
+    $sql = "INSERT INTO `gr_session`
+    (uid,
+    device,
+    code,
+    tms
+    )
+    VALUES
+    (:uid,
+    :device,
+    :code,
+    NOW())";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue("uid",  $v);
+    $stmt->bindValue("device",  $_SESSION[$d.'usrdev']);
+    $stmt->bindValue("code",  $_SESSION[$d.'usrcode']);
+    $stmt->execute();
+    $_SESSION[$d.'usrses'] = $db->lastInsertId();
+    return true;
+  
+}
+

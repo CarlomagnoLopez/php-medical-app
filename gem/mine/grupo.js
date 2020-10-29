@@ -1,6 +1,5 @@
 var clickSwitchInvite = true;
 $(document).ready(function () {
-
     $("#modalCreateUser").hide();
 });
 
@@ -104,6 +103,91 @@ function onClickStatusUser(event) {
 
 }
 
+$("#txtProfileUsernameInvite").on("focusout",  function() {
+    if($(this).val()==''){
+        $("#selProfileComplementPhoneInvite").val('+1');
+        $("#txtProfilePhoneNumberInvite").val(''); 
+        $("#txtProfileUsernameInvite").val(''); 
+    }
+});
+
+$("#txtProfilePhoneNumberInvite").on("focusout",  function() {
+    if($(this).val()==''){
+        $("#selProfileComplementPhoneInvite").val('+1');
+        $("#txtProfilePhoneNumberInvite").val(''); 
+        $("#txtProfileUsernameInvite").val(''); 
+    }
+});
+
+$("#txtProfileUsernameInvite").autocomplete({
+    source: function (request, response) {
+         $.ajax({
+             url: 'door/grform/main.php',
+             type: "POST",
+             data: JSON.stringify({ "method": "searchByUsernameOrPhone", "username": $("#txtProfileUsernameInvite").val() , phone : ""}),
+             success: function (data) {
+                 response($.map(data.data, function (el) {
+                     return {
+                         data : el,
+                         label: el.username,
+                         value: el.id
+                     };
+                 }));
+             }
+         });
+    },
+    select: function (event, ui) {
+        if(ui.item.data.phone.substring(0, 2)=='+1'){
+            $("#selProfileComplementPhoneInvite").val('+1');
+            $("#txtProfilePhoneNumberInvite").val(ui.item.data.phone.substring(2));
+        
+        }else{
+            $("#selProfileComplementPhoneInvite").val(ui.item.data.phone.substring(0, 3));
+            $("#txtProfilePhoneNumberInvite").val( ui.item.data.phone.substring(3) );
+        }
+        this.value = ui.item.label;
+        // Set the next input's value to the "value" of the item.
+        $(this).next("input").val(ui.item.value);
+        event.preventDefault();
+    }
+});
+
+
+$("#txtProfilePhoneNumberInvite").autocomplete({
+    source: function (request, response) {
+         $.ajax({
+             url: 'door/grform/main.php',
+             type: "POST",
+             data: JSON.stringify({ "method": "searchByUsernameOrPhone", "phone": $("#txtProfilePhoneNumberInvite").val() , username : ""}),
+             success: function (data) {
+                 response($.map(data.data, function (el) {
+                     return {
+                         data : el,
+                         label: el.phone,
+                         value: el.id
+                     };
+                 }));
+             }
+         });
+    },
+    select: function (event, ui) {
+        $("#txtProfileUsernameInvite").val(ui.item.data.username);
+        if(ui.item.data.phone.substring(0, 2)=='+1'){
+            $("#selProfileComplementPhoneInvite").val('+1');
+            $("#txtProfilePhoneNumberInvite").val();
+            $(this).next("input").val(ui.item.data.phone.substring(2));
+            this.value = ui.item.data.phone.substring(2);
+        }else{
+            $("#selProfileComplementPhoneInvite").val(ui.item.data.phone.substring(0, 3));
+            $(this).next("input").val(ui.item.data.phone.substring(3));
+            this.value = ui.item.data.phone.substring(3);
+        }
+
+        // Set the next input's value to the "value" of the item.
+        event.preventDefault();
+    }
+});
+
 function onClickFormCreateGroup(event) {
     if (event.value !== "Create Group") {
         return false;
@@ -193,6 +277,7 @@ function onClickCancelProfileUser() {
     $("#modalEditProfile").fadeOut();
 }
 function onClickCancelInvite() {
+    window.idGroupChatSelected='';
     $("#modalInvite").fadeOut();
 }
 
@@ -305,6 +390,22 @@ function onClickCloseModalViewer(event) {
     console.log('close')
     $("#iframeViewer").attr('src', null);
     $("#modalViewer").fadeOut();
+}
+
+function searchByUsernameOrPhone(username,phone) {
+    var searchOrg = $.ajax({
+        url: 'door/grform/main.php',
+        data: JSON.stringify({ "method": "searchByUsernameOrPhone", "username": username , phone : phone}),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) { },
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
 }
 
 

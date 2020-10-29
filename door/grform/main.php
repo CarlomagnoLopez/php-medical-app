@@ -36,6 +36,23 @@ switch($method){
         $data = getDataUserById($db,$id);
         echo json_encode( $data );
     break;  
+    case 'searchByUsernameOrPhone':
+        $username = $json->username;
+        $phone    = $json->phone;
+        $data     = searchByUsernameOrPhone($db,$username,$phone);
+        echo json_encode( $data );
+    break;  
+    case 'inviteUser':
+        $code             = $json->code;
+        $username         = $json->username;
+        $phone            = $json->phone;
+        $id_chat          = $json->id_chat;
+        $from             = $json->from;
+        $id_organization  = $json->id_organization;
+        $id_user_from     = $json->id_user_from;
+        $data     = inviteUser($db,$code,$username,$phone,$id_chat,$from,$id_organization,$id_user_from);
+        echo json_encode( $data );
+    break;  
     case 'updateUser':
         updateUser($db,$json);
     break;  
@@ -59,7 +76,7 @@ switch($method){
 //                 "type"  =>"chat",
 //                 "phone" => $phone
 //             );
-//             $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+//             $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms'"SMS",, json_encode($data_array));
 //             $response  = json_decode($make_call, true);
 //             $data    = $response['body']['MessageId'];
 //             $statusCode = $response['statusCode'];
@@ -68,6 +85,82 @@ switch($method){
 
 // }
 
+
+function generateLinkBitUserInvite($inviteCode){
+    $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/invite$"."code=".$inviteCode;
+    $data_array =  array(
+        "group_guid" => "Bk9h1KBTFqy",
+        "domain" => "bit.ly",
+        "long_url" => $longLink
+    );
+    $make_call = callAPIAuth('POST', 'https://api-ssl.bitly.com/v4/shorten', json_encode($data_array));
+    $responseBitLy  = json_decode($make_call, true);
+    return $responseBitLy["link"];  
+}
+
+
+function inviteUser($db,$code,$username,$phone,$id_chat,$from,$id_organization,$id_user_from){
+        $searchUserPhone = searchByUsernameOrPhone($db,"",$phone);
+        $userInvite      = $searchUserPhone['data'][0];
+        $sql = "INSERT INTO `gr_options`
+        (type,
+        v1,
+        v2,
+        v3,
+        v4,
+        v5
+        )
+        VALUES
+      ('invite',
+        :organization,
+        :code,
+        :idUser,
+        0,
+        :id_chat
+      )     
+      ";
+        try {
+            $response = array();
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue("organization", $id_organization);
+            $stmt->bindValue("idUser",       $userInvite['id']);
+            $stmt->bindValue("code",         $code);
+            $stmt->bindValue("id_chat",      $id_chat);
+            $stmt->execute();
+            $id = $db->lastInsertId();
+            $lastInsertId = $id > 0 ? $id : 0;
+            if($lastInsertId>0){
+                $linkBitLy     = generateLinkBitUserInvite($code);
+                $nameChatGroup = getNameChat($db,$id_chat)['data'][0]['v1'];
+                $sms           = trim($username)." invited to group ".$nameChatGroup;
+                sendSMS($sms,$phone,$linkBitLy,"chat");            
+                $response['data']    = $lastInsertId;
+                $response['error']   = false;
+                $response['message'] = "Invitation created succesfully";
+            }
+
+        } catch (PDOException $e) {
+            $response['data']    = null;
+            $response['error']   = true;
+            $response['message'] = "An error occurred, try again." . $e->getMessage();
+        }
+    return $response;
+ }
+
+ function getNameChat($db,$id_chat){
+    $sql = "SELECT * FROM gr_options WHERE ID =".$id_chat;
+    try {
+        $response = array();
+        $stmt     = $db->query($sql); 
+        $rs       =  $stmt->fetchAll();
+        $response['data']  = $rs;
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['data']  = null;
+        $response['error'] = true; 
+    }
+    return $response;
+}
 
 function getUsers($db){
     $sql = "SELECT * FROM gr_users WHERE status = 1 and deleted=0 and username is not null and username != ''";
@@ -101,6 +194,29 @@ function getDataUserById($db,$id){
     return $response;
 }
 
+
+function searchByUsernameOrPhone($db,$username,$phone){
+    if($phone==""){
+        $sql = "SELECT * FROM gr_users WHERE deleted=0 and status=1 and username like '%".$username."%' ";
+    }else if($username==""){
+        $sql = "SELECT * FROM gr_users WHERE deleted=0 and status=1 and phone like '%".$phone."%' ";
+    }
+    try {
+        $response = array();
+        $stmt     = $db->query($sql); 
+        $rs       = $stmt->fetchAll();
+        $response['data']  = $rs;
+        $response['error'] = false; 
+    } catch(PDOException $e) {
+        $response['data']  = null;
+        $response['error'] = true; 
+    }
+    return $response;
+}
+
+
+
+
 function generateLinkBitUserEnable(){
         $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$";
         $data_array =  array(
@@ -114,12 +230,12 @@ function generateLinkBitUserEnable(){
 }
 
 
-function sendSMS($phone, $linkBitLy, $typeSMS){
+function sendSMS($sms,$phone, $linkBitLy, $typeSMS){
 
     try {
         $response   = array();
         $data_array =  array(
-            "sms"   => "",
+            "sms"   => $sms,
             "link" => $linkBitLy,
             "type"  => $typeSMS,
             "phone" => $phone
@@ -174,7 +290,7 @@ function updateStatusUser($db,$uid,$status){
         $response['data']    = $rs;
         if($status=='1'){
             $linkBitLy = generateLinkBitUserEnable();
-            sendSMS($phone,$linkBitLy,"enableuser");
+            sendSMS("SMS","",$phone,$linkBitLy,"enableuser");
         }
         $response['error']   = false; 
         $response['message'] = "";             
@@ -230,7 +346,8 @@ function createGroup($db,$group,$password,$id_user,$role,$id_organization){
 
 
 function existGroup($db,$group){
-      $sql = "SELECT * FROM gr_options WHERE type = 'group' and v1 = '$group'";
+      $nameGroup = addslashes($group);
+      $sql = "SELECT * FROM gr_options WHERE type = 'group' and v1 = '$nameGroup' ";
       try {
           $response = array();
           $stmt = $db->query($sql); 

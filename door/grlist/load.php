@@ -13,9 +13,10 @@ function gr_list($do) {
     }
     if ($do["type"] === "groups") {
       //  $r = db('Grupo', 's', 'options', 'type', 'group');
-        $r = db('Grupo', 'q', 'SELECT * FROM gr_options WHERE id_organization='.$id_organization);
+        $r    = db('Grupo', 'q', 'SELECT * FROM gr_options WHERE id_organization='.$id_organization);
+        $orgs = db('Grupo', 'q', 'SELECT * FROM gr_options WHERE type="gruser" and v2 =  "'.$uid.'" ');
 
-        
+     
         // $r = db('Grupo', 'q', 'SELECT * FROM gr_options as opt INNER JOIN gr_users usr on opt.v2 = usr.id WHERE opt.type="gruser" and usr.deleted=0 and usr.id_organization = '.$id_organization);
         
         
@@ -23,6 +24,7 @@ function gr_list($do) {
         foreach ($r as $v) {
                 $count = db('Grupo', 'q', 'SELECT COUNT(*) as count FROM chat.gr_options as opt INNER JOIN gr_users as usr on opt.v2 = usr.id where opt.type = "gruser" and usr.deleted != 1 and opt.v1 = '.$v['id'] )[0];
                 $cu = gr_group('user', $v['id'], $uid);
+                //           $infoChat =  db('Grupo', 'q', 'SELECT * FROM gr_options where id="'.$v['v1'].'"  ' )[0];
                 if ($cu[0] || !$cu[0] && gr_role('access', 'groups', '6')) {
                     $list[$i] = new stdClass();
                     $list[$i]->img = gr_img('groups', $v['id']);
@@ -73,6 +75,67 @@ function gr_list($do) {
                 $i = $i+1;
                 
         }
+
+
+     
+        foreach ($orgs as $v) {
+            
+            $infoChat =  db('Grupo', 'q', 'SELECT * FROM gr_options where id="'.$v['v1'].'"  ' )[0];
+            if($infoChat['id_organization'] != $id_organization){
+
+
+                $list[$i] = new stdClass();
+                $list[$i]->img = gr_img('groups', $v['v1']);
+                $list[$i]->name = $infoChat['v1'];
+                $list[$i]->countag = $list[$i]->count = 0;
+               // $list[$i]->sub = gr_data('c', 'type,v1', 'gruser', $v['v1'])." ".gr_lang('get', 'members');
+                $list[$i]->sub = $count['count']." ".gr_lang('get', 'members');
+                $lview = db('Grupo', 's', 'options', 'type,v1,v2', 'lview', $v['v1'], $uid, 'ORDER BY id DESC LIMIT 1');
+                $msg = db('Grupo', 's', 'msgs', 'gid', $v['v1'], 'ORDER BY id DESC');
+                
+                if ($cu[0]) {
+                    if (count($lview) != 0) {
+                        $list[$i]->count = db('Grupo', 's,count(*)', 'msgs', 'gid,id>', $v['v1'], $lview[0]['v3'])[0][0];
+                        if ($list[$i]->count != 0) {
+                            $list[$i]->count = $list[$i]->count;
+                            $list[$i]->countag = gr_lang('get', 'new');
+                        }
+                    } else {
+                        $list[$i]->count = count($msg)." ".gr_lang('get', 'new');
+                    }
+                }
+                $list[$i]->right = gr_lang('get', 'options');
+                $list[$i]->rtag = '';
+                $list[$i]->oa = gr_lang('get', 'view');
+                $list[$i]->oat = 'class="paj"';
+                $list[$i]->ob = 0;
+                $list[$i]->obt = '';
+                $list[$i]->oc = 0;
+                $list[$i]->oct = '';
+                $list[$i]->icon = "";
+                $list[$i]->id = 'class="loadgroup" id="group'.$v['v1'].'" ldt="group" no="'.$v['v1'].'" data-sort="100'.strtotime($msg[0]['tms']).'"';
+                if ($cu && $cu['role'] == 3 && !gr_role('access', 'groups', '7')) {
+                    $list[$i]->id = 'class="say" say="'.gr_lang('get', 'banned').'" type="e" no="'.$v['v1'].'" ldt="group" data-sort="000'.strtotime($msg[0]['tms']).'"';
+                }
+                if (!$cu[0]) {
+                    if (!gr_role('access', 'groups', '4') && !gr_role('access', 'groups', '7')) {
+                        $list[$i]->oa = gr_lang('get', 'join');
+                        $list[$i]->id = 'class="say" say="'.gr_lang('get', 'denied').'" type="e" no="'.$v['v1'].'" ldt="group" data-sort="000'.strtotime($msg[0]['tms']).'"';
+                    } else {
+                        $list[$i]->oa = gr_lang('get', 'join');
+                        $list[$i]->id = 'class="formpop" title="'.gr_lang('get', 'join_group').'" do="group" ldt="group" btn="'.gr_lang('get', 'join').'" act="join" no="'.$v['v1'].'" data-sort="000'.strtotime($msg[0]['tms']).'"';
+                    }
+                }
+                if (!empty($v['v2'])) {
+                    $list[$i]->icon = "ti-lock";
+                }
+
+                $i = $i+1;
+            }
+
+        }
+
+
     } else if ($do["type"] === "pm") {
         if (gr_role('access', 'privatemsg', '2')) {
             $r = db('Grupo', 'q', 'SELECT max(id) as id,gid FROM gr_msgs WHERE cat="user" GROUP by gid ORDER by id DESC');
@@ -428,7 +491,7 @@ function gr_list($do) {
      //   $lists = db('Grupo', 's', 'options', 'type,v1,v2|,v2', 'profile', 'status', 'online', 'idle');
         $lists = db('Grupo', 'q', 'SELECT opt.id,opt.type,opt.v1,opt.v2,opt.v3,opt.v4,opt.v5,opt.tms,usr.id_organization FROM gr_options as opt INNER JOIN gr_users as usr on opt.v3 = usr.id WHERE opt.type="profile" AND opt.v1="status" AND opt.v2="online" and usr.id_organization="'.$id_organization.'" ');
         foreach ($lists as $f) {
-         //   if ($f['v3'] !== $uid) {
+           if ($f['v4'] == 1) {
                 $list[$i] = new stdClass();
                 $list[$i]->img = gr_img('users', $f['v3']);
                 $list[$i]->name = gr_profile('get', $f['v3'], 'name');
@@ -454,7 +517,7 @@ function gr_list($do) {
                 }
                 $list[$i]->icon = "'status ".$f['v2']."'";
                 $list[$i]->id = 'data-sort="'.strtotime($f['tms']).'"';
-        //    }
+            }
             $i = $i+1;
         }
     } else if ($do["type"] === "roles") {

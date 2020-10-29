@@ -33,7 +33,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700,700i,800" rel="stylesheet">
     <link href="https://weloveiconfonts.com/api/?family=entypo" rel="stylesheet">
     <link rel="stylesheet" href="dist/view-bigimg-master/lib/view-bigimg.css">
-
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <?php
     cdn("npm/bootstrap@4.3.1/dist/css/bootstrap.min.css");
     cdn("npm/cd-themify-icons@0.0.1/index.css");
@@ -539,9 +539,9 @@
     </section>
 
 
-    <section id="modalInvite" class="grupo-pop-modal" style="display: none;overflow: auto;">>
+    <section id="modalInvite" class="grupo-pop-modal" style="display: none;overflow: auto;">
         <div>
-            <form autocomplete="off" id="formModalInvite" class="sizeModalInviteByPhone">
+            <form id="formModalInvite" class="sizeModalInviteByPhone">
                 <span class="head" id="titleInvite">Invite</span>
                 <div class="fields scroller" tabindex="5" style="overflow-y: hidden; outline: none;">
                     <div style="position: relative;">
@@ -568,7 +568,9 @@
                             </select>
                         </div>
                         <label class="color-label">Phone Number</label>
-                        <input type="text" name="fPhoneNumberInvite" id="txtProfilePhoneNumberInvite" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;">
+                        <input type="text" name="fPhoneNumberInvite" id="txtProfilePhoneNumberInvite" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;"/>
+                        <label class="color-label" style="margin-right: 39px;">Username</label>
+                        <input type="text" name="fUsernameInvite" id="txtProfileUsernameInvite" class="margin-input" style="margin-left: 60px;width: 178px;"/>
                     </div>
                     <div class="divByUser">
                         <label style="color: black;" id="totalUsers"></label>
@@ -582,7 +584,7 @@
 
 
                 </div>
-                <button type="button" onclick="onClickInvite(this)" class="button-submit-form  ajx grsub">Invite</button>
+                <button type="button" onclick="onClickInvite(this)" class="button-submit-form  ajx grsub" style="margin-top: 116px;">Invite</button>
                 <span class="cancel" onclick="onClickCancelInvite()">Cancel</span>
             </form>
         </div>
@@ -622,6 +624,8 @@ cdn("libs/emojionearea/3.4.1/emojionearea.min.js");
 cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+
 <script src="./dist/jquery.loading.block.js"></script>
 <script src="./dist/view-bigimg-master/lib/view-bigimg.js"></script>
 <script src="./dist/viewtiff/tiff.min.js"></script>

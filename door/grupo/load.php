@@ -676,6 +676,7 @@ function gr_group() {
             }
             $cu = gr_group('user', $arg[1]["id"], $uid, $arg[1]["ldt"]);
             if ($cu[0] && $cu['role'] != 3) {
+            //if ($cu[0]) {
                 $typ = 'msg';
                 $rmid = $rtxt = $rid = 0;
                 if (isset($arg[2])) {
@@ -843,6 +844,8 @@ function gr_group() {
         $list = null;
         $cu = gr_group('user', $arg[1]["id"], $uid, $arg[1]["ldt"]);
         if ($cu[0] && $cu['role'] != 3 || gr_role('access', 'groups', '7')) {
+        //if ($cu[0]) {
+        
             if (isset($arg[1]["from"]) && !empty($arg[1]["from"])) {
                 $r = db('Grupo', 's', 'msgs', 'cat,gid,id>', $arg[1]["ldt"], $arg[1]["id"], $arg[1]["from"], 'ORDER BY id DESC LIMIT 10');
             } else if (isset($arg[1]["to"]) && !empty($arg[1]["to"])) {
@@ -935,10 +938,10 @@ function gr_group() {
                 
                 if (isset($rchk['groups'][5]) || isset($rchk['groups'][7])) {
                     if($nameOrg !== $list[0]->pntitle ){
-                    $list[1]->md = array($lphr['invite'], 'class="formpop" pn="1" title="'.$lphr['invite'].'" do="group" btn="'.$lphr['invite'].'" act="invite"');
-
+                       $list[1]->md = array($lphr['invite'], 'class="formpop" pn="1" title="'.$lphr['invite'].'" do="group" btn="'.$lphr['invite'].'" act="invite"');
                     }
                 }
+                //$list[1]->md = array($lphr['invite'], 'class="formpop" pn="1" title="'.$lphr['invite'].'" do="group" btn="'.$lphr['invite'].'" act="invite"');
                 $list[1]->me = array($lphr['report_group'], 'class="formpop" pn="1" title="'.$lphr['report_group'].'" do="group" btn="'.$lphr['report'].'" act="reportmsg"');
 
                 if (isset($rchk['groups'][5]) || isset($rchk['groups'][7])) {

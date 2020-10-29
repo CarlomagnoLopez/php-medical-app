@@ -2455,7 +2455,7 @@ border-radius: 50%;
 }
 
 .sizeModalInviteByPhone{
-height: 356px !important;
+height: 600px !important;
 }
 
 .sizeModalInviteByUser{
@@ -2543,3 +2543,18 @@ display:none;
     left: 0;
   }
 }
+
+#txtProfileUsernameInvite {
+    position: relative;
+    z-index: 10000;
+}
+
+.ui-autocomplete {
+     z-index: 9999 !important;
+            max-height: 200px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+        } 

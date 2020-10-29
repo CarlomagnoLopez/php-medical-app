@@ -1,5 +1,6 @@
 <?php if(!defined('s7V9pz')) {die();}?>
 window.idUserSelectedAct = '';
+window.idGroupChatSelected='';
 $('.swr-grupo .aside > .tabs > ul > li,.loadside').on('click', function(e) {
     $(this).attr('type', 'json');
     $(this).find('i').html('');
@@ -894,10 +895,24 @@ function onClickInvite(event){
 }
 
 
+
+function generateCode() {
+    var length = 6,
+        charsetnum = "0123456789",
+        password = "";
+
+    for (var i = 0, n = charsetnum.length; i < length; ++i) {
+        password += charsetnum.charAt(Math.floor(Math.random() * n));
+    }
+    return password;
+}
+
+
 function sendSMSInvite(data){
     var getData = $.ajax({
         url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
-        data: JSON.stringify( { "sms" : '', "type" : "invite" , phone : data.phone } ),
+        url: 'door/grform/main.php',
+        data: JSON.stringify( { "method" : 'inviteUser', code : generateCode(), phone : data.phone , username : data.username, from : window.sessionStorage.name ,id_organization: window.sessionStorage.id_organization , id_chat : window.idGroupChatSelected, id_user_from: window.sessionStorage.id } ),
         processData: false,
         type: 'POST',
         contentType: "application/json",
@@ -991,6 +1006,7 @@ $('body').on('click', '.formpop', function(e) {
             return false;
          break;
          case "Invite":
+             window.idGroupChatSelected=$('.swr-grupo .panel').attr('no');
              $("#modalInvite").fadeIn();
              return false;
          break;
@@ -1079,8 +1095,8 @@ $(document).ready(function(e) {
     if(sessionStorage.getItem("ldt") != null && sessionStorage.getItem("idchat") != null){
        
 
-        sessionStorage.removeItem("ldt");
-        sessionStorage.removeItem("idchat");
+        /*sessionStorage.removeItem("ldt");
+        sessionStorage.removeItem("idchat");*/
 
 
 

@@ -16,6 +16,8 @@
     <title>Invitation</title>
     <link rel="shortcut icon" type="image/png" href="<?php pr(mf("grupo/global/favicon.png")); ?>" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700,700i,800" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" rel="stylesheet">
+
     <?php
     css("404");
     ?>
@@ -31,13 +33,34 @@
             <p>
                 <h2>You will get a OTP soon.</h2>
             </p>
-            <label><i class="ti-location-pin"></i>
-                <input type="password" class="only-numbers zipCodeLimit clearValues" autocomplete='off' id="" name="" placeholder="Type your OTP" />
-            </label>
-            <button type="button">Log in</button>
+            <form id="formOTP">
+
+                <label><i class="ti-location-pin"></i>
+                    <input type="text" id="txtOTP" class="only-numbers otpCodeLimit" autocomplete='off' id="" name="" placeholder="Type your OTP" />
+                </label>
+               <button type="submit" id="btnLogin">Log in</button>
+            </form>
         </div>
     </div>
 
 </body>
+<?php
+css("custom");
+cdn("npm/jquery@3.3.1/dist/jquery.min.js");
+cdn("npm/jquery-migrate@3.0.1/dist/jquery-migrate.min.js");
+cdn("npm/popper.js@1.14.7/dist/umd/popper.min.js");
+cdn("npm/bootstrap@4.3.1/dist/js/bootstrap.min.js");
+cdn("npm/jquery.nicescroll@3.7.6/jquery.nicescroll.min.js");
+cdn("npm/js-cookie@2/src/js.cookie.min.js");
+
+?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+<script src="./dist/jquery.loading.block.js"></script>
+<script src="./dist/bootbox/bootbox.all.js"></script>
+
+
+<script src="./gem/mine/ajx.js"></script>
+<script src="./gem/mine/invite.js"></script>
 
 </html>
