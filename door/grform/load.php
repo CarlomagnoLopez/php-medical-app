@@ -38,7 +38,8 @@ function gr_form($do) {
         $cm = db('Grupo', 's', 'complaints', 'id', $do["no"]);
         if (count($cm) != 0) {
             $cu = gr_group('user', $cm[0]['gid'], $uid);
-            if (!$cu[0] || $cu['role'] == 3 || $cm[0]['msid'] == 0 && !gr_role('access', 'groups', '7')) {
+            if (!$cu[0] || $cu['role'] == 3  /* || $cm[0]['msid'] == 0  && !gr_role('access', 'groups', '7')*/) {
+            //if (!$cu[0] ) {
                 exit;
             }
             $fields->name = array(gr_lang('get', 'full_name'), 'input', 'disabled', '"'.gr_profile('get', $cm[0]['uid'], 'name').'"');

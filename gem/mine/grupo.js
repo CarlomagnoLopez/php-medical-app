@@ -337,47 +337,8 @@ $("body").on("click", ".list  > li", function (e) {
     $("#global_group_selected").val($(this).attr('no'));
 
 });
-function onClickList(filename, typefile) {
-    showFileViewer(filename, typefile);
-}
-function showFileViewer(filename, typefile) {
-    if (filename != "undefined") {
-        $(".previewPDF").hide();
-        $("#wrap").hide();
-        if (typefile !== 'application/pdf') {
-            var link = "gem/ore/" + filename;
 
 
-            if (typefile === "image/tiff") {
-                var xhr = new XMLHttpRequest();
-                xhr.responseType = 'arraybuffer';
-                xhr.open('GET', link);
-                xhr.onload = function (e) {
-                    var tiff = new Tiff({ buffer: xhr.response });
-                    var canvas = tiff.toCanvas();
-                    canvas.id = "canvasTiff";
-                    if ($("#canvasTiff").length) {
-                        $("#canvasTiff").detach()
-                    }
-                    $("#wrap").show();
-                    $("#wrap").append(canvas);
-                };
-                xhr.send();
-            } else {
-                $("#wrap").show();
-                // var link = "gem/ore/" + filename;
-                var viewer = new ViewBigimg();
-                viewer.show(link)
-            }
-        } else {
-            $(".previewPDF").show();
-            var link = "dist/ViewerJS/#../../gem/ore/" + filename;
-            $("#iframeViewer").attr('src', link);
-
-        }
-        $("#modalViewer").fadeIn();
-    }
-}
 
 
 $('body').on('click', '.iv-close', function (e) {
