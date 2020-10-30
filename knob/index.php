@@ -547,12 +547,12 @@
                     <div style="position: relative;">
                         <label>Invite by phone</label>
                     </div>
-                    <div style="position: relative;float: right;">
+                    <!-- <div style="position: relative;float: right;">
                         <label class="switch">
                             <input id="chkFilterModalInvite" type="checkbox" checked>
                             <span class="slider round"></span>
                         </label>
-                    </div>
+                    </div> -->
                     <label>Invite by phone</label>
 
 

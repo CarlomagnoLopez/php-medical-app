@@ -231,7 +231,7 @@ function onClickFormCreateGroup(event) {
         id_user: $("#global_id_user").val(),
         role: $("#global_role").val(),
         id_organization: $("#global_id_organization").val()
-    }
+    };
 
     $.ajax({
         type: "POST",

@@ -1454,7 +1454,7 @@ $(window).load(function() {
     if ($(".swr-grupo .rside").is(':visible')) {
         $('.swr-grupo .rside > .tabs > ul > li').eq(0).trigger('click');
     }
-
+    grliveupdates();
 });
 
 $(".scroller").niceScroll({
@@ -1652,3 +1652,101 @@ $('body').on('click', '.swr-grupo .panel > .room > .msgs > li > div > .msg > .ti
         ajxx($(this), data, s, e);
     }
 });
+
+function validatePasswords(password, repeatPassword) {
+    return password === repeatPassword;
+}
+
+function existGroup(group) {
+    var searchOrg = $.ajax({
+        url: 'door/grform/main.php',
+        data: JSON.stringify({ "method": "existGroup", "group": group }),
+        processData: false,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) { },
+        async: false,
+        error: function (err) {
+            console.log(err);
+        }
+    }).responseText;
+    return JSON.parse(searchOrg);
+}
+
+
+function onClickFormCreateGroup(event) {
+    if (event.value !== "Create Group") {
+        return false;
+    }
+    if ($("#txtGroupName").val() == "") {
+        say("the group name is required", "s");
+        $("#txtGroupName").focus();
+        return false;
+    }
+    if ($("#txtGroupPassword").val() == "") {
+        say("the password group is required", "s");
+        $("#txtGroupPassword").focus();
+        return false;
+    }
+
+    if (!validatePasswords($("#txtGroupPassword").val(), $("#txtGroupRepeatPassword").val())) {
+        say("The given passwords do not match", "s");
+        $("#txtGroupRepeatPassword").focus();
+        return false;
+    }
+
+
+    $.loadingBlockShow({
+        imgPath: './asset/default.svg',
+        text: 'Loading...',
+        style: { position: 'fixed', width: '100%', height: '100%', background: 'rgba(0, 0, 0, .8)', left: 0, top: 0, zIndex: 10000 }
+    });
+
+    var exist = existGroup($("#txtGroupName").val());
+
+    if (exist.exist) {
+        $.loadingBlockHide();
+        say(exist.message, "s");
+        return false;
+    }
+
+    var payload = {
+        method: "createGroup",
+        group: $("#txtGroupName").val(),
+        password: $("#txtGroupPassword").val(),
+        id_user: $("#global_id_user").val(),
+        role: $("#global_role").val(),
+        id_organization: $("#global_id_organization").val()
+    };
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        processData: false,
+        url: 'door/grform/main.php',
+        data: JSON.stringify(payload),
+        success: function (data) {
+            $.loadingBlockHide();
+            if (data.data == 0) {
+                say("Please try again", "s");
+            } else {
+
+                $('#liGroups').click();
+
+                say("The group: " + $("#txtGroupName").val() + " was creaded successfully", "s");
+                $("#txtGroupPassword").val("");
+                $("#txtGroupRepeatPassword").val("");
+                $("#txtGroupName").val("");
+                $("#modalCreateGroup").fadeOut();
+
+            }
+        },
+        error: function (err) {
+            say("Please try again", "s");
+            $.loadingBlockHide();
+        }
+    });
+
+
+}
+
