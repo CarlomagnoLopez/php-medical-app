@@ -1,4 +1,6 @@
-<?php if(!defined('s7V9pz')) {die();}?>*
+<?php if (!defined('s7V9pz')) {
+    die();
+} ?>*
 {
 -webkit-box-sizing: border-box;
 -moz-box-sizing: border-box;
@@ -138,8 +140,8 @@ margin-left: 17px;
 
 .sign > section > div > div form label > input
 {
-    background: #78797a;
-    color: #fff;
+background: #78797a;
+color: #fff;
 border: 0px;
 padding: 12px 5px;
 padding-left: 39px;
@@ -316,7 +318,6 @@ background: url('gem/ore/grupo/global/background-img.png') no-repeat center cent
 -moz-background-size: cover;
 -o-background-size: cover;
 background-size: cover;
-filter: brightness(0.5) !important;
 }
 
 .bgtwo
@@ -329,7 +330,7 @@ background-attachment: fixed;
 
 .two > section > div > div form > .submit
 {
-background: linear-gradient(to right,#000000,#000000);
+background: linear-gradient(to right,#E91E63,#003ade);
 }
 
 .two > section
@@ -351,7 +352,7 @@ color: white;
 
 .two > section > div > div > .box
 {
-background: linear-gradient(to right,#484f55 50%,#484f55 ) !important;
+background: linear-gradient(to right,#232630,#252d40);
 text-align: center;
 box-shadow: 0px 0px 6px #0c0c0c4f;
 }
@@ -367,12 +368,14 @@ border-radius: 0px;
 .two > section > div > div form label > input
 {
 padding-left: 24px;
+background: transparent;
+color: #ffffffd1;
 }
 
 .two > section > div > div form label > i
 {
-    margin-left: 6px;
-    color: #fff;
+margin-left: 6px;
+color: #fff;
 }
 
 .two > section > div > div .logo > img
@@ -469,5 +472,5 @@ margin-left: 5px;
 }
 
 .phone-input{
-	margin-bottom:8px;
+margin-bottom:8px;
 }
