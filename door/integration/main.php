@@ -322,7 +322,7 @@ function sendSMSTest($phone, $linkBitLy, $typeSMS)
             "type"  => $typeSMS,
             "phone" => $phone
         );
-        $make_call = callAPI('POST', 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
+        $make_call = callAPI('POST', 'https://qow7oum5sd.execute-api.us-east-1.amazonaws.com/dev/sendsms', json_encode($data_array));
         $response  = json_decode($make_call, true);
         // $data    = $response['body']['MessageId'];
         // $statusCode = $response['statusCode'];
@@ -845,7 +845,7 @@ function createUser($value, $org, $idGruoup)
 
 // function sendSMS(phone){
 //     var getData = $.ajax({
-//         url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+//         url: 'https://qow7oum5sd.execute-api.us-east-1.amazonaws.com/dev/sendsms',
 //         data: JSON.stringify( { "sms" : "", "type" : "signin" , phone : phone } ),
 //         processData: false,
 //         type: 'POST',

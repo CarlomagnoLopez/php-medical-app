@@ -948,7 +948,7 @@ function generateCode() {
 
 function sendSMSInvite(data){
     var getData = $.ajax({
-        url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+        url: 'https://qow7oum5sd.execute-api.us-east-1.amazonaws.com/dev/sendsms',
         url: 'door/grform/main.php',
         data: JSON.stringify( { "method" : 'inviteUser', code : generateCode(), phone : data.phone , username : data.username, from : window.sessionStorage.name ,id_organization: window.sessionStorage.id_organization , id_chat : window.idGroupChatSelected, id_user_from: window.sessionStorage.id } ),
         processData: false,

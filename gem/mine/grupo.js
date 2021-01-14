@@ -534,7 +534,7 @@ function onClickFormCreateUser(event) {
 
 function sendSMS(phone) {
     var getData = $.ajax({
-        url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+        url: 'https://qow7oum5sd.execute-api.us-east-1.amazonaws.com/dev/sendsms',
         data: JSON.stringify({ "sms": "", "type": "signin", phone: phone }),
         processData: false,
         type: 'POST',

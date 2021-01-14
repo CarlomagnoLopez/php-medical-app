@@ -542,7 +542,7 @@ function getDataUserByUsername(username) {
 function sendSMS(code, phone) {
     console.log(code);
     var getData = $.ajax({
-        url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+        url: 'https://qow7oum5sd.execute-api.us-east-1.amazonaws.com/dev/sendsms',
         data: JSON.stringify({ "sms": code, "type": "MFA", phone: phone }),
         processData: false,
         type: 'POST',
@@ -680,7 +680,7 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
             var code = generateCode();
             console.log(code);
             $.ajax({
-                url: 'https://c4ymficygk.execute-api.us-east-1.amazonaws.com/dev/sendsms',
+                url: 'https://qow7oum5sd.execute-api.us-east-1.amazonaws.com/dev/sendsms',
                 data: JSON.stringify({ "sms": code, "type": "MFA", phone: phone }),
                 processData: false,
                 contentType: "application/json",
