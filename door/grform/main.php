@@ -87,7 +87,7 @@ switch($method){
 
 
 function generateLinkBitUserInvite($inviteCode){
-    $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/invite$"."code=".$inviteCode;
+    $longLink = "http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/invite$"."code=".$inviteCode;
     $data_array =  array(
         "group_guid" => "Bk9h1KBTFqy",
         "domain" => "bit.ly",
@@ -218,7 +218,7 @@ function searchByUsernameOrPhone($db,$username,$phone){
 
 
 function generateLinkBitUserEnable(){
-        $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$";
+        $longLink = "http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/signin$";
         $data_array =  array(
             "group_guid" => "Bk9h1KBTFqy",
             "domain" => "bit.ly",

@@ -43,7 +43,7 @@ function grupofns() {
             } else if ($do["do"] == "logout") {
                 gr_profile('ustatus', 'offline');
                 usr('Grupo', 'logout');
-                gr_prnt('window.location.href = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$";');
+                gr_prnt('window.location.href = "http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/signin$";');
                 // gr_prnt('$');
             } else if ($do["do"] == "files") {
                 fnc('grfiles');
@@ -1977,7 +1977,7 @@ function callAPIAuth($method, $url, $data)
 function generateLinkBit($id,$ldt){
     $response   = array();
     try {
-        $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$"."ldt=".$ldt."&id=".$id;
+        $longLink = "http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/signin$"."ldt=".$ldt."&id=".$id;
         $data_array =  array(
             "group_guid" => "Bk9h1KBTFqy",
             "domain" => "bit.ly",

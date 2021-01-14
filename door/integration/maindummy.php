@@ -22,7 +22,7 @@ if ($_REQUEST) {
         case 0:
             $responseSql = $validationsLevel["resposeSql"];
             updateLink($responseSql[0]["link"]);
-            header("Location: http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin");
+            header("Location: http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/signin");
             // header("Location: http://localhost/php-medical-app/signin");
             $response['data'] = "success";
             $response['error'] = false;
@@ -32,14 +32,14 @@ if ($_REQUEST) {
             $responseSql = $validationsLevel["resposeSql"];
             getSMSTestAndUpdate($responseSql[0]["phone_number"], "signuplink", $responseSql[0]["id"]);
             // header("Location:http://localhost/php-medical-app/expired");
-            header("Location:http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/expired");
+            header("Location:http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/expired");
             $response['data'] = "success";
             $response['error'] = false;
             $response['message'] = "level 1";
             break;
         case 2:
             // header("Location: http://localhost/php-medical-app/expired");
-            header("Location: http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/expired");
+            header("Location: http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/expired");
             $response['data'] = "success";
             $response['error'] = false;
             $response['message'] = "level 2";
@@ -123,7 +123,7 @@ function getSMSTestAndUpdate($phone, $typeSMS, $idToUpdate)
         $n = 8;
         $createdArray = array_values(array_intersect_key($a, array_flip(array_rand($a, $n))));
         $stringArray = $createdArray[0] . $createdArray[1] . $createdArray[2] . $createdArray[3] . $createdArray[4] . $createdArray[5] . $createdArray[6] . $createdArray[7];
-        $longLink = "http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/door/integration/maindummy.php?smsvalidations=" . $stringArray;
+        $longLink = "http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/door/integration/maindummy.php?smsvalidations=" . $stringArray;
         $data_array =  array(
             "group_guid" => "Bk9h1KBTFqy",
             "domain" => "bit.ly",

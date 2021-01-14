@@ -704,7 +704,7 @@ if ($_SESSION['timestamp'] && time() - $_SESSION['timestamp'] > 300) { //subtrac
     // unset( $_SESSION['timestamp']);
 
 
-    header("Location:http://ec2-52-91-135-78.compute-1.amazonaws.com/php-medical-app/signin$"); //redirect to index.php
+    header("Location:http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/signin$"); //redirect to index.php
     return;
 } else {
     $_SESSION['timestamp'] = time(); //set new timestamp
