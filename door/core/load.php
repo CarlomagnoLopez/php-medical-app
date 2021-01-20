@@ -170,7 +170,8 @@ function url() {
     if (cnf()['global'] === 0) {
         return cnf()['url'];
     } else {
-        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";;
+        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https")."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";;
+        // $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";;
         $url = vc($url, 'url');
 
         if (!empty(pg())) {
