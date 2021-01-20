@@ -261,7 +261,7 @@ function getSMSTest($phone, $typeSMS)
         $n = 8;
         $createdArray = array_values(array_intersect_key($a, array_flip(array_rand($a, $n))));
         $stringArray = $createdArray[0] . $createdArray[1] . $createdArray[2] . $createdArray[3] . $createdArray[4] . $createdArray[5] . $createdArray[6] . $createdArray[7];
-        $longLink = "http://ec2-54-166-131-223.compute-1.amazonaws.com/php-medical-app/door/integration/maindummy.php?smsvalidations=" . $stringArray;
+        $longLink = "https://letstrackme.com/track-it/door/integration/maindummy.php?smsvalidations=" . $stringArray;
         $data_array =  array(
             "group_guid" => "Bk9h1KBTFqy",
             "domain" => "bit.ly",
