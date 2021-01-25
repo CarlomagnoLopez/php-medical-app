@@ -624,7 +624,7 @@ cdn("libs/emojionearea/3.4.1/emojionearea.min.js");
 cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 
 <script src="./dist/jquery.loading.block.js"></script>
 <script src="./dist/view-bigimg-master/lib/view-bigimg.js"></script>
