@@ -13,7 +13,7 @@ $(document).ready(function () {
     sessionStorage.removeItem("email");
     sessionStorage.removeItem("ldt");
     sessionStorage.removeItem("idchat");
-    if(window.location.pathname!="/php-medical-app/signin"){
+    if(window.location.pathname!="/track-it/signin"){
         $("#fieldRepeatPassword").hide();
         $("#forgotPsw").show();
     }else{
@@ -694,7 +694,7 @@ $('.two > section > div > div form > .submit.global').on('click', function (e) {
                         if (result === code) {
                             // var getData = getDataUserByPhone( phone ); 
                             var s = 'eval(data);';
-                            if(window.location.pathname!="/php-medical-app/signin"){
+                            if(window.location.pathname!="/track-it/signin"){
                                 var params = window.location.pathname.split('/')[2].split('$')[1].split('&')
                                 if(params[0]!=""){
                                     var ldt    = params[0].replace('ldt=','');
