@@ -173,7 +173,7 @@ function gr_captcha($response) {
         $response = curl_exec($ch);
         curl_close($ch);
     } else {
-        $opts = array('http' =>
+        $opts = array('https' =>
             array(
                 'method' => 'POST',
                 'header' => 'Content-type: application/x-www-form-urlencoded',

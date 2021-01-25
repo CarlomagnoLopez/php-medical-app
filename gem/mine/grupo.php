@@ -1508,7 +1508,7 @@ function url2link(text) {
         function(match, space, url) {
             var hyperlink = url;
             if (!hyperlink.match('^https?:\/\/')) {
-                hyperlink = 'http://' + hyperlink;
+                hyperlink = 'https://' + hyperlink;
             }
             var video = urlParser.parse(hyperlink);
             var em = 'link';

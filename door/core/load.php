@@ -352,7 +352,7 @@ function load_mine() {
 
 function urlfix($url = 0) {
     if ($url === 0) {
-        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https")."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     }
     $url = vc(vc($url, 'url'));
     $site = url().pg();
