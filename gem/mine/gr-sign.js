@@ -161,7 +161,8 @@ function onClickCancelForg(){
 
     $(".formForgotPassword").val('');
     $("#forgotCodeCountry").val('1');
-    $("#divPassword").fadeOut();
+    // $("#divPassword").fadeOut();
+    $(".fade").fadeOut();
     $(".stepTwoDanger").hide();
     $(".stepOneError").hide();
 

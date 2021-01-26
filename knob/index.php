@@ -664,7 +664,7 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
                 d.shift();
             }
         }
-        // window.location.reload()
+        header("Location:https://letstrackme.com/track-it/signin$");
     }
 
     function timerIncrement() {
