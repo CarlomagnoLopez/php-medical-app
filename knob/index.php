@@ -44,7 +44,7 @@
     gr_core('hf', 'header');
     ?>
 
-    
+
 </head>
 <input type="hidden" id="global_role" value="<?php pr($usr['role']); ?>">
 <input type="hidden" id="global_id_user" value="<?php pr($usr['id']); ?>">
@@ -175,7 +175,7 @@
                                 <?php
                                 if (gr_role('access', 'privatemsg', '2')) {
                                 ?>
-                                    <li id="liPM"  act='pm' side='lside' zero='0' unread='0' zval='<?php pr(gr_lang('get', 'zero_pm')) ?>'><?php pr(gr_lang('get', 'pm')) ?> <i></i></li>
+                                    <li id="liPM" act='pm' side='lside' zero='0' unread='0' zval='<?php pr(gr_lang('get', 'zero_pm')) ?>'><?php pr(gr_lang('get', 'pm')) ?> <i></i></li>
                                 <?php
                                 } ?>
                                 <?php
@@ -568,9 +568,9 @@
                             </select>
                         </div>
                         <label class="color-label">Phone Number</label>
-                        <input type="text" name="fPhoneNumberInvite" id="txtProfilePhoneNumberInvite" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;"/>
+                        <input type="text" name="fPhoneNumberInvite" id="txtProfilePhoneNumberInvite" class="margin-input only-numbers phoneNumberLimit" style="margin-left: 60px;width: 178px;" />
                         <label class="color-label" style="margin-right: 39px;">Username</label>
-                        <input type="text" name="fUsernameInvite" id="txtProfileUsernameInvite" class="margin-input" style="margin-left: 60px;width: 178px;"/>
+                        <input type="text" name="fUsernameInvite" id="txtProfileUsernameInvite" class="margin-input" style="margin-left: 60px;width: 178px;" />
                     </div>
                     <div class="divByUser">
                         <label style="color: black;" id="totalUsers"></label>
@@ -648,24 +648,25 @@ cdn("npm/js-video-url-parser@0.3.1/dist/jsVideoUrlParser.min.js");
 
     });
 
-        function deleteCookies() {
-            console.log("borrando..." );
-            var cookies = document.cookie.split("; ");
-            for (var c = 0; c < cookies.length; c++) {
-                var d = window.location.hostname.split(".");
-                while (d.length > 0) {
-                    var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
-                    var p = location.pathname.split('/');
-                    document.cookie = cookieBase + '/';
-                    while (p.length > 0) {
-                        document.cookie = cookieBase + p.join('/');
-                        p.pop();
-                    };
-                    d.shift();
-                }
+    function deleteCookies() {
+        console.log("borrando...");
+        var cookies = document.cookie.split("; ");
+        for (var c = 0; c < cookies.length; c++) {
+            var d = window.location.hostname.split(".");
+            while (d.length > 0) {
+                var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
+                var p = location.pathname.split('/');
+                document.cookie = cookieBase + '/';
+                while (p.length > 0) {
+                    document.cookie = cookieBase + p.join('/');
+                    p.pop();
+                };
+                d.shift();
             }
-            window.location.reload()
         }
+        // window.location.reload()
+    }
+
     function timerIncrement() {
         idleTime = idleTime + 1;
         console.log("1 minunte more..." + idleTime);
@@ -698,18 +699,13 @@ gr_reactprof();
 
 // echo "<script>console.log('init ==  ". $_SESSION['timestamp']."');</script>";
 if ($_SESSION['timestamp'] && time() - $_SESSION['timestamp'] > 300) { //subtract new timestamp from the old one
-    
+    echo "<script>console.log('time == " . time() - $_SESSION['timestamp'] . " " . $_SESSION['timestamp'] . "');</script>";
     echo "<script>deleteCookies()</script>";
-    echo "<script>console.log('time == ".time() - $_SESSION['timestamp']. " ". $_SESSION['timestamp']."');</script>";
-    // unset( $_SESSION['timestamp']);
-
-
     header("Location:https://letstrackme.com/track-it/signin$"); //redirect to index.php
     return;
 } else {
     $_SESSION['timestamp'] = time(); //set new timestamp
-    echo "<script>console.log('aca == ". $_SESSION['timestamp']."');</script>";
-
+    echo "<script>console.log('aca == " . $_SESSION['timestamp'] . "');</script>";
 }
 ?>
 
